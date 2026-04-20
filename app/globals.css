@@ -1,0 +1,168 @@
+:root {
+  /* Clear Sky brand palette */
+  --bg:         #f5f3ee;
+  --bg-alt:     #fdfcfa;
+  --ink:        #1c2b35;
+  --ink-mid:    #4a5e6a;
+  --ink-lt:     #7a919d;
+  --accent:     #3d7a8a;
+  --accent-dk:  #2d6070;
+  --accent-lt:  #ddeef3;
+  --accent-xl:  #eef6f9;
+  --white:      #fff;
+  --border:     rgba(28, 43, 53, 0.1);
+  --border-md:  rgba(28, 43, 53, 0.15);
+  --r:          16px;
+  --shadow:     0 4px 20px rgba(28, 43, 53, 0.09);
+  --shadow-sm:  0 2px 8px rgba(28, 43, 53, 0.07);
+
+  --font-h: var(--font-dm-serif), Georgia, serif;
+  --font-b: var(--font-inter), system-ui, sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-inter), system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-dm-serif), Georgia, serif;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  font-weight: 400;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--accent-dk);
+}
+
+.container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.container-sm {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-family: var(--font-b);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: white;
+}
+.btn-primary:hover {
+  background: var(--accent-dk);
+  color: white;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--ink);
+  border: 1.5px solid var(--border-md);
+}
+.btn-ghost:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn-sm {
+  padding: 9px 18px;
+  font-size: 13px;
+}
+
+.card {
+  background: var(--white);
+  border-radius: var(--r);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.card-hover {
+  transition: box-shadow 0.2s, transform 0.15s;
+}
+.card-hover:hover {
+  box-shadow: var(--shadow);
+  transform: translateY(-2px);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border-md);
+  background: var(--white);
+  font-family: var(--font-b);
+  font-size: 15px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+input:focus,
+textarea:focus {
+  border-color: var(--accent);
+}
+
+.error-text {
+  font-size: 13px;
+  color: #c0392b;
+}
+
+@media (max-width: 700px) {
+  .container,
+  .container-sm {
+    padding: 0 20px;
+  }
+}
