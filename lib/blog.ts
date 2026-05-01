@@ -45,7 +45,7 @@ export function getAllPosts(): PostMeta[] {
       }
     })
     .filter(Boolean)
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()) as PostMeta[]
+    .sort((a, b) => new Date((b as PostMeta).date).getTime() - new Date((a as PostMeta).date).getTime()) as PostMeta[]
 }
 
 export function getPost(slug: string): Post | null {

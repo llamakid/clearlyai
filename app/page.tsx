@@ -1,5 +1,6 @@
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import EmailSignup from '@/components/EmailSignup'
 import Link from 'next/link'
 
 export default function HomePage() {
@@ -56,16 +57,16 @@ export default function HomePage() {
             </p>
 
             <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <Link href="/pricing" className="btn btn-primary" style={{ fontSize: 15, padding: '15px 32px', boxShadow: '0 4px 16px rgba(61,122,138,0.25)' }}>
-                Get started — $97
-              </Link>
-              <Link href="/blog" className="btn btn-ghost" style={{ fontSize: 15, padding: '15px 32px' }}>
-                Read the blog
-              </Link>
+              <a href="/Clearly_AI_Starter_Kit.pdf" download className="btn btn-primary" style={{ fontSize: 15, padding: '15px 32px', boxShadow: '0 4px 16px rgba(61,122,138,0.25)' }}>
+                Download the Free Starter Kit
+              </a>
+              <a href="#curriculum" className="btn btn-ghost" style={{ fontSize: 15, padding: '15px 32px' }}>
+                See the curriculum
+              </a>
             </div>
 
             <p style={{ marginTop: 20, fontSize: 13, color: 'var(--ink-lt)' }}>
-              6 modules · Go at your own pace · Instant access
+              Free · No sign-up required · Instant download
             </p>
           </div>
         </section>
@@ -213,7 +214,7 @@ export default function HomePage() {
         </section>
 
         {/* ── Course overview ── */}
-        <section style={{ padding: '80px 32px', background: 'var(--ink)' }}>
+        <section id="curriculum" style={{ padding: '80px 32px', background: 'var(--ink)' }}>
           <div style={{ maxWidth: 1120, margin: '0 auto' }}>
             <div style={{ marginBottom: 48 }}>
               <div style={{
@@ -275,9 +276,9 @@ export default function HomePage() {
             </div>
 
             <div style={{ marginTop: 44 }}>
-              <Link href="/pricing" className="btn btn-primary" style={{ fontSize: 16, padding: '16px 40px' }}>
-                Get full access — $97
-              </Link>
+              <a href="/Clearly_AI_Starter_Kit.pdf" download className="btn btn-primary" style={{ fontSize: 16, padding: '16px 40px' }}>
+                Download the Free Starter Kit
+              </a>
             </div>
           </div>
         </section>
@@ -434,36 +435,29 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── CTA strip ── */}
+        {/* ── Email signup ── */}
         <section style={{
           background: 'var(--accent)',
-          padding: '64px 32px',
+          padding: '72px 32px',
           textAlign: 'center',
         }}>
-          <div style={{ maxWidth: 640, margin: '0 auto' }}>
+          <div style={{ maxWidth: 580, margin: '0 auto' }}>
             <h2 style={{
               fontFamily: 'var(--font-dm-serif), Georgia, serif',
               fontSize: 36,
               color: 'white',
-              marginBottom: 16,
+              marginBottom: 14,
+              lineHeight: 1.2,
             }}>
-              Ready to stop wondering<br />and start using?
+              Get practical AI tips<br />in your inbox.
             </h2>
-            <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: 17, marginBottom: 32 }}>
-              Join the people who went from "I don&apos;t get AI" to "I use it every day."
+            <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: 17, marginBottom: 32, lineHeight: 1.65 }}>
+              Short, plain-English ideas you can actually use — plus updates on the course when it opens.
             </p>
-            <Link href="/pricing" style={{
-              display: 'inline-block',
-              background: 'white',
-              color: 'var(--accent-dk)',
-              fontWeight: 700,
-              fontSize: 16,
-              padding: '16px 40px',
-              borderRadius: 10,
-              textDecoration: 'none',
-            }}>
-              Get started today
-            </Link>
+            <EmailSignup />
+            <p style={{ marginTop: 16, fontSize: 13, color: 'rgba(255,255,255,0.5)' }}>
+              No spam, ever. Unsubscribe any time.
+            </p>
           </div>
         </section>
       </main>

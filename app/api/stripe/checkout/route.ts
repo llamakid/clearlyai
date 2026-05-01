@@ -1,14 +1,18 @@
 import { getStripe } from '@/lib/stripe'
+import { apiError } from '@/lib/api-error'
+import { checkoutSchema } from '@/lib/schemas'
 import { NextResponse } from 'next/server'
 
 export async function POST(request: Request) {
   try {
-    const { userId, email } = await request.json()
+    const body = await request.json()
+    const parsed = checkoutSchema.safeParse(body)
 
-    if (!userId || !email) {
-      return NextResponse.json({ error: 'Missing user info' }, { status: 400 })
+    if (!parsed.success) {
+      return apiError(parsed.error.issues[0].message, 400)
     }
 
+    const { userId, email } = parsed.data
     const stripe = getStripe()
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
@@ -21,7 +25,7 @@ export async function POST(request: Request) {
         },
       ],
       metadata: {
-        userId, // passed to webhook so we know who paid
+        userId,
       },
       success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard?welcome=1`,
       cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/pricing`,
@@ -30,6 +34,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ url: session.url })
   } catch (err) {
     console.error('Stripe checkout error:', err)
-    return NextResponse.json({ error: 'Failed to create checkout session' }, { status: 500 })
+    return apiError('Failed to create checkout session')
   }
 }

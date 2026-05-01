@@ -1,4 +1,5 @@
 import { getStripe } from '@/lib/stripe'
+import { apiError } from '@/lib/api-error'
 import { createClient } from '@supabase/supabase-js'
 import { NextResponse } from 'next/server'
 import type Stripe from 'stripe'
@@ -19,7 +20,7 @@ export async function POST(request: Request) {
     )
   } catch (err) {
     console.error('Webhook signature verification failed:', err)
-    return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })
+    return apiError('Invalid signature', 400)
   }
 
   if (event.type === 'checkout.session.completed') {
@@ -28,10 +29,10 @@ export async function POST(request: Request) {
     const userId = session.metadata?.userId
     if (!userId) {
       console.error('No userId in Stripe metadata')
-      return NextResponse.json({ error: 'No userId' }, { status: 400 })
+      return apiError('No userId', 400)
     }
 
-    // Use service role key — bypasses RLS so webhook can write
+    // Service role key bypasses RLS — webhook has no user session
     const supabaseAdmin = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.SUPABASE_SERVICE_ROLE_KEY!
@@ -49,7 +50,7 @@ export async function POST(request: Request) {
 
     if (error) {
       console.error('Supabase upsert error:', error)
-      return NextResponse.json({ error: 'DB error' }, { status: 500 })
+      return apiError('DB error')
     }
   }
 

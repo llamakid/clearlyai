@@ -1,5 +1,5 @@
 # Clearly, AI — Claude Briefing File
-> This file is read automatically at the start of each session. Full detail is in CONTEXT.md.
+> This file is read automatically at the start of each session. Architecture decisions and the full color palette are in `CONTEXT.md`.
 
 ## What We're Building
 **Clearly, AI** — a plain-English AI school for non-technical adults. Three audiences: working professionals (35–54), small business owners (38–58), and curious learners (55–75). The brand promise is confidence, not complexity.

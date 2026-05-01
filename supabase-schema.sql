@@ -55,6 +55,25 @@ create policy "users can update own progress"
   on course_progress for update
   using (auth.uid() = user_id);
 
+-- subscribers: homepage email opt-in (no auth required)
+create table if not exists subscribers (
+  id            uuid primary key default gen_random_uuid(),
+  email         text not null unique,
+  subscribed_at timestamptz not null default now()
+);
+
+alter table subscribers enable row level security;
+
+-- Nobody can read subscribers via client — export via Supabase dashboard or service role
+create policy "no public read on subscribers"
+  on subscribers for select
+  using (false);
+
+-- Anyone can insert (the homepage form uses service role key via API route)
+create policy "service role can insert subscribers"
+  on subscribers for insert
+  with check (true);
+
 -- ── Helpful index ──────────────────────────────────────────
 create index if not exists purchases_user_id_idx on purchases(user_id);
 create index if not exists progress_user_module_idx on course_progress(user_id, module_id);
