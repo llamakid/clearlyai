@@ -1,7 +1,6 @@
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import EmailSignup from '@/components/EmailSignup'
-import Link from 'next/link'
 
 export default function HomePage() {
   return (
@@ -60,13 +59,13 @@ export default function HomePage() {
               <a href="/Clearly_AI_Starter_Kit.pdf" download className="btn btn-primary" style={{ fontSize: 15, padding: '15px 32px', boxShadow: '0 4px 16px rgba(61,122,138,0.25)' }}>
                 Download the Free Starter Kit
               </a>
-              <a href="#curriculum" className="btn btn-ghost" style={{ fontSize: 15, padding: '15px 32px' }}>
-                See the curriculum
+              <a href="/pricing" className="btn btn-ghost" style={{ fontSize: 15, padding: '15px 32px' }}>
+                See Plans — from $15/mo
               </a>
             </div>
 
             <p style={{ marginTop: 20, fontSize: 13, color: 'var(--ink-lt)' }}>
-              Free · No sign-up required · Instant download
+              Free starter kit · No sign-up required · Plans from $15/mo
             </p>
           </div>
         </section>
@@ -229,7 +228,7 @@ export default function HomePage() {
                 letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: 16,
                 color: 'white',
               }}>
-                Six modules. <em style={{ color: 'var(--accent-lt)', fontStyle: 'italic' }}>A completely different relationship with AI.</em>
+                Six modules now. <em style={{ color: 'var(--accent-lt)', fontStyle: 'italic' }}>More launching soon.</em>
               </h2>
               <p style={{ fontSize: 17, color: 'rgba(255,255,255,0.65)', lineHeight: 1.65, maxWidth: 540 }}>
                 Each module is a focused set of short lessons built around what you can actually do — not how the technology works.
@@ -370,6 +369,94 @@ export default function HomePage() {
                 </div>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* ── Pricing CTA ── */}
+        <section style={{
+          padding: '80px 32px',
+          background: 'var(--ink)',
+          textAlign: 'center',
+        }}>
+          <div style={{ maxWidth: 680, margin: '0 auto' }}>
+            <div style={{
+              fontSize: 11, fontWeight: 700, letterSpacing: '0.1em',
+              textTransform: 'uppercase', color: 'var(--accent-lt)', marginBottom: 12,
+            }}>
+              Simple Pricing
+            </div>
+            <h2 style={{
+              fontFamily: 'var(--font-dm-serif), Georgia, serif',
+              fontSize: 'clamp(28px, 4vw, 44px)',
+              color: 'white',
+              lineHeight: 1.15,
+              marginBottom: 32,
+              letterSpacing: '-0.02em',
+            }}>
+              Everything included.<br />
+              <em style={{ color: 'var(--accent-lt)', fontStyle: 'italic' }}>Pick the plan that fits.</em>
+            </h2>
+
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: 16,
+              maxWidth: 560,
+              margin: '0 auto 36px',
+            }}>
+              {[
+                { label: 'Monthly', price: '$15', period: '/mo', note: null, highlight: false },
+                { label: 'Yearly', price: '$120', period: '/yr', note: 'Best Value', highlight: true },
+                { label: 'Forever', price: '$299', period: ' one-time', note: null, highlight: false },
+              ].map(({ label, price, period, note, highlight }) => (
+                <div key={label} style={{
+                  background: highlight ? 'rgba(61,122,138,0.3)' : 'rgba(255,255,255,0.05)',
+                  border: `1px solid ${highlight ? 'rgba(61,122,138,0.8)' : 'rgba(255,255,255,0.08)'}`,
+                  borderRadius: 16,
+                  padding: '20px 16px',
+                }}>
+                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: highlight ? 'var(--accent-lt)' : 'rgba(255,255,255,0.4)', marginBottom: 8 }}>
+                    {note ?? label}
+                  </div>
+                  <div>
+                    <span style={{
+                      fontFamily: 'var(--font-dm-serif), Georgia, serif',
+                      fontSize: 32, color: 'white', lineHeight: 1,
+                    }}>{price}</span>
+                    <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)', marginLeft: 3 }}>{period}</span>
+                  </div>
+                  {note && (
+                    <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', marginTop: 4 }}>{label}</div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <ul style={{
+              listStyle: 'none', padding: 0, marginBottom: 36,
+              display: 'inline-flex', flexDirection: 'column', gap: 10, textAlign: 'left',
+            }}>
+              {[
+                '6 modules to start — more launching soon',
+                'New courses as they launch',
+                'Go at your own pace, on any device',
+                '30-day money-back guarantee',
+              ].map((item) => (
+                <li key={item} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 15, color: 'rgba(255,255,255,0.8)' }}>
+                  <span style={{ color: 'var(--accent-lt)', fontWeight: 700, flexShrink: 0 }}>✓</span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+
+            <div>
+              <a href="/pricing" className="btn btn-primary" style={{ fontSize: 16, padding: '16px 44px', boxShadow: '0 4px 20px rgba(61,122,138,0.4)' }}>
+                See All Plans →
+              </a>
+            </div>
+            <p style={{ marginTop: 16, fontSize: 13, color: 'rgba(255,255,255,0.4)' }}>
+              Secure checkout via Stripe. Refund within 30 days, no questions asked.
+            </p>
           </div>
         </section>
 

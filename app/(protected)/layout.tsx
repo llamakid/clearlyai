@@ -19,14 +19,21 @@ export default async function ProtectedLayout({
     redirect('/login')
   }
 
-  // Check if user has a purchase record
-  const { data: purchase } = await supabase
+  // Forever plans: any row with plan_type='forever'
+  // Subscription plans: any row with subscription_status='active' or 'past_due'
+  const { data: purchases } = await supabase
     .from('purchases')
-    .select('id')
+    .select('plan_type, subscription_status')
     .eq('user_id', user.id)
-    .single()
 
-  if (!purchase) {
+  const hasAccess = purchases?.some(
+    (p) =>
+      p.plan_type === 'forever' ||
+      p.subscription_status === 'active' ||
+      p.subscription_status === 'past_due'
+  )
+
+  if (!hasAccess) {
     redirect('/pricing')
   }
 

@@ -4,7 +4,9 @@ import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 
-export default function CheckoutButton() {
+type PlanType = 'monthly' | 'yearly' | 'forever'
+
+export default function CheckoutButton({ planType, label }: { planType: PlanType; label: string }) {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
 
@@ -14,7 +16,6 @@ export default function CheckoutButton() {
     const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
-    // Not logged in — send to signup first, then come back to pricing
     if (!user) {
       router.push('/signup?redirectTo=/pricing')
       return
@@ -23,7 +24,7 @@ export default function CheckoutButton() {
     const res = await fetch('/api/stripe/checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId: user.id, email: user.email }),
+      body: JSON.stringify({ userId: user.id, email: user.email, planType }),
     })
 
     const { url, error } = await res.json()
@@ -42,9 +43,9 @@ export default function CheckoutButton() {
       onClick={handleCheckout}
       disabled={loading}
       className="btn btn-primary"
-      style={{ width: '100%', fontSize: 16, padding: '16px' }}
+      style={{ width: '100%', fontSize: 15, padding: '14px' }}
     >
-      {loading ? 'Redirecting to checkout…' : 'Get instant access — $97'}
+      {loading ? 'Redirecting to checkout…' : label}
     </button>
   )
 }

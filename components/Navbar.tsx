@@ -58,6 +58,7 @@ export default function Navbar() {
         </Link>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <Link href="/pricing" style={navLink}>Pricing</Link>
           <Link href="/blog" style={navLink}>Blog</Link>
 
           {user ? (

@@ -116,10 +116,10 @@ export default async function BlogPostPage({
               Ready to go further?
             </h2>
             <p style={{ fontSize: 15, color: 'var(--ink-mid)', marginBottom: 24 }}>
-              The full Clearly, AI course goes deep on everything in this post — with hands-on exercises, real prompts, and six complete modules.
+              The full Clearly, AI course goes deep on everything in this post — with hands-on exercises, real prompts, and new modules launching regularly.
             </p>
             <Link href="/pricing" className="btn btn-primary">
-              Get full course access — $97
+              See plans — from $15/mo
             </Link>
           </div>
         </div>

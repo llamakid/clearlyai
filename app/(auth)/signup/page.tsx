@@ -27,7 +27,7 @@ export default function SignupPage() {
     }
 
     const supabase = createClient()
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -41,7 +41,14 @@ export default function SignupPage() {
       return
     }
 
-    setDone(true)
+    // If Supabase returned a session, the user is confirmed immediately — go straight to dashboard.
+    // If no session, email confirmation is required — show the "check your inbox" screen.
+    if (data.session) {
+      router.push('/dashboard')
+      router.refresh()
+    } else {
+      setDone(true)
+    }
   }
 
   if (done) {
