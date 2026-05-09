@@ -22,9 +22,19 @@ export async function POST(request: Request) {
       process.env.SUPABASE_SERVICE_ROLE_KEY!
     )
 
+    const { data: existing } = await supabase
+      .from('subscribers')
+      .select('email')
+      .eq('email', parsed.data.email)
+      .maybeSingle()
+
+    if (existing) {
+      return NextResponse.json({ ok: true })
+    }
+
     const { error } = await supabase
       .from('subscribers')
-      .upsert({ email: parsed.data.email }, { onConflict: 'email' })
+      .insert({ email: parsed.data.email })
 
     if (error) {
       console.error('Subscribe error:', error)

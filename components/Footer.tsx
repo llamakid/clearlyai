@@ -2,21 +2,12 @@ import Link from 'next/link'
 
 export default function Footer() {
   return (
-    <footer style={{
+    <footer className="footer-wrap" style={{
       background: '#1c2b35',
       color: 'rgba(255,255,255,0.55)',
-      padding: '48px 32px',
       marginTop: 'auto',
     }}>
-      <div style={{
-        maxWidth: 1120,
-        margin: '0 auto',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        flexWrap: 'wrap',
-        gap: 16,
-      }}>
+      <div className="footer-inner">
         <div>
           <div style={{
             fontFamily: 'var(--font-dm-serif), Georgia, serif',

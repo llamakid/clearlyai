@@ -7,8 +7,8 @@ export default async function ProtectedLayout({
 }: {
   children: React.ReactNode
 }) {
-  // Dev bypass: skip auth/purchase checks when SKIP_AUTH=true
-  if (process.env.SKIP_AUTH === 'true') {
+  // Dev bypass: skip auth/purchase checks when SKIP_AUTH=true (never in production)
+  if (process.env.NODE_ENV !== 'production' && process.env.SKIP_AUTH === 'true') {
     return <>{children}</>
   }
 

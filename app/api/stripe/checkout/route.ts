@@ -1,6 +1,7 @@
 import { getStripe } from '@/lib/stripe'
 import { apiError } from '@/lib/api-error'
 import { checkoutSchema } from '@/lib/schemas'
+import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 
 const PRICE_IDS: Record<string, string | undefined> = {
@@ -11,6 +12,10 @@ const PRICE_IDS: Record<string, string | undefined> = {
 
 export async function POST(request: Request) {
   try {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return apiError('Unauthorized', 401)
+
     const body = await request.json()
     const parsed = checkoutSchema.safeParse(body)
 
@@ -18,7 +23,9 @@ export async function POST(request: Request) {
       return apiError(parsed.error.issues[0].message, 400)
     }
 
-    const { userId, email, planType } = parsed.data
+    const { planType } = parsed.data
+    const userId = user.id
+    const email = user.email!
     const priceId = PRICE_IDS[planType]
 
     if (!priceId) {

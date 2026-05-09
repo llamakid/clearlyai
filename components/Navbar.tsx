@@ -8,6 +8,7 @@ import type { User } from '@supabase/supabase-js'
 
 export default function Navbar() {
   const [user, setUser] = useState<User | null>(null)
+  const [menuOpen, setMenuOpen] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -24,43 +25,23 @@ export default function Navbar() {
   const handleSignOut = async () => {
     const supabase = createClient()
     await supabase.auth.signOut()
+    setMenuOpen(false)
     router.push('/')
     router.refresh()
   }
 
+  const close = () => setMenuOpen(false)
+
   return (
-    <nav style={{
-      background: 'rgba(253,252,250,0.92)',
-      backdropFilter: 'blur(12px)',
-      WebkitBackdropFilter: 'blur(12px)',
-      borderBottom: '1px solid rgba(28,43,53,0.1)',
-      padding: '0 32px',
-      position: 'sticky',
-      top: 0,
-      zIndex: 100,
-    }}>
-      <div style={{
-        maxWidth: 1120,
-        margin: '0 auto',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        height: 64,
-      }}>
-        <Link href="/" style={{
-          fontFamily: 'var(--font-dm-serif), Georgia, serif',
-          fontSize: 22,
-          color: 'var(--ink)',
-          textDecoration: 'none',
-          letterSpacing: '-0.01em',
-        }}>
+    <nav className="navbar">
+      <div className="navbar-inner">
+        <Link href="/" className="navbar-logo" onClick={close}>
           Clearly,&nbsp;<span style={{ color: 'var(--accent)' }}>AI</span>
         </Link>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div className="nav-desktop">
           <Link href="/pricing" style={navLink}>Pricing</Link>
           <Link href="/blog" style={navLink}>Blog</Link>
-
           {user ? (
             <>
               <Link href="/dashboard" style={navLink}>My Courses</Link>
@@ -73,7 +54,42 @@ export default function Navbar() {
             </>
           )}
         </div>
+
+        <button
+          className="nav-hamburger"
+          onClick={() => setMenuOpen(o => !o)}
+          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={menuOpen}
+        >
+          {menuOpen ? (
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M4 4l12 12M16 4L4 16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+            </svg>
+          ) : (
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+            </svg>
+          )}
+        </button>
       </div>
+
+      {menuOpen && (
+        <div className="nav-mobile-menu">
+          <Link href="/pricing" className="nav-mobile-link" onClick={close}>Pricing</Link>
+          <Link href="/blog" className="nav-mobile-link" onClick={close}>Blog</Link>
+          {user ? (
+            <>
+              <Link href="/dashboard" className="nav-mobile-link" onClick={close}>My Courses</Link>
+              <button onClick={handleSignOut} className="nav-mobile-link">Sign Out</button>
+            </>
+          ) : (
+            <>
+              <Link href="/login" className="nav-mobile-link" onClick={close}>Log In</Link>
+              <Link href="/pricing" className="nav-mobile-cta" onClick={close}>Get Started →</Link>
+            </>
+          )}
+        </div>
+      )}
     </nav>
   )
 }

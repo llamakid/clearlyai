@@ -8,9 +8,8 @@ export default function HomePage() {
       <Navbar />
       <main>
         {/* ── Hero ── */}
-        <section style={{
+        <section className="section-pad" style={{
           background: 'var(--bg)',
-          padding: '88px 32px 80px',
           textAlign: 'center',
         }}>
           <div style={{ maxWidth: 760, margin: '0 auto' }}>
@@ -71,8 +70,7 @@ export default function HomePage() {
         </section>
 
         {/* ── Pain section ── */}
-        <section style={{
-          padding: '80px 32px',
+        <section className="section-pad" style={{
           background: 'var(--bg-alt)',
           borderTop: '1px solid var(--border)',
           borderBottom: '1px solid var(--border)',
@@ -96,11 +94,9 @@ export default function HomePage() {
               </h2>
             </div>
 
-            <ul style={{
+            <ul className="grid-2" style={{
               listStyle: 'none',
               padding: 0,
-              display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
               gap: 24,
             }}>
               {[
@@ -142,7 +138,7 @@ export default function HomePage() {
         </section>
 
         {/* ── How it works ── */}
-        <section style={{ padding: '80px 32px', background: 'var(--bg)' }}>
+        <section className="section-pad" style={{ background: 'var(--bg)' }}>
           <div style={{ maxWidth: 1120, margin: '0 auto' }}>
             <div style={{ marginBottom: 48 }}>
               <div style={{
@@ -163,11 +159,7 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              gap: 24,
-            }}>
+            <div className="grid-3" style={{ gap: 24 }}>
               {[
                 {
                   num: '01',
@@ -213,7 +205,7 @@ export default function HomePage() {
         </section>
 
         {/* ── Course overview ── */}
-        <section id="curriculum" style={{ padding: '80px 32px', background: 'var(--ink)' }}>
+        <section id="curriculum" className="section-pad" style={{ background: 'var(--ink)' }}>
           <div style={{ maxWidth: 1120, margin: '0 auto' }}>
             <div style={{ marginBottom: 48 }}>
               <div style={{
@@ -235,11 +227,7 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              gap: 16,
-            }}>
+            <div className="grid-3" style={{ gap: 16 }}>
               {[
                 { num: 'Module 01', title: 'AI 101: What It Is & Why It Matters', desc: 'Understand what AI actually is, in plain terms. Feel confident in any conversation about it.' },
                 { num: 'Module 02', title: 'ChatGPT & Your Work: Getting Things Done', desc: 'Draft emails, summarize documents, brainstorm ideas, and do research in minutes — not hours.' },
@@ -283,7 +271,7 @@ export default function HomePage() {
         </section>
 
         {/* ── Who it's for ── */}
-        <section style={{ padding: '80px 32px', background: 'var(--bg)' }}>
+        <section className="section-pad" style={{ background: 'var(--bg)' }}>
           <div style={{ maxWidth: 1120, margin: '0 auto' }}>
             <div style={{ marginBottom: 48 }}>
               <div style={{
@@ -304,11 +292,7 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              gap: 20,
-            }}>
+            <div className="grid-3" style={{ gap: 20 }}>
               {[
                 {
                   emoji: '💼',
@@ -373,8 +357,7 @@ export default function HomePage() {
         </section>
 
         {/* ── Pricing CTA ── */}
-        <section style={{
-          padding: '80px 32px',
+        <section className="section-pad" style={{
           background: 'var(--ink)',
           textAlign: 'center',
         }}>
@@ -397,9 +380,7 @@ export default function HomePage() {
               <em style={{ color: 'var(--accent-lt)', fontStyle: 'italic' }}>Pick the plan that fits.</em>
             </h2>
 
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
+            <div className="grid-3" style={{
               gap: 16,
               maxWidth: 560,
               margin: '0 auto 36px',
@@ -461,8 +442,7 @@ export default function HomePage() {
         </section>
 
         {/* ── Common questions ── */}
-        <section style={{
-          padding: '80px 32px',
+        <section className="section-pad" style={{
           background: 'var(--bg-alt)',
           borderTop: '1px solid var(--border)',
         }}>
@@ -523,9 +503,8 @@ export default function HomePage() {
         </section>
 
         {/* ── Email signup ── */}
-        <section style={{
+        <section className="section-pad" style={{
           background: 'var(--accent)',
-          padding: '72px 32px',
           textAlign: 'center',
         }}>
           <div style={{ maxWidth: 580, margin: '0 auto' }}>
