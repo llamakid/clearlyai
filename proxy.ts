@@ -1,7 +1,7 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   // Dev-only bypass — never runs in production
   if (process.env.NODE_ENV !== 'production' && process.env.SKIP_AUTH === 'true') {
     return NextResponse.next({ request })
