@@ -28,10 +28,11 @@
 |---|---|
 | **Framework** | Next.js 16 (App Router, TypeScript) |
 | **Auth + DB** | Supabase |
-| **Payments** | Stripe (one-time checkout, webhook) |
+| **Payments** | Stripe (subscription + lifetime checkout, webhook) |
 | **Email** | Resend |
 | **Hosting** | Vercel (not Netlify) |
 | **Blog** | MDX files in `content/blog/` |
+| **Analytics** | Vercel Analytics + Speed Insights (both in `app/layout.tsx`) |
 
 ---
 
@@ -140,7 +141,9 @@ See `.env.local.example` for the full list. Summary:
 | `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe → Developers → API Keys |
 | `STRIPE_SECRET_KEY` | Stripe → Developers → API Keys |
 | `STRIPE_WEBHOOK_SECRET` | Stripe → Developers → Webhooks |
-| `STRIPE_PRICE_ID` | Stripe → Products → Price ID |
+| `STRIPE_PRICE_ID_MONTHLY` | Stripe → Products → Monthly price ID ($15/mo) |
+| `STRIPE_PRICE_ID_YEARLY` | Stripe → Products → Yearly price ID ($120/yr) |
+| `STRIPE_PRICE_ID_FOREVER` | Stripe → Products → Founder/lifetime price ID ($299 one-time) |
 | `NEXT_PUBLIC_SITE_URL` | `https://learnaiclearly.com` in production |
 | `RESEND_API_KEY` | resend.com → API Keys |
 | `RESEND_FROM_EMAIL` | `nate@learnaiclearly.com` |
@@ -153,29 +156,26 @@ See `.env.local.example` for the full list. Summary:
 - ✅ Brand system locked (Clear Sky + DM Serif + Inter)
 - ✅ Next.js app scaffolded with full stack (auth, payments, blog, course player)
 - ✅ All 6 course modules built (`lib/course-data/module-1.ts` through `module-6.ts`)
-- ✅ Supabase schema written (`supabase-schema.sql`)
-- ✅ Stripe checkout + webhook wired up
+- ✅ Supabase project created, schema run, auth verified
+- ✅ Stripe products created — 3 prices (monthly $15, yearly $120, forever $299)
+- ✅ Stripe checkout + webhook wired up (subscriptions + one-time payment handled)
+- ✅ Resend account set up, domain verified, email confirmation re-enabled in Supabase
 - ✅ Email capture wired up (homepage → `/api/subscribe` → Supabase `subscribers` table)
 - ✅ Blog wired up with 6 starter posts (MDX)
 - ✅ Domain purchased: learnaiclearly.com
-- ⏳ Supabase project not yet created / schema not yet run
-- ⏳ Stripe product + price not yet created
-- ⏳ Resend account not yet set up
-- ⏳ `.env.local` not fully populated
-- ⏳ Not yet deployed to Vercel
-- ⏳ Domain not yet connected to Vercel
+- ✅ Deployed to Vercel, all env vars set
+- ✅ Vercel Analytics + Speed Insights installed
+- ⏳ Smoke test not yet fully completed (Stripe test mode price IDs needed)
+- ⏳ Domain not yet confirmed connected to Vercel
 - ⏳ Beta testers not yet recruited
 
 ---
 
 ## Immediate Priorities (pick up here)
 
-1. **Fill in `.env.local`** — Supabase, Stripe, Resend keys (see SETUP.md for exact steps)
-2. **Run `supabase-schema.sql`** — in Supabase SQL Editor to create tables
-3. **Create Stripe product** — "Clearly, AI Course" at $97 one-time, copy the Price ID
-4. **Deploy to Vercel** — `vercel` CLI or import from GitHub; add all env vars in Vercel dashboard
-5. **Connect domain** — Vercel → Settings → Domains → add `learnaiclearly.com`
-6. **Recruit 10–15 beta testers** — share `/dashboard` URL directly after manually granting access, or have them go through the Stripe flow
+1. **Complete smoke test** — In Stripe dashboard, switch to Test mode and create test versions of the 3 prices; add those test `price_...` IDs to Vercel env vars temporarily; run the full signup → checkout → dashboard flow using card `4242 4242 4242 4242`; verify purchase row appears in Supabase and welcome email arrives
+2. **Confirm domain is connected** — Vercel → Settings → Domains should show `learnaiclearly.com` as active with no DNS warnings
+3. **Recruit 10–15 beta testers** — have them go through the live Stripe flow (or manually grant access in Supabase `purchases` table)
 
 ---
 
@@ -189,3 +189,5 @@ See `.env.local.example` for the full list. Summary:
 - Do not use Netlify or Netlify Forms — this app runs on Vercel with its own API routes
 - The old static HTML files (`index.html`, `module-1.html`, etc.) no longer exist — the Next.js app replaced them
 - Blog posts are MDX files in `content/blog/` — adding a new file there is all it takes to publish
+- Stripe has separate test and live mode price IDs — they are not interchangeable. Test keys (`sk_test_`) only work with test prices; live keys (`sk_live_`) only work with live prices. Always confirm the mode before debugging Stripe errors.
+- Pricing is 3 tiers: Monthly ($15/mo, recurring), Yearly ($120/yr, recurring), Forever ($299 one-time, founder pricing). Plan IDs in code: `monthly`, `yearly`, `forever`.

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { DM_Serif_Display, Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import './globals.css'
 
 const dmSerif = DM_Serif_Display({
@@ -43,6 +44,7 @@ export default function RootLayout({
       <body>
         {children}
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
