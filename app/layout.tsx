@@ -32,6 +32,12 @@ export const metadata: Metadata = {
     siteName: 'Clearly, AI',
     type: 'website',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Clearly, AI — Learn it. Use it. Own it.',
+    description:
+      'A plain-English AI school for non-technical adults. No jargon. No tech background needed. Real results.',
+  },
 }
 
 export default function RootLayout({
