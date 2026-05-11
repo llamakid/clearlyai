@@ -16,7 +16,6 @@ const plans = [
       'New courses as they launch',
       'Go at your own pace, any device',
       'Progress saved automatically',
-      '30-day money-back guarantee',
     ],
     buttonLabel: 'Start monthly — $15/mo',
     highlight: false,
@@ -34,7 +33,6 @@ const plans = [
       'Save 33% vs. monthly billing',
       'New courses as they launch',
       'Go at your own pace, any device',
-      '30-day money-back guarantee',
     ],
     buttonLabel: 'Start yearly — $120/yr',
     highlight: true,
@@ -52,7 +50,6 @@ const plans = [
       'Founding Member pricing — locked in forever',
       'All future courses included',
       'Never think about it again',
-      '30-day money-back guarantee',
     ],
     buttonLabel: 'Claim founding member access — $299',
     highlight: false,
@@ -216,10 +213,6 @@ export default function PricingPage() {
                 {
                   q: 'Can I switch plans later?',
                   a: 'Yes. You can upgrade, downgrade, or cancel anytime from your account settings. If you upgrade to Forever, your remaining subscription period is credited.',
-                },
-                {
-                  q: 'What if I don\'t like it?',
-                  a: 'Email us within 30 days for a full refund, no questions asked.',
                 },
                 {
                   q: 'How long does the course take?',

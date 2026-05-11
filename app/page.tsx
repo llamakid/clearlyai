@@ -421,7 +421,6 @@ export default function HomePage() {
                 '6 modules to start — more launching soon',
                 'New courses as they launch',
                 'Go at your own pace, on any device',
-                '30-day money-back guarantee',
               ].map((item) => (
                 <li key={item} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 15, color: 'rgba(255,255,255,0.8)' }}>
                   <span style={{ color: 'var(--accent-lt)', fontWeight: 700, flexShrink: 0 }}>✓</span>
@@ -436,7 +435,7 @@ export default function HomePage() {
               </a>
             </div>
             <p style={{ marginTop: 16, fontSize: 13, color: 'rgba(255,255,255,0.4)' }}>
-              Secure checkout via Stripe. Refund within 30 days, no questions asked.
+              Secure checkout via Stripe.
             </p>
           </div>
         </section>
