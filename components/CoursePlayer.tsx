@@ -38,10 +38,12 @@ export default function CoursePlayer({ course }: { course: CourseData }) {
   }, [storageKey, course.lessons.length])
 
   const persistState = useCallback((patch: Partial<CourseState>) => {
-    try {
-      const current = JSON.parse(localStorage.getItem(storageKey) || '{}')
-      localStorage.setItem(storageKey, JSON.stringify({ ...current, ...patch }))
-    } catch { }
+    setTimeout(() => {
+      try {
+        const current = JSON.parse(localStorage.getItem(storageKey) || '{}')
+        localStorage.setItem(storageKey, JSON.stringify({ ...current, ...patch }))
+      } catch { }
+    }, 0)
   }, [storageKey])
 
   const lesson = course.lessons[curLesson]

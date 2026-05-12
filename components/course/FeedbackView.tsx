@@ -1,16 +1,39 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import Link from 'next/link'
 
 export default function FeedbackView({ moduleId, nextModuleId }: { moduleId: number; nextModuleId?: number }) {
   const [stars, setStars] = useState(0)
   const [recommend, setRecommend] = useState('')
   const [submitted, setSubmitted] = useState(false)
-  const [form, setForm] = useState({ helpful: '', confusing: '', change: '', testimonial: '', name: '', email: '' })
+  const [submitting, setSubmitting] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Uncontrolled — no re-render on keystroke, values read on submit
+  const formRef = useRef({ helpful: '', confusing: '', change: '', testimonial: '', name: '', email: '' })
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setSubmitting(true)
+    try {
+      await fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          module_id:   moduleId,
+          stars:       stars || null,
+          recommend:   recommend || null,
+          helpful:     formRef.current.helpful,
+          confusing:   formRef.current.confusing,
+          change:      formRef.current.change,
+          testimonial: formRef.current.testimonial,
+          name:        formRef.current.name,
+          email:       formRef.current.email,
+        }),
+      })
+    } catch {
+      // Don't block the thank-you screen if the request fails
+    }
     setSubmitted(true)
   }
 
@@ -88,8 +111,8 @@ export default function FeedbackView({ moduleId, nextModuleId }: { moduleId: num
             <div key={key} style={{ marginBottom: 28 }}>
               <label style={{ fontSize: 14, fontWeight: 600, color: 'var(--ink)', marginBottom: 10, display: 'block' }}>{label}</label>
               <textarea
-                value={form[key as keyof typeof form]}
-                onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
+                defaultValue=""
+                onChange={e => { formRef.current[key as keyof typeof formRef.current] = e.target.value }}
                 placeholder={placeholder}
                 style={{
                   width: '100%', padding: '14px 16px', border: '1.5px solid var(--border-md)',
@@ -128,8 +151,8 @@ export default function FeedbackView({ moduleId, nextModuleId }: { moduleId: num
               6. Would you be willing to share a short testimonial? (Optional)
             </label>
             <textarea
-              value={form.testimonial}
-              onChange={e => setForm(f => ({ ...f, testimonial: e.target.value }))}
+              defaultValue=""
+              onChange={e => { formRef.current.testimonial = e.target.value }}
               placeholder="After just one module, I finally feel like I understand what everyone's been talking about..."
               style={{
                 width: '100%', padding: '14px 16px', border: '1.5px solid var(--border-md)',
@@ -146,22 +169,28 @@ export default function FeedbackView({ moduleId, nextModuleId }: { moduleId: num
             </label>
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
               <input
-                value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                placeholder="Your name" style={{ flex: 1, minWidth: 200, padding: '12px 16px', border: '1.5px solid var(--border-md)', borderRadius: 10, fontSize: 15, fontFamily: 'inherit', color: 'var(--ink)', background: 'white', outline: 'none' }}
+                defaultValue=""
+                onChange={e => { formRef.current.name = e.target.value }}
+                placeholder="Your name"
+                style={{ flex: 1, minWidth: 200, padding: '12px 16px', border: '1.5px solid var(--border-md)', borderRadius: 10, fontSize: 15, fontFamily: 'inherit', color: 'var(--ink)', background: 'white', outline: 'none' }}
               />
               <input
-                type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-                placeholder="your@email.com" style={{ flex: 1, minWidth: 200, padding: '12px 16px', border: '1.5px solid var(--border-md)', borderRadius: 10, fontSize: 15, fontFamily: 'inherit', color: 'var(--ink)', background: 'white', outline: 'none' }}
+                type="email"
+                defaultValue=""
+                onChange={e => { formRef.current.email = e.target.value }}
+                placeholder="your@email.com"
+                style={{ flex: 1, minWidth: 200, padding: '12px 16px', border: '1.5px solid var(--border-md)', borderRadius: 10, fontSize: 15, fontFamily: 'inherit', color: 'var(--ink)', background: 'white', outline: 'none' }}
               />
             </div>
           </div>
 
-          <button type="submit" style={{
+          <button type="submit" disabled={submitting} style={{
             width: '100%', padding: 16, background: 'var(--accent)', color: 'white',
             border: 'none', borderRadius: 12, fontSize: 16, fontWeight: 700,
-            cursor: 'pointer', fontFamily: 'inherit', marginBottom: 40, transition: 'background 0.15s',
+            cursor: submitting ? 'default' : 'pointer', fontFamily: 'inherit', marginBottom: 40,
+            transition: 'background 0.15s', opacity: submitting ? 0.7 : 1,
           }}>
-            Submit My Feedback →
+            {submitting ? 'Submitting…' : 'Submit My Feedback →'}
           </button>
         </form>
       </div>
