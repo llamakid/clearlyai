@@ -55,8 +55,8 @@ export default function HomePage() {
             </p>
 
             <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <a href="/api/download/starter-kit" className="btn btn-primary" style={{ fontSize: 15, padding: '15px 32px', boxShadow: '0 4px 16px rgba(61,122,138,0.25)' }}>
-                Download the Free Starter Kit
+              <a href="/signup" className="btn btn-primary" style={{ fontSize: 15, padding: '15px 32px', boxShadow: '0 4px 16px rgba(61,122,138,0.25)' }}>
+                Start the Free Course
               </a>
               <a href="/pricing" className="btn btn-ghost" style={{ fontSize: 15, padding: '15px 32px' }}>
                 See Plans — from $15/mo
@@ -64,7 +64,10 @@ export default function HomePage() {
             </div>
 
             <p style={{ marginTop: 20, fontSize: 13, color: 'var(--ink-lt)' }}>
-              Free starter kit · No sign-up required · Plans from $15/mo
+              Free course · No credit card required ·{' '}
+              <a href="/api/download/starter-kit" style={{ color: 'var(--ink-lt)', textDecoration: 'underline' }}>
+                Download the PDF instead
+              </a>
             </p>
           </div>
         </section>
@@ -263,8 +266,8 @@ export default function HomePage() {
             </div>
 
             <div style={{ marginTop: 44 }}>
-              <a href="/api/download/starter-kit" className="btn btn-primary" style={{ fontSize: 16, padding: '16px 40px' }}>
-                Download the Free Starter Kit
+              <a href="/signup" className="btn btn-primary" style={{ fontSize: 16, padding: '16px 40px' }}>
+                Start the Free Course
               </a>
             </div>
           </div>

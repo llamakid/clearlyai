@@ -1,6 +1,7 @@
 import { notFound, redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import CoursePlayer from '@/components/CoursePlayer'
+import starterCourse from '@/lib/course-data/starter'
 import module1 from '@/lib/course-data/module-1'
 import module2 from '@/lib/course-data/module-2'
 import module3 from '@/lib/course-data/module-3'
@@ -10,6 +11,7 @@ import module6 from '@/lib/course-data/module-6'
 import type { CourseData } from '@/lib/course-data/types'
 
 const COURSES: Record<string, CourseData> = {
+  '0': starterCourse,
   '1': module1,
   '2': module2,
   '3': module3,
@@ -28,7 +30,8 @@ export default async function CoursePage({
 
   if (!course) notFound()
 
-  if (moduleId !== '1') {
+  // Module 0 (starter course) is free for all signed-in users
+  if (moduleId !== '0') {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 

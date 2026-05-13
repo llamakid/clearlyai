@@ -48,6 +48,6 @@ export interface CourseData {
   title: string
   subtitle: string
   lessons: Lesson[]
-  quiz: QuizQuestion[]
+  quiz?: QuizQuestion[]
   nextModuleId?: number
 }
