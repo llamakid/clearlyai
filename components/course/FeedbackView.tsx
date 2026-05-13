@@ -38,21 +38,37 @@ export default function FeedbackView({ moduleId, nextModuleId }: { moduleId: num
   }
 
   if (submitted) {
+    const isStarter = moduleId === 0
     return (
       <div style={{ flex: 1, overflowY: 'auto', padding: '40px', display: 'flex', justifyContent: 'center' }}>
         <div style={{ width: '100%', maxWidth: 620, textAlign: 'center', padding: '48px 24px' }}>
-          <div style={{ fontSize: 56, marginBottom: 20 }}>{nextModuleId ? '🙏' : '🎓'}</div>
+          <div style={{ fontSize: 56, marginBottom: 20 }}>{isStarter ? '🚀' : nextModuleId ? '🙏' : '🎓'}</div>
           <h2 style={{ fontFamily: 'var(--font-dm-serif), Georgia, serif', fontSize: 32, color: 'var(--ink)', marginBottom: 12 }}>
-            {nextModuleId ? 'Thank you so much.' : 'You did it. Thank you.'}
+            {isStarter ? "You're ready for more." : nextModuleId ? 'Thank you so much.' : 'You did it. Thank you.'}
           </h2>
           <p style={{ fontSize: 16, color: 'var(--ink-mid)', lineHeight: 1.65, marginBottom: 28 }}>
-            {nextModuleId ? (
+            {isStarter ? (
+              <>Thank you for the feedback — it means a lot.<br /><br />You just learned 10 things most people have never tried. That&apos;s a real head start.<br /><br />The full Clearly, AI curriculum goes deeper — real workflows, smarter prompts, and a personal AI system built around how you actually work.</>
+            ) : nextModuleId ? (
               <>Your feedback is genuinely valuable — it shapes every lesson, every module, and every experience we build for the people who come after you.<br /><br />You&apos;ve completed Module {moduleId}. You&apos;re not just learning about AI anymore. You&apos;re using it.<br /><br /><strong>Welcome to Clearly, AI.</strong></>
             ) : (
-              <>Six modules. All the way through. You&apos;re the person we built this for, and your feedback will help us build it better for everyone who comes after you.<br /><br />Go use AI. You know how.<br /><br /><strong>Welcome to Clearly, AI.</strong></>
+              <>All the way through. You&apos;re the person we built this for, and your feedback will help us build it better for everyone who comes after you.<br /><br />Go use AI. You know how.<br /><br /><strong>Welcome to Clearly, AI.</strong></>
             )}
           </p>
-          {nextModuleId ? (
+          {isStarter ? (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
+              <Link href="/pricing" style={{
+                display: 'inline-block', padding: '14px 32px',
+                background: 'var(--accent)', color: 'white', borderRadius: 12,
+                fontSize: 15, fontWeight: 700, textDecoration: 'none',
+              }}>
+                See the full curriculum →
+              </Link>
+              <Link href="/dashboard" style={{ fontSize: 14, color: 'var(--ink-lt)', textDecoration: 'underline' }}>
+                Back to course home
+              </Link>
+            </div>
+          ) : nextModuleId ? (
             <Link href={`/course/${nextModuleId}`} style={{
               display: 'inline-block', padding: '14px 32px',
               background: 'var(--accent)', color: 'white', borderRadius: 12,
@@ -86,7 +102,7 @@ export default function FeedbackView({ moduleId, nextModuleId }: { moduleId: num
           {/* Stars */}
           <div style={{ marginBottom: 28 }}>
             <label style={{ fontSize: 14, fontWeight: 600, color: 'var(--ink)', marginBottom: 10, display: 'block' }}>
-              1. How would you rate Module {moduleId} overall?
+              1. How would you rate {moduleId === 0 ? 'the starter course' : `Module ${moduleId}`} overall?
             </label>
             <div style={{ display: 'flex', gap: 8 }}>
               {[1, 2, 3, 4, 5].map(i => (
