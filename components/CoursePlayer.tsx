@@ -52,9 +52,11 @@ export default function CoursePlayer({ course }: { course: CourseData }) {
   const isLastLesson = curLesson === course.lessons.length - 1
   const allLessonsDone = course.lessons.every((_, i) => courseState.completed[i])
 
+  const hasQuiz = (course.quiz?.length ?? 0) > 0
+
   const totalSlides = course.lessons.reduce((a, l) => a + l.slides.length, 0)
   const doneSlides = course.lessons.reduce((a, l, i) => a + (courseState.completed[i] ? l.slides.length : 0), 0)
-  const pct = courseState.quizDone ? 100 : Math.round(((doneSlides + curSlide) / totalSlides) * 100)
+  const pct = (hasQuiz ? courseState.quizDone : allLessonsDone) ? 100 : Math.round(((doneSlides + curSlide) / totalSlides) * 100)
 
   const markLessonDone = () => {
     const newCompleted = { ...courseState.completed, [curLesson]: true }
@@ -80,7 +82,7 @@ export default function CoursePlayer({ course }: { course: CourseData }) {
   }
 
   const handleNextBtn = () => {
-    if (isLastSlide && isLastLesson) { markLessonDone(); setView('quiz') }
+    if (isLastSlide && isLastLesson) { markLessonDone(); setView(hasQuiz ? 'quiz' : 'feedback') }
     else if (isLastSlide) { markLessonDone(); goLesson(curLesson + 1) }
     else { nextSlide() }
   }
@@ -92,7 +94,7 @@ export default function CoursePlayer({ course }: { course: CourseData }) {
   }
 
   const nextBtnLabel = isLastSlide && isLastLesson
-    ? 'Finish Lesson & Take Quiz →'
+    ? hasQuiz ? 'Finish Lesson & Take Quiz →' : 'Finish Course →'
     : isLastSlide
       ? 'Complete Lesson →'
       : 'Next →'
@@ -148,7 +150,7 @@ export default function CoursePlayer({ course }: { course: CourseData }) {
           )
         })}
       </div>
-      {allLessonsDone && (
+      {allLessonsDone && hasQuiz && (
         <button
           onClick={() => setView('quiz')}
           style={{
