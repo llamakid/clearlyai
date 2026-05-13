@@ -7,15 +7,13 @@ export async function GET(request: NextRequest) {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   )
 
-  supabase
+  void supabase
     .from('downloads')
     .insert({
       asset: 'starter-kit',
       user_agent: request.headers.get('user-agent'),
       referrer: request.headers.get('referer'),
     })
-    .then(() => {})
-    .catch(console.error)
 
   return NextResponse.redirect(new URL('/Clearly_AI_Starter_Kit.pdf', request.url))
 }
