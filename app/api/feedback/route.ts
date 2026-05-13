@@ -6,7 +6,7 @@ import { z } from 'zod'
 import { NextResponse } from 'next/server'
 
 const schema = z.object({
-  module_id:  z.number().int().min(1).max(6),
+  module_id:  z.number().int().min(0).max(6),
   stars:      z.number().int().min(1).max(5).nullable().optional(),
   recommend:  z.enum(['yes', 'maybe', 'no']).nullable().optional(),
   helpful:    z.string().max(2000).optional(),

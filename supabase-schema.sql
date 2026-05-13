@@ -87,7 +87,7 @@ create policy "service role can insert subscribers"
 create table if not exists feedback (
   id            uuid primary key default gen_random_uuid(),
   user_id       uuid references auth.users(id) on delete set null,
-  module_id     integer not null check (module_id between 1 and 6),
+  module_id     integer not null check (module_id between 0 and 6),
   stars         integer check (stars between 1 and 5),
   recommend     text check (recommend in ('yes', 'maybe', 'no')),
   helpful       text,
