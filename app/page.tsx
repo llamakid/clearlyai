@@ -55,7 +55,7 @@ export default function HomePage() {
             </p>
 
             <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <a href="/Clearly_AI_Starter_Kit.pdf" download className="btn btn-primary" style={{ fontSize: 15, padding: '15px 32px', boxShadow: '0 4px 16px rgba(61,122,138,0.25)' }}>
+              <a href="/api/download/starter-kit" className="btn btn-primary" style={{ fontSize: 15, padding: '15px 32px', boxShadow: '0 4px 16px rgba(61,122,138,0.25)' }}>
                 Download the Free Starter Kit
               </a>
               <a href="/pricing" className="btn btn-ghost" style={{ fontSize: 15, padding: '15px 32px' }}>
@@ -263,7 +263,7 @@ export default function HomePage() {
             </div>
 
             <div style={{ marginTop: 44 }}>
-              <a href="/Clearly_AI_Starter_Kit.pdf" download className="btn btn-primary" style={{ fontSize: 16, padding: '16px 40px' }}>
+              <a href="/api/download/starter-kit" className="btn btn-primary" style={{ fontSize: 16, padding: '16px 40px' }}>
                 Download the Free Starter Kit
               </a>
             </div>
