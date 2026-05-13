@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo, startTransition } from 'react'
 import Link from 'next/link'
 import type { CourseData } from '@/lib/course-data/types'
 import SlideContent from '@/components/course/SlideContent'
@@ -64,9 +64,9 @@ export default function CoursePlayer({ course }: { course: CourseData }) {
     persistState({ completed: newCompleted })
   }
 
-  const goLesson = (idx: number) => {
+  const goLesson = useCallback((idx: number) => {
     setCurLesson(idx); setCurSlide(0); setView('slide')
-  }
+  }, [])
 
   const prevSlide = () => {
     if (curSlide > 0) { setCurSlide(s => s - 1) }
@@ -82,9 +82,15 @@ export default function CoursePlayer({ course }: { course: CourseData }) {
   }
 
   const handleNextBtn = () => {
-    if (isLastSlide && isLastLesson) { markLessonDone(); setView(hasQuiz ? 'quiz' : 'feedback') }
-    else if (isLastSlide) { markLessonDone(); goLesson(curLesson + 1) }
-    else { nextSlide() }
+    if (isLastSlide && isLastLesson) {
+      startTransition(() => markLessonDone())
+      setView(hasQuiz ? 'quiz' : 'feedback')
+    } else if (isLastSlide) {
+      startTransition(() => markLessonDone())
+      goLesson(curLesson + 1)
+    } else {
+      nextSlide()
+    }
   }
 
   const handleQuizComplete = () => {
@@ -99,7 +105,7 @@ export default function CoursePlayer({ course }: { course: CourseData }) {
       ? 'Complete Lesson →'
       : 'Next →'
 
-  const Sidebar = (
+  const Sidebar = useMemo(() => (
     <aside style={{
       width: 300, background: 'var(--bg-alt)', borderRight: '1px solid var(--border)',
       display: 'flex', flexDirection: 'column', flexShrink: 0, overflowY: 'auto',
@@ -179,7 +185,7 @@ export default function CoursePlayer({ course }: { course: CourseData }) {
         </Link>
       )}
     </aside>
-  )
+  ), [courseState.completed, courseState.quizDone, curLesson, view, course, allLessonsDone, hasQuiz, goLesson])
 
   return (
     <div style={{ height: '100dvh', display: 'flex', flexDirection: 'column', overflow: 'hidden', background: 'var(--bg)' }}>

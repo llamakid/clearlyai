@@ -36,7 +36,7 @@ export default async function DashboardPage({
 
   return (
     <>
-      <Navbar />
+      <Navbar initialUser={user} />
       <main style={{ minHeight: '80vh', padding: '52px 32px' }}>
         <div style={{ maxWidth: 1120, margin: '0 auto' }}>
 

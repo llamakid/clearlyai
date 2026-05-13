@@ -6,20 +6,29 @@ import { createClient } from '@/lib/supabase/client'
 import { useEffect, useState } from 'react'
 import type { User } from '@supabase/supabase-js'
 
-export default function Navbar() {
-  const [user, setUser] = useState<User | null>(null)
+interface NavbarProps {
+  initialUser?: User | null
+}
+
+export default function Navbar({ initialUser }: NavbarProps = {}) {
+  const [user, setUser] = useState<User | null>(initialUser ?? null)
   const [menuOpen, setMenuOpen] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
     const supabase = createClient()
-    supabase.auth.getUser().then(({ data }) => setUser(data.user))
+
+    if (initialUser === undefined) {
+      supabase.auth.getUser().then(({ data }) => setUser(data.user))
+    }
 
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null)
     })
 
     return () => listener.subscription.unsubscribe()
+    // initialUser is stable from server render — intentionally excluded from deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleSignOut = async () => {

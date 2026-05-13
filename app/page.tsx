@@ -1,11 +1,15 @@
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import EmailSignup from '@/components/EmailSignup'
+import { createClient } from '@/lib/supabase/server'
 
-export default function HomePage() {
+export default async function HomePage() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
   return (
     <>
-      <Navbar />
+      <Navbar initialUser={user} />
       <main>
         {/* ── Hero ── */}
         <section className="section-pad" style={{
