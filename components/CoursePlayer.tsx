@@ -263,7 +263,7 @@ export default function CoursePlayer({ course }: { course: CourseData }) {
           )}
 
           {view === 'quiz' && (
-            <QuizView quiz={course.quiz} moduleId={course.moduleId} onComplete={handleQuizComplete} />
+            <QuizView quiz={course.quiz ?? []} moduleId={course.moduleId} onComplete={handleQuizComplete} />
           )}
 
           {view === 'feedback' && (

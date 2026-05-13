@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useMemo, memo } from 'react'
-import type { CourseData } from '@/lib/course-data/types'
+import type { QuizQuestion } from '@/lib/course-data/types'
 
 const letters = ['A', 'B', 'C', 'D']
 
@@ -46,7 +46,7 @@ const OptionRow = memo(function OptionRow({
 const QuestionCard = memo(function QuestionCard({
   q, qi, total, chosen, submitted, onSelect,
 }: {
-  q: CourseData['quiz'][number]; qi: number; total: number
+  q: QuizQuestion; qi: number; total: number
   chosen: number | undefined; submitted: boolean
   onSelect: (qi: number, oi: number) => void
 }) {
@@ -83,7 +83,7 @@ const QuestionCard = memo(function QuestionCard({
 export default function QuizView({
   quiz, moduleId, onComplete,
 }: {
-  quiz: CourseData['quiz']
+  quiz: QuizQuestion[]
   moduleId: number
   onComplete: () => void
 }) {
