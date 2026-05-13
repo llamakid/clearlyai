@@ -157,7 +157,7 @@ const starterCourse: CourseData = {
             'Every item on this list works today, with a free AI account, in less time than it takes to make coffee.',
             'This is just the beginning. The full Clearly, AI course goes deeper — real workflows, smarter prompts, and tools that change how you work every single day.',
           ],
-          highlight: 'Ready to go deeper? The full course covers 6 modules, 30 lessons, and gives you a personal AI workflow you\'ll use for years.',
+          highlight: 'Ready to go deeper? Unlock the full Clearly, AI curriculum — real workflows, smarter prompts, and a personal AI system you\'ll use every day.',
         },
       ],
     },
