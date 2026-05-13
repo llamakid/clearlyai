@@ -26,13 +26,14 @@
 
 | Layer | Tool |
 |---|---|
-| **Framework** | Next.js 16 (App Router, TypeScript) |
-| **Auth + DB** | Supabase |
+| **Framework** | Next.js 16.2 (App Router, TypeScript) |
+| **Auth + DB** | Supabase (`@supabase/ssr` + `@supabase/supabase-js`) |
 | **Payments** | Stripe (subscription + lifetime checkout, webhook) |
-| **Email** | Resend |
+| **Email** | Resend (`lib/resend.ts` — lazy-init singleton) |
 | **Hosting** | Vercel (not Netlify) |
-| **Blog** | MDX files in `content/blog/` |
+| **Blog** | MDX files in `content/blog/` via `next-mdx-remote` |
 | **Analytics** | Vercel Analytics + Speed Insights (both in `app/layout.tsx`) |
+| **Validation** | Zod v4 |
 
 ---
 
@@ -41,8 +42,11 @@
 ```
 app/
   page.tsx                          Landing page
-  layout.tsx                        Root layout (fonts, CSS vars)
+  layout.tsx                        Root layout (fonts, CSS vars, analytics)
   globals.css                       Global styles + CSS custom properties
+  icon.tsx                          Favicon (generated)
+  apple-icon.tsx                    Apple touch icon (generated)
+  opengraph-image.tsx               OG image (generated)
   (auth)/login/page.tsx             Login form
   (auth)/signup/page.tsx            Signup form
   (protected)/layout.tsx            Auth + purchase gate (server-side)
@@ -52,6 +56,7 @@ app/
   api/stripe/checkout/route.ts      Creates Stripe Checkout session
   api/stripe/webhook/route.ts       Receives payment → writes to purchases table
   api/subscribe/route.ts            Homepage email capture → subscribers table
+  api/feedback/route.ts             End-of-module feedback → feedback table + Resend notify
   blog/page.tsx                     Blog index
   blog/[slug]/page.tsx              MDX blog post
   pricing/page.tsx                  Pricing page
@@ -66,12 +71,13 @@ components/
   CoursePlayer.tsx                  Main course player (lessons + slides + nav)
   course/SlideContent.tsx           Renders individual slide content
   course/QuizView.tsx               Quiz slide type
-  course/FeedbackView.tsx           End-of-module feedback form
+  course/FeedbackView.tsx           End-of-module feedback form (POSTs to /api/feedback)
 
 lib/
   supabase/client.ts                Browser Supabase client
-  supabase/server.ts                Server Supabase client
+  supabase/server.ts                Server Supabase client (async, cookie-based)
   stripe.ts                         Stripe client (lazy init)
+  resend.ts                         Resend client (lazy init) + fromAddress() helper
   blog.ts                           Reads MDX posts from content/blog/
   api-error.ts                      Standard API error helper
   schemas.ts                        Zod schemas
@@ -84,10 +90,10 @@ lib/
   course-data/types.ts              Shared types for course data
 
 content/blog/
-  *.mdx                             Blog posts — add new ones here
+  *.mdx                             Blog posts — add new ones here (8 posts live)
 
 middleware.ts                       Protects /dashboard and /course/* behind auth
-supabase-schema.sql                 Run once in Supabase SQL Editor to create tables
+supabase-schema.sql                 Full schema — run in Supabase SQL Editor
 .env.local.example                  Template for required environment variables
 SETUP.md                            Step-by-step setup guide (Supabase, Stripe, Vercel)
 ```
@@ -96,13 +102,14 @@ SETUP.md                            Step-by-step setup guide (Supabase, Stripe, 
 
 ## Database Schema (Supabase)
 
-Three tables — all with RLS enabled:
+Four tables — all with RLS enabled:
 
 | Table | Purpose |
 |---|---|
 | `purchases` | Created by Stripe webhook on successful payment. Grants course access. |
 | `course_progress` | Tracks `current_lesson` + `current_slide` per user per module. |
 | `subscribers` | Email addresses from the homepage opt-in form. |
+| `feedback` | End-of-module survey responses (stars, text answers, optional testimonial). Service-role insert only — review in Supabase dashboard. |
 
 ---
 
@@ -125,6 +132,15 @@ Payment flow:
   → payment succeeds → Stripe webhook → POST /api/stripe/webhook
   → webhook writes row to purchases table
   → user redirected to /dashboard?welcome=1
+```
+
+Feedback flow:
+```
+End of each module → FeedbackView renders
+  → user fills out form → POST /api/feedback
+  → row saved to feedback table (with user_id if logged in)
+  → Resend notification email sent to nate.guy@reusser.com
+  → thank-you screen shown (never blocks on email failure)
 ```
 
 ---
@@ -161,21 +177,25 @@ See `.env.local.example` for the full list. Summary:
 - ✅ Stripe checkout + webhook wired up (subscriptions + one-time payment handled)
 - ✅ Resend account set up, domain verified, email confirmation re-enabled in Supabase
 - ✅ Email capture wired up (homepage → `/api/subscribe` → Supabase `subscribers` table)
-- ✅ Blog wired up with 6 starter posts (MDX)
+- ✅ Feedback forms wired up (end of each module → `/api/feedback` → Supabase `feedback` table + Resend notify)
+- ✅ Blog wired up with 8 posts (MDX in `content/blog/`)
+- ✅ Favicon, OG image, Apple icon all generated
 - ✅ Domain purchased: learnaiclearly.com
 - ✅ Deployed to Vercel, all env vars set
 - ✅ Vercel Analytics + Speed Insights installed
 - ⏳ Smoke test not yet fully completed (Stripe test mode price IDs needed)
-- ⏳ Domain not yet confirmed connected to Vercel
+- ⏳ Domain connection to Vercel not yet confirmed
+- ⏳ `feedback` table needs to be created in Supabase (run the new block in `supabase-schema.sql`)
 - ⏳ Beta testers not yet recruited
 
 ---
 
 ## Immediate Priorities (pick up here)
 
-1. **Complete smoke test** — In Stripe dashboard, switch to Test mode and create test versions of the 3 prices; add those test `price_...` IDs to Vercel env vars temporarily; run the full signup → checkout → dashboard flow using card `4242 4242 4242 4242`; verify purchase row appears in Supabase and welcome email arrives
-2. **Confirm domain is connected** — Vercel → Settings → Domains should show `learnaiclearly.com` as active with no DNS warnings
-3. **Recruit 10–15 beta testers** — have them go through the live Stripe flow (or manually grant access in Supabase `purchases` table)
+1. **Run the feedback table migration** — In Supabase SQL Editor, run the `feedback` table block from `supabase-schema.sql` (section: `-- feedback: end-of-module survey responses`)
+2. **Complete smoke test** — Switch Stripe to Test mode, create test price IDs, add to Vercel env vars temporarily, run the full signup → checkout → dashboard → module → feedback flow; verify rows in Supabase and notification email arrives
+3. **Confirm domain is connected** — Vercel → Settings → Domains should show `learnaiclearly.com` as active with no DNS warnings
+4. **Recruit 10–15 beta testers** — have them go through the live Stripe flow (or manually grant access in Supabase `purchases` table)
 
 ---
 
@@ -183,11 +203,13 @@ See `.env.local.example` for the full list. Summary:
 
 - Always use the Clear Sky palette and DM Serif + Inter for anything visual
 - This is a **Next.js App Router** project — use server components by default, `'use client'` only when needed
-- Course content lives in `lib/course-data/` as TypeScript — not in the HTML files from the old static prototype
+- Course content lives in `lib/course-data/` as TypeScript — not in any HTML files
 - When writing lesson content: jargon-free, second person ("you"), specific outcomes, one idea per slide
 - Nate's preferred working style: build things, then iterate based on feedback
 - Do not use Netlify or Netlify Forms — this app runs on Vercel with its own API routes
-- The old static HTML files (`index.html`, `module-1.html`, etc.) no longer exist — the Next.js app replaced them
 - Blog posts are MDX files in `content/blog/` — adding a new file there is all it takes to publish
 - Stripe has separate test and live mode price IDs — they are not interchangeable. Test keys (`sk_test_`) only work with test prices; live keys (`sk_live_`) only work with live prices. Always confirm the mode before debugging Stripe errors.
 - Pricing is 3 tiers: Monthly ($15/mo, recurring), Yearly ($120/yr, recurring), Forever ($299 one-time, founder pricing). Plan IDs in code: `monthly`, `yearly`, `forever`.
+- The server Supabase client (`lib/supabase/server.ts`) exports `createClient` — import it as `createClient` or alias it. Do not import `createServerClient` from that path.
+- API routes that need the logged-in user's ID should use the server client + `auth.getUser()`, then fall back gracefully if unauthenticated.
+- Resend notification emails to Nate should always be fire-and-forget (`.catch(console.error)`) — never let a failed notification block a user response.

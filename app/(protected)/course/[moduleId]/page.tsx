@@ -1,4 +1,5 @@
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
+import { createClient } from '@/lib/supabase/server'
 import CoursePlayer from '@/components/CoursePlayer'
 import module1 from '@/lib/course-data/module-1'
 import module2 from '@/lib/course-data/module-2'
@@ -26,6 +27,27 @@ export default async function CoursePage({
   const course = COURSES[moduleId]
 
   if (!course) notFound()
+
+  if (moduleId !== '1') {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+
+    const { data: purchases } = await supabase
+      .from('purchases')
+      .select('plan_type, subscription_status')
+      .eq('user_id', user!.id)
+
+    const hasPurchase = purchases?.some(
+      (p) =>
+        p.plan_type === 'forever' ||
+        p.subscription_status === 'active' ||
+        p.subscription_status === 'past_due'
+    )
+
+    if (!hasPurchase) {
+      redirect('/pricing')
+    }
+  }
 
   return <CoursePlayer course={course} />
 }

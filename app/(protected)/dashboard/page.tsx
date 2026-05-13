@@ -22,6 +22,18 @@ export default async function DashboardPage({
   const params = await searchParams
   const showWelcome = params.welcome === '1'
 
+  const { data: purchases } = await supabase
+    .from('purchases')
+    .select('plan_type, subscription_status')
+    .eq('user_id', user!.id)
+
+  const hasPurchase = purchases?.some(
+    (p) =>
+      p.plan_type === 'forever' ||
+      p.subscription_status === 'active' ||
+      p.subscription_status === 'past_due'
+  ) ?? false
+
   return (
     <>
       <Navbar />
@@ -42,7 +54,7 @@ export default async function DashboardPage({
               <span style={{ fontSize: 28 }}>🎉</span>
               <div>
                 <p style={{ fontWeight: 700, marginBottom: 4, fontSize: 15 }}>You&apos;re in! Welcome to Clearly, AI.</p>
-                <p style={{ fontSize: 14, color: 'var(--ink-mid)' }}>Start with Module 1 whenever you&apos;re ready. There&apos;s no rush — go at your own pace.</p>
+                <p style={{ fontSize: 14, color: 'var(--ink-mid)' }}>Start with Module 1 — it&apos;s on us. No credit card needed.</p>
               </div>
             </div>
           )}
@@ -65,27 +77,31 @@ export default async function DashboardPage({
             gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
             gap: 20,
           }}>
-            {MODULES.map((mod) => (
-              <Link
-                key={mod.id}
-                href={`/course/${mod.id}`}
-                style={{ textDecoration: 'none' }}
-              >
-                <div className="card card-hover" style={{
+            {MODULES.map((mod) => {
+              const isLocked = mod.id !== 1 && !hasPurchase
+              const card = (
+                <div className={`card${isLocked ? '' : ' card-hover'}`} style={{
                   padding: 24,
                   display: 'flex',
                   flexDirection: 'column',
                   gap: 12,
                   height: '100%',
+                  opacity: isLocked ? 0.6 : 1,
+                  cursor: isLocked ? 'default' : 'pointer',
                 }}>
-                  <span style={{
-                    fontFamily: 'var(--font-dm-serif), Georgia, serif',
-                    fontSize: 32,
-                    color: 'var(--accent-lt)',
-                    lineHeight: 1,
-                  }}>
-                    0{mod.id}
-                  </span>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <span style={{
+                      fontFamily: 'var(--font-dm-serif), Georgia, serif',
+                      fontSize: 32,
+                      color: 'var(--accent-lt)',
+                      lineHeight: 1,
+                    }}>
+                      0{mod.id}
+                    </span>
+                    {isLocked && (
+                      <span style={{ fontSize: 18, color: 'var(--ink-lt)' }}>🔒</span>
+                    )}
+                  </div>
 
                   <div>
                     <h2 style={{
@@ -112,14 +128,66 @@ export default async function DashboardPage({
                     <span style={{ fontSize: 13, color: 'var(--ink-lt)' }}>
                       {mod.lessons} lessons
                     </span>
-                    <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--accent)' }}>
-                      Start →
+                    <span style={{ fontSize: 13, fontWeight: 600, color: isLocked ? 'var(--ink-lt)' : 'var(--accent)' }}>
+                      {isLocked ? 'Locked' : 'Start →'}
                     </span>
                   </div>
                 </div>
-              </Link>
-            ))}
+              )
+
+              return isLocked ? (
+                <div key={mod.id}>{card}</div>
+              ) : (
+                <Link key={mod.id} href={`/course/${mod.id}`} style={{ textDecoration: 'none' }}>
+                  {card}
+                </Link>
+              )
+            })}
           </div>
+
+          {!hasPurchase && (
+            <div style={{
+              marginTop: 48,
+              background: 'var(--accent)',
+              borderRadius: 20,
+              padding: '32px 36px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: 24,
+              flexWrap: 'wrap',
+            }}>
+              <div>
+                <p style={{
+                  fontFamily: 'var(--font-dm-serif), Georgia, serif',
+                  fontSize: 22,
+                  color: '#fff',
+                  marginBottom: 6,
+                }}>
+                  Ready for the full course?
+                </p>
+                <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.8)', maxWidth: 420 }}>
+                  Module 1 is free. Unlock all 6 modules — including hands-on prompts, real-world tools, and your personal AI workflow.
+                </p>
+              </div>
+              <Link
+                href="/pricing"
+                style={{
+                  background: '#fff',
+                  color: 'var(--accent)',
+                  fontWeight: 700,
+                  fontSize: 15,
+                  padding: '14px 28px',
+                  borderRadius: 12,
+                  textDecoration: 'none',
+                  whiteSpace: 'nowrap',
+                  flexShrink: 0,
+                }}
+              >
+                See plans →
+              </Link>
+            </div>
+          )}
 
         </div>
       </main>
