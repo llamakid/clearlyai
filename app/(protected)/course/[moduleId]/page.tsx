@@ -30,11 +30,11 @@ export default async function CoursePage({
 
   if (!course) notFound()
 
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
   // Module 0 (starter course) is free for all signed-in users
   if (moduleId !== '0') {
-    const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
-
     const { data: purchases } = await supabase
       .from('purchases')
       .select('plan_type, subscription_status')
@@ -52,5 +52,18 @@ export default async function CoursePage({
     }
   }
 
-  return <CoursePlayer course={course} />
+  // Fetch saved progress (modules 1-6 only — module 0 not in schema constraint)
+  const moduleNum = parseInt(moduleId)
+  let initialProgress: { current_lesson: number; current_slide: number; completed: boolean } | null = null
+  if (moduleNum >= 1 && moduleNum <= 6) {
+    const { data } = await supabase
+      .from('course_progress')
+      .select('current_lesson, current_slide, completed')
+      .eq('user_id', user!.id)
+      .eq('module_id', moduleNum)
+      .maybeSingle()
+    initialProgress = data
+  }
+
+  return <CoursePlayer course={course} userId={user!.id} initialProgress={initialProgress} />
 }

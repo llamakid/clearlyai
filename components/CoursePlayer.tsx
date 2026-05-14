@@ -6,6 +6,7 @@ import type { CourseData } from '@/lib/course-data/types'
 import SlideContent from '@/components/course/SlideContent'
 import QuizView from '@/components/course/QuizView'
 import FeedbackView from '@/components/course/FeedbackView'
+import { createClient } from '@/lib/supabase/client'
 
 interface CourseState {
   completed: Record<number, boolean>
@@ -13,9 +14,21 @@ interface CourseState {
   feedbackDone: boolean
 }
 
+interface InitialProgress {
+  current_lesson: number
+  current_slide: number
+  completed: boolean
+}
+
 type View = 'slide' | 'quiz' | 'feedback'
 
-export default function CoursePlayer({ course }: { course: CourseData }) {
+interface CoursePlayerProps {
+  course: CourseData
+  userId?: string
+  initialProgress?: InitialProgress | null
+}
+
+export default function CoursePlayer({ course, userId, initialProgress }: CoursePlayerProps) {
   const storageKey = `clearlyai_m${course.moduleId}`
 
   const [courseState, setCourseState] = useState<CourseState>({ completed: {}, quizDone: false, feedbackDone: false })
@@ -24,6 +37,29 @@ export default function CoursePlayer({ course }: { course: CourseData }) {
   const [view, setView] = useState<View>('slide')
 
   useEffect(() => {
+    if (initialProgress) {
+      // Build per-lesson completion map from DB: all lessons before current are done;
+      // if module is marked complete, all lessons are done.
+      const completedMap: Record<number, boolean> = {}
+      if (initialProgress.completed) {
+        course.lessons.forEach((_, i) => { completedMap[i] = true })
+      } else {
+        for (let i = 0; i < initialProgress.current_lesson; i++) {
+          completedMap[i] = true
+        }
+      }
+      setCourseState(s => ({ ...s, completed: completedMap }))
+      setCurLesson(initialProgress.current_lesson)
+      setCurSlide(initialProgress.current_slide)
+      // Keep localStorage in sync so offline / tab-switch is instant
+      try {
+        const existing = JSON.parse(localStorage.getItem(storageKey) || '{}')
+        localStorage.setItem(storageKey, JSON.stringify({ ...existing, completed: completedMap }))
+      } catch { }
+      return
+    }
+
+    // No DB record — fall back to localStorage
     try {
       const saved = JSON.parse(localStorage.getItem(storageKey) || '{}')
       if (saved.completed || saved.quizDone || saved.feedbackDone) {
@@ -35,7 +71,8 @@ export default function CoursePlayer({ course }: { course: CourseData }) {
         }
       }
     } catch { }
-  }, [storageKey, course.lessons.length])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []) // intentionally runs once on mount — initialProgress is stable from server render
 
   const persistState = useCallback((patch: Partial<CourseState>) => {
     setTimeout(() => {
@@ -45,6 +82,26 @@ export default function CoursePlayer({ course }: { course: CourseData }) {
       } catch { }
     }, 0)
   }, [storageKey])
+
+  // Upsert progress to DB — fire and forget, never blocks UI.
+  // Skipped for module 0 (not in schema) and unauthenticated users.
+  const saveProgressToDB = useCallback((lesson: number, slide: number, moduleCompleted: boolean) => {
+    if (!userId || course.moduleId === 0) return
+    createClient()
+      .from('course_progress')
+      .upsert(
+        {
+          user_id: userId,
+          module_id: course.moduleId,
+          current_lesson: lesson,
+          current_slide: slide,
+          completed: moduleCompleted,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: 'user_id,module_id' }
+      )
+      .then(null, console.error)
+  }, [userId, course.moduleId])
 
   const lesson = course.lessons[curLesson]
   const slide = lesson.slides[curSlide]
@@ -60,8 +117,12 @@ export default function CoursePlayer({ course }: { course: CourseData }) {
 
   const markLessonDone = () => {
     const newCompleted = { ...courseState.completed, [curLesson]: true }
+    const allDone = course.lessons.every((_, i) => newCompleted[i])
     setCourseState(s => ({ ...s, completed: newCompleted }))
     persistState({ completed: newCompleted })
+    // Save position after this lesson: next lesson (or stay on last if done)
+    const nextLesson = isLastLesson ? curLesson : curLesson + 1
+    saveProgressToDB(nextLesson, 0, allDone)
   }
 
   const goLesson = useCallback((idx: number) => {
