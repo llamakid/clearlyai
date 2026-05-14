@@ -172,12 +172,12 @@ export default function CoursePlayer({ course, courseSlug, userId, initialProgre
       width: 300, background: 'var(--bg-alt)', borderRight: '1px solid var(--border)',
       display: 'flex', flexDirection: 'column', flexShrink: 0, overflowY: 'auto',
     }}>
-      <Link href={`/courses/${courseSlug}`} style={{
+      <Link href={courseSlug ? `/courses/${courseSlug}` : '/dashboard'} style={{
         display: 'flex', alignItems: 'center', gap: 6, padding: '10px 20px',
         fontSize: 12, fontWeight: 600, color: 'var(--ink-lt)', textDecoration: 'none',
         borderBottom: '1px solid var(--border)', transition: 'color 0.15s',
       }}>
-        ← Course Home
+        {courseSlug ? '← Course Home' : '← Back to Dashboard'}
       </Link>
       <div style={{ padding: '20px 20px 12px', borderBottom: '1px solid var(--border)' }}>
         <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: 4 }}>Module {course.moduleId}</div>

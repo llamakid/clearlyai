@@ -78,7 +78,7 @@ export default async function CoursePage({
     initialProgress = data
   }
 
-  const courseSlug = COURSES_META.find(c => c.modules.some(m => m.id === moduleNum))?.slug ?? 'ai-foundations'
+  const courseSlug = moduleNum === 0 ? '' : (COURSES_META.find(c => c.modules.some(m => m.id === moduleNum))?.slug ?? 'ai-foundations')
 
   return <CoursePlayer course={course} courseSlug={courseSlug} userId={user!.id} initialProgress={initialProgress} />
 }

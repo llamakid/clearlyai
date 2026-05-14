@@ -91,7 +91,7 @@ lib/
   course-data/types.ts                  Shared TypeScript types (CourseData, Lesson, Slide, etc.)
   course-data/starter.ts                Free starter course (module 0 — not gated, not in DB)
   course-data/module-1.ts through 6.ts  Course 1 "AI Foundations" content (moduleIds 1–6)
-  course-data/c2-module-1.ts            Course 2 "AI at Work" — Module 1 (moduleId 7)
+  course-data/c2-module-1.ts through 6.ts  Course 2 "AI at Work" content (moduleIds 7–12)
 
 content/blog/
   *.mdx                                 Blog posts — add new ones here (8 posts live)
@@ -139,7 +139,11 @@ Progress is stored in `course_progress` (Supabase) and mirrored to `localStorage
 /dashboard → course cards
   → click course → /courses/[courseSlug] — hero + module grid
     → click module → /course/[moduleId] — full-screen player
+      → "← Course Home" sidebar button → back to /courses/[courseSlug]
+      → "Clearly, AI" top-bar logo → back to /dashboard
 ```
+
+The `courseSlug` is derived server-side in the module page by looking up the moduleId in `COURSES_META` and passed to `CoursePlayer` as a prop.
 
 ---
 
@@ -218,8 +222,11 @@ See `.env.local.example` for the full list. Summary:
 - ✅ Business plan written
 - ✅ Brand system locked (Clear Sky + DM Serif + Inter)
 - ✅ Next.js app scaffolded with full stack (auth, payments, blog, course player)
+- ✅ Business plan written
+- ✅ Brand system locked (Clear Sky + DM Serif + Inter)
+- ✅ Next.js app scaffolded with full stack (auth, payments, blog, course player)
 - ✅ Course 1 "AI Foundations" — all 6 modules built (`module-1.ts` through `module-6.ts`)
-- ✅ Course 2 "AI at Work" — Module 1 built (`c2-module-1.ts`), modules 2–6 stubbed as Coming Soon
+- ✅ Course 2 "AI at Work" — all 6 modules built (`c2-module-1.ts` through `c2-module-6.ts`)
 - ✅ Dashboard redesigned — course cards link to course overview pages
 - ✅ Course overview pages live at `/courses/[courseSlug]` (hero + module grid)
 - ✅ Course progress wired to Supabase DB (reads on load, writes on lesson completion)
@@ -234,11 +241,12 @@ See `.env.local.example` for the full list. Summary:
 - ✅ Domain purchased: learnaiclearly.com
 - ✅ Deployed to Vercel, all env vars set
 - ✅ Vercel Analytics + Speed Insights installed
+- ✅ "Course Home" sidebar button navigates to course overview page (not dashboard)
 - ⏳ Supabase migration needed: expand `module_id` constraint (run SQL below)
 - ⏳ Smoke test not yet fully completed
 - ⏳ Domain connection to Vercel not yet confirmed
 - ⏳ Beta testers not yet recruited
-- ⏳ Course 2 modules 2–6 not yet built
+- ⏳ Course loading performance — module pages have noticeable load time; investigate and reduce (Supabase query waterfall, bundle size, or streaming)
 
 ### Pending Supabase migration
 Run this in Supabase SQL Editor to support Course 2 module IDs:
@@ -252,7 +260,7 @@ ALTER TABLE course_progress ADD CONSTRAINT course_progress_module_id_check CHECK
 ## Immediate Priorities (pick up here)
 
 1. **Run Supabase migration** — expand the `module_id` constraint (SQL above)
-2. **Build Course 2 modules 2–6** — content files in `lib/course-data/`, then flip `available: true` in `courses.ts`
+2. **Improve course loading performance** — module pages have noticeable load time; investigate the Supabase query waterfall (purchases check + progress fetch are sequential), bundle size from importing all 12 course data files, and whether React Suspense / streaming can help
 3. **Complete smoke test** — full signup → checkout → dashboard → course → module → feedback flow
 4. **Confirm domain is connected** — Vercel → Settings → Domains
 5. **Recruit 10–15 beta testers**
@@ -276,4 +284,6 @@ ALTER TABLE course_progress ADD CONSTRAINT course_progress_module_id_check CHECK
 - **Navbar** accepts an optional `initialUser` prop — always pass it from server components that already have the user (dashboard, course pages, home page if needed). Skips the client-side Supabase auth fetch.
 - **Home page** (`app/page.tsx`) must stay a non-async server component so it stays `○` (Static) and is served from Vercel's CDN edge. Do not add `supabase.auth.getUser()` to it.
 - **CoursePlayer** uses `startTransition` for lesson-completion state updates and `useMemo` for the sidebar — keep these optimizations in place when editing that component.
+- **CoursePlayer** accepts a `courseSlug` prop (passed from the server page) — the "← Course Home" sidebar button links to `/courses/[courseSlug]`. The top-bar logo links to `/dashboard`.
 - `lib/course-data/courses.ts` is the single source of truth for course-level metadata — dashboard cards and course overview pages both read from it. Always update this file when adding or publishing a new module.
+- Course progress fetch in `app/(protected)/course/[moduleId]/page.tsx` uses `moduleNum >= 1` — covers all current and future paid modules. Module 0 (starter) skips the DB entirely.
