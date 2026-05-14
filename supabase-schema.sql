@@ -22,7 +22,7 @@ create table if not exists purchases (
 create table if not exists course_progress (
   id              uuid primary key default gen_random_uuid(),
   user_id         uuid not null references auth.users(id) on delete cascade,
-  module_id       integer not null check (module_id between 1 and 6),
+  module_id       integer not null check (module_id >= 1),
   current_lesson  integer not null default 0,
   current_slide   integer not null default 0,
   completed       boolean not null default false,

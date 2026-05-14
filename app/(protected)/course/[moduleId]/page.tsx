@@ -8,7 +8,14 @@ import module3 from '@/lib/course-data/module-3'
 import module4 from '@/lib/course-data/module-4'
 import module5 from '@/lib/course-data/module-5'
 import module6 from '@/lib/course-data/module-6'
+import c2module1 from '@/lib/course-data/c2-module-1'
+import c2module2 from '@/lib/course-data/c2-module-2'
+import c2module3 from '@/lib/course-data/c2-module-3'
+import c2module4 from '@/lib/course-data/c2-module-4'
+import c2module5 from '@/lib/course-data/c2-module-5'
+import c2module6 from '@/lib/course-data/c2-module-6'
 import type { CourseData } from '@/lib/course-data/types'
+import { COURSES_META } from '@/lib/course-data/courses'
 
 const COURSES: Record<string, CourseData> = {
   '0': starterCourse,
@@ -18,6 +25,12 @@ const COURSES: Record<string, CourseData> = {
   '4': module4,
   '5': module5,
   '6': module6,
+  '7': c2module1,
+  '8': c2module2,
+  '9': c2module3,
+  '10': c2module4,
+  '11': c2module5,
+  '12': c2module6,
 }
 
 export default async function CoursePage({
@@ -55,7 +68,7 @@ export default async function CoursePage({
   // Fetch saved progress (modules 1-6 only — module 0 not in schema constraint)
   const moduleNum = parseInt(moduleId)
   let initialProgress: { current_lesson: number; current_slide: number; completed: boolean } | null = null
-  if (moduleNum >= 1 && moduleNum <= 6) {
+  if (moduleNum >= 1) {
     const { data } = await supabase
       .from('course_progress')
       .select('current_lesson, current_slide, completed')
@@ -65,5 +78,7 @@ export default async function CoursePage({
     initialProgress = data
   }
 
-  return <CoursePlayer course={course} userId={user!.id} initialProgress={initialProgress} />
+  const courseSlug = COURSES_META.find(c => c.modules.some(m => m.id === moduleNum))?.slug ?? 'ai-foundations'
+
+  return <CoursePlayer course={course} courseSlug={courseSlug} userId={user!.id} initialProgress={initialProgress} />
 }

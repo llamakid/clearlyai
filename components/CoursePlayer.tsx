@@ -24,11 +24,12 @@ type View = 'slide' | 'quiz' | 'feedback'
 
 interface CoursePlayerProps {
   course: CourseData
+  courseSlug: string
   userId?: string
   initialProgress?: InitialProgress | null
 }
 
-export default function CoursePlayer({ course, userId, initialProgress }: CoursePlayerProps) {
+export default function CoursePlayer({ course, courseSlug, userId, initialProgress }: CoursePlayerProps) {
   const storageKey = `clearlyai_m${course.moduleId}`
 
   const [courseState, setCourseState] = useState<CourseState>({ completed: {}, quizDone: false, feedbackDone: false })
@@ -171,7 +172,7 @@ export default function CoursePlayer({ course, userId, initialProgress }: Course
       width: 300, background: 'var(--bg-alt)', borderRight: '1px solid var(--border)',
       display: 'flex', flexDirection: 'column', flexShrink: 0, overflowY: 'auto',
     }}>
-      <Link href="/dashboard" style={{
+      <Link href={`/courses/${courseSlug}`} style={{
         display: 'flex', alignItems: 'center', gap: 6, padding: '10px 20px',
         fontSize: 12, fontWeight: 600, color: 'var(--ink-lt)', textDecoration: 'none',
         borderBottom: '1px solid var(--border)', transition: 'color 0.15s',
@@ -246,7 +247,7 @@ export default function CoursePlayer({ course, userId, initialProgress }: Course
         </Link>
       )}
     </aside>
-  ), [courseState.completed, courseState.quizDone, curLesson, view, course, allLessonsDone, hasQuiz, goLesson])
+  ), [courseState.completed, courseState.quizDone, curLesson, view, course, courseSlug, allLessonsDone, hasQuiz, goLesson])
 
   return (
     <div style={{ height: '100dvh', display: 'flex', flexDirection: 'column', overflow: 'hidden', background: 'var(--bg)' }}>

@@ -1,16 +1,8 @@
 import { createClient } from '@/lib/supabase/server'
+import { COURSES_META } from '@/lib/course-data/courses'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import Link from 'next/link'
-
-const MODULES = [
-  { id: 1, title: 'AI 101: What It Is & Why It Matters', desc: 'Understand what AI actually is, in plain terms. Feel confident in any conversation about it.', lessons: 5 },
-  { id: 2, title: 'ChatGPT & Your Work: Getting Things Done', desc: 'Draft emails, summarize documents, brainstorm ideas, and do research in minutes — not hours.', lessons: 5 },
-  { id: 3, title: 'Think Smarter: AI for Research, Planning & Decisions', desc: 'Automate repetitive tasks, build your own templates, and reclaim five or more hours every week.', lessons: 5 },
-  { id: 4, title: 'Creating Content with AI: Your Voice, Amplified', desc: 'Write social posts, create proposals, respond to reviews, and plan campaigns — without a marketing team.', lessons: 5 },
-  { id: 5, title: 'AI Tools Beyond ChatGPT: Image, Audio & More', desc: 'Explore image generators, voice tools, and specialized AI. Know what to trust and what to question.', lessons: 5 },
-  { id: 6, title: 'Your AI Life — Staying Current and Going Further', desc: 'Choose the right tools for your needs, build your daily workflow, and keep growing as AI evolves.', lessons: 5 },
-]
 
 export default async function DashboardPage({
   searchParams,
@@ -38,7 +30,7 @@ export default async function DashboardPage({
     <>
       <Navbar initialUser={user} />
       <main style={{ minHeight: '80vh', padding: '52px 32px' }}>
-        <div style={{ maxWidth: 1120, margin: '0 auto' }}>
+        <div style={{ maxWidth: 860, margin: '0 auto' }}>
 
           {showWelcome && (
             <div style={{
@@ -72,129 +64,114 @@ export default async function DashboardPage({
             </p>
           </div>
 
-          {/* Starter course — free for everyone */}
-          <Link href="/course/0" style={{ textDecoration: 'none', display: 'block', marginBottom: 32 }}>
-            <div className="card card-hover" style={{
-              padding: '28px 32px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: 24,
-              flexWrap: 'wrap',
-              borderColor: 'var(--accent-lt)',
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-                <span style={{ fontSize: 40, lineHeight: 1 }}>🚀</span>
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-                    <span style={{
-                      fontSize: 11,
-                      fontWeight: 700,
-                      letterSpacing: '0.06em',
-                      textTransform: 'uppercase',
-                      color: 'var(--accent)',
-                      background: 'var(--accent-xl)',
-                      padding: '2px 8px',
-                      borderRadius: 6,
-                    }}>Free</span>
-                    <span style={{ fontSize: 13, color: 'var(--ink-lt)' }}>2 lessons · ~17 min</span>
-                  </div>
-                  <h2 style={{
-                    fontFamily: 'var(--font-dm-serif), Georgia, serif',
-                    fontSize: 22,
-                    marginBottom: 4,
-                    color: 'var(--ink)',
-                  }}>
-                    10 Things You Can Do With AI Today
-                  </h2>
-                  <p style={{ fontSize: 14, color: 'var(--ink-mid)' }}>
-                    No tech skills required. 10 practical things to try right now, each with a ready-to-use prompt.
-                  </p>
-                </div>
-              </div>
-              <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--accent)', whiteSpace: 'nowrap' }}>
-                Start free →
-              </span>
-            </div>
-          </Link>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
 
-          <div style={{ marginBottom: 16 }}>
-            <p style={{ fontSize: 13, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--ink-lt)' }}>
-              Full course — 6 modules
-            </p>
-          </div>
-
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
-            gap: 20,
-          }}>
-            {MODULES.map((mod) => {
-              const isLocked = !hasPurchase
-              const card = (
-                <div className={`card${isLocked ? '' : ' card-hover'}`} style={{
-                  padding: 24,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 12,
-                  height: '100%',
-                  opacity: isLocked ? 0.6 : 1,
-                  cursor: isLocked ? 'default' : 'pointer',
-                }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                    <span style={{
-                      fontFamily: 'var(--font-dm-serif), Georgia, serif',
-                      fontSize: 32,
-                      color: 'var(--accent-lt)',
-                      lineHeight: 1,
-                    }}>
-                      0{mod.id}
-                    </span>
-                    {isLocked && (
-                      <span style={{ fontSize: 18, color: 'var(--ink-lt)' }}>🔒</span>
-                    )}
-                  </div>
-
+            {/* Starter course — free for everyone */}
+            <Link href="/course/0" style={{ textDecoration: 'none' }}>
+              <div className="card card-hover" style={{
+                padding: '28px 32px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: 24,
+                flexWrap: 'wrap',
+                borderColor: 'var(--accent-lt)',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+                  <span style={{ fontSize: 36, lineHeight: 1 }}>🚀</span>
                   <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                      <span style={{
+                        fontSize: 11, fontWeight: 700, letterSpacing: '0.06em',
+                        textTransform: 'uppercase', color: 'var(--accent)',
+                        background: 'var(--accent-xl)', padding: '2px 8px', borderRadius: 6,
+                      }}>Free</span>
+                      <span style={{ fontSize: 13, color: 'var(--ink-lt)' }}>2 lessons · ~17 min</span>
+                    </div>
                     <h2 style={{
                       fontFamily: 'var(--font-dm-serif), Georgia, serif',
-                      fontSize: 20,
-                      marginBottom: 8,
-                      color: 'var(--ink)',
+                      fontSize: 20, marginBottom: 4, color: 'var(--ink)',
                     }}>
-                      {mod.title}
+                      10 Things You Can Do With AI Today
                     </h2>
-                    <p style={{ fontSize: 14, color: 'var(--ink-mid)', lineHeight: 1.6 }}>
-                      {mod.desc}
+                    <p style={{ fontSize: 14, color: 'var(--ink-mid)' }}>
+                      No tech skills required. 10 practical things to try right now, each with a ready-to-use prompt.
                     </p>
                   </div>
+                </div>
+                <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--accent)', whiteSpace: 'nowrap' }}>
+                  Start free →
+                </span>
+              </div>
+            </Link>
 
-                  <div style={{
-                    marginTop: 'auto',
-                    paddingTop: 14,
-                    borderTop: '1px solid var(--border)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                  }}>
-                    <span style={{ fontSize: 13, color: 'var(--ink-lt)' }}>
-                      {mod.lessons} lessons
-                    </span>
-                    <span style={{ fontSize: 13, fontWeight: 600, color: isLocked ? 'var(--ink-lt)' : 'var(--accent)' }}>
-                      {isLocked ? 'Locked' : 'Start →'}
+            {/* Course cards */}
+            {COURSES_META.map((course) => {
+              const availableCount = course.modules.filter((m) => m.available).length
+              const isLocked = !hasPurchase
+
+              const card = (
+                <div className={`card${!isLocked ? ' card-hover' : ''}`} style={{
+                  padding: '28px 32px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: 24,
+                  flexWrap: 'wrap',
+                  opacity: isLocked ? 0.75 : 1,
+                  cursor: isLocked ? 'default' : 'pointer',
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+                    <span style={{ fontSize: 36, lineHeight: 1 }}>{course.icon}</span>
+                    <div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                        <span style={{
+                          fontSize: 11, fontWeight: 700, letterSpacing: '0.06em',
+                          textTransform: 'uppercase', color: 'var(--accent-dk)',
+                          background: 'var(--accent-lt)', padding: '2px 8px', borderRadius: 6,
+                        }}>
+                          {course.tag}
+                        </span>
+                        <span style={{ fontSize: 13, color: 'var(--ink-lt)' }}>
+                          {course.modules.length} modules · {course.estimatedTime}
+                        </span>
+                        {isLocked && (
+                          <span style={{ fontSize: 13, color: 'var(--ink-lt)' }}>🔒</span>
+                        )}
+                      </div>
+                      <h2 style={{
+                        fontFamily: 'var(--font-dm-serif), Georgia, serif',
+                        fontSize: 20, marginBottom: 4, color: 'var(--ink)',
+                      }}>
+                        {course.title}
+                      </h2>
+                      <p style={{ fontSize: 14, color: 'var(--ink-mid)' }}>
+                        {course.subtitle}
+                      </p>
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 6, flexShrink: 0 }}>
+                    {availableCount < course.modules.length && (
+                      <span style={{ fontSize: 12, color: 'var(--accent)', fontWeight: 600 }}>
+                        {availableCount} of {course.modules.length} available
+                      </span>
+                    )}
+                    <span style={{ fontSize: 14, fontWeight: 600, color: isLocked ? 'var(--ink-lt)' : 'var(--accent)', whiteSpace: 'nowrap' }}>
+                      {isLocked ? 'Locked' : 'Explore course →'}
                     </span>
                   </div>
                 </div>
               )
 
               return isLocked ? (
-                <div key={mod.id}>{card}</div>
+                <div key={course.slug}>{card}</div>
               ) : (
-                <Link key={mod.id} href={`/course/${mod.id}`} style={{ textDecoration: 'none' }}>
+                <Link key={course.slug} href={`/courses/${course.slug}`} style={{ textDecoration: 'none' }}>
                   {card}
                 </Link>
               )
             })}
+
           </div>
 
           {!hasPurchase && (
@@ -212,30 +189,20 @@ export default async function DashboardPage({
               <div>
                 <p style={{
                   fontFamily: 'var(--font-dm-serif), Georgia, serif',
-                  fontSize: 22,
-                  color: '#fff',
-                  marginBottom: 6,
+                  fontSize: 22, color: '#fff', marginBottom: 6,
                 }}>
-                  Ready to go deeper?
+                  Ready to unlock everything?
                 </p>
                 <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.8)', maxWidth: 420 }}>
-                  Unlock all 6 modules — real workflows, smarter prompts, and a personal AI system you&apos;ll use every day.
+                  Get full access to both courses — plus every new course as it launches.
                 </p>
               </div>
-              <Link
-                href="/pricing"
-                style={{
-                  background: '#fff',
-                  color: 'var(--accent)',
-                  fontWeight: 700,
-                  fontSize: 15,
-                  padding: '14px 28px',
-                  borderRadius: 12,
-                  textDecoration: 'none',
-                  whiteSpace: 'nowrap',
-                  flexShrink: 0,
-                }}
-              >
+              <Link href="/pricing" style={{
+                background: '#fff', color: 'var(--accent)',
+                fontWeight: 700, fontSize: 15,
+                padding: '14px 28px', borderRadius: 12,
+                textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0,
+              }}>
                 See plans →
               </Link>
             </div>

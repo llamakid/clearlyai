@@ -41,61 +41,104 @@
 
 ```
 app/
-  page.tsx                          Landing page
-  layout.tsx                        Root layout (fonts, CSS vars, analytics)
-  globals.css                       Global styles + CSS custom properties
-  icon.tsx                          Favicon (generated)
-  apple-icon.tsx                    Apple touch icon (generated)
-  opengraph-image.tsx               OG image (generated)
-  (auth)/login/page.tsx             Login form
-  (auth)/signup/page.tsx            Signup form
-  (protected)/layout.tsx            Auth + purchase gate (server-side)
-  (protected)/dashboard/page.tsx    Course dashboard
-  (protected)/course/[moduleId]/    Individual module player
-  api/auth/callback/route.ts        Supabase email confirmation callback
-  api/stripe/checkout/route.ts      Creates Stripe Checkout session
-  api/stripe/webhook/route.ts       Receives payment → writes to purchases table
-  api/subscribe/route.ts            Homepage email capture → subscribers table
-  api/feedback/route.ts             End-of-module feedback → feedback table + Resend notify
-  blog/page.tsx                     Blog index
-  blog/[slug]/page.tsx              MDX blog post
-  pricing/page.tsx                  Pricing page
-  pricing/CheckoutButton.tsx        Client component for Stripe redirect
-  privacy/page.tsx                  Privacy policy
-  terms/page.tsx                    Terms of service
+  page.tsx                              Landing page (static — no server auth fetch)
+  layout.tsx                            Root layout (fonts, CSS vars, analytics)
+  globals.css                           Global styles + CSS custom properties
+  icon.tsx / apple-icon.tsx             Favicon + Apple touch icon (generated)
+  opengraph-image.tsx                   OG image (generated)
+  (auth)/login/page.tsx                 Login form
+  (auth)/signup/page.tsx                Signup form
+  (protected)/layout.tsx                Auth gate (checks Supabase session server-side)
+  (protected)/dashboard/page.tsx        Course dashboard — shows course cards
+  (protected)/courses/[courseSlug]/     Course overview page (hero + module grid)
+  (protected)/course/[moduleId]/        Individual module player
+  api/auth/callback/route.ts            Supabase email confirmation callback
+  api/stripe/checkout/route.ts          Creates Stripe Checkout session
+  api/stripe/webhook/route.ts           Receives payment → writes to purchases table
+  api/subscribe/route.ts                Homepage email capture → subscribers table
+  api/feedback/route.ts                 End-of-module feedback → feedback table + Resend notify
+  blog/page.tsx                         Blog index
+  blog/[slug]/page.tsx                  MDX blog post
+  pricing/page.tsx                      Pricing page
+  pricing/CheckoutButton.tsx            Client component for Stripe redirect (uses startTransition)
+  privacy/page.tsx / terms/page.tsx     Legal pages
 
 components/
-  Navbar.tsx                        Site-wide nav (auth-aware)
-  Footer.tsx                        Site-wide footer
-  EmailSignup.tsx                   Email capture form (calls /api/subscribe)
-  CoursePlayer.tsx                  Main course player (lessons + slides + nav)
-  course/SlideContent.tsx           Renders individual slide content
-  course/QuizView.tsx               Quiz slide type
-  course/FeedbackView.tsx           End-of-module feedback form (POSTs to /api/feedback)
+  Navbar.tsx                            Auth-aware nav — accepts optional `initialUser` prop to
+                                        skip client-side Supabase auth fetch (pass from server
+                                        components that already have the user)
+  Footer.tsx                            Site-wide footer
+  EmailSignup.tsx                       Email capture form — lazy-loaded on home page via dynamic()
+  CoursePlayer.tsx                      Main course player (lessons + slides + nav).
+                                        Accepts `userId` + `initialProgress` props from server.
+                                        Reads initial position from DB; writes back on lesson completion.
+                                        Uses startTransition for lesson-done updates + useMemo sidebar.
+  course/SlideContent.tsx               Renders individual slide content
+  course/QuizView.tsx                   Quiz slide type
+  course/FeedbackView.tsx               End-of-module feedback form (POSTs to /api/feedback)
 
 lib/
-  supabase/client.ts                Browser Supabase client
-  supabase/server.ts                Server Supabase client (async, cookie-based)
-  stripe.ts                         Stripe client (lazy init)
-  resend.ts                         Resend client (lazy init) + fromAddress() helper
-  blog.ts                           Reads MDX posts from content/blog/
-  api-error.ts                      Standard API error helper
-  schemas.ts                        Zod schemas
-  course-data/module-1.ts           Course content — Module 1
-  course-data/module-2.ts           Course content — Module 2
-  course-data/module-3.ts           Course content — Module 3
-  course-data/module-4.ts           Course content — Module 4
-  course-data/module-5.ts           Course content — Module 5
-  course-data/module-6.ts           Course content — Module 6
-  course-data/types.ts              Shared types for course data
+  supabase/client.ts                    Browser Supabase client
+  supabase/server.ts                    Server Supabase client (async, cookie-based)
+  stripe.ts                             Stripe client (lazy init)
+  resend.ts                             Resend client (lazy init) + fromAddress() helper
+  blog.ts                               Reads MDX posts from content/blog/
+  api-error.ts                          Standard API error helper
+  schemas.ts                            Zod schemas
+  course-data/courses.ts                Course-level metadata for all courses — SINGLE SOURCE OF
+                                        TRUTH for the dashboard and course overview pages.
+                                        Add new courses here; UI picks them up automatically.
+  course-data/types.ts                  Shared TypeScript types (CourseData, Lesson, Slide, etc.)
+  course-data/starter.ts                Free starter course (module 0 — not gated, not in DB)
+  course-data/module-1.ts through 6.ts  Course 1 "AI Foundations" content (moduleIds 1–6)
+  course-data/c2-module-1.ts            Course 2 "AI at Work" — Module 1 (moduleId 7)
 
 content/blog/
-  *.mdx                             Blog posts — add new ones here (8 posts live)
+  *.mdx                                 Blog posts — add new ones here (8 posts live)
 
-middleware.ts                       Protects /dashboard and /course/* behind auth
-supabase-schema.sql                 Full schema — run in Supabase SQL Editor
-.env.local.example                  Template for required environment variables
-SETUP.md                            Step-by-step setup guide (Supabase, Stripe, Vercel)
+middleware.ts                           Protects /dashboard, /courses/*, /course/* behind auth
+supabase-schema.sql                     Full schema — run in Supabase SQL Editor
+.env.local.example                      Template for required environment variables
+SETUP.md                                Step-by-step setup guide (Supabase, Stripe, Vercel)
+```
+
+---
+
+## Course Architecture
+
+### Two courses, one subscription
+Access is gated by the `purchases` table — a single purchase unlocks **all** courses. Do not build per-course gating.
+
+### Course numbering
+| Course | Name | Module IDs | Slug |
+|---|---|---|---|
+| Course 1 | AI Foundations | 1–6 | `ai-foundations` |
+| Course 2 | AI at Work | 7–12 | `ai-at-work` |
+
+Module 0 is the free starter course — not in the `course_progress` table (schema constraint: `module_id >= 1`).
+
+### Adding a new course
+1. Add course metadata to `lib/course-data/courses.ts` (dashboard + course pages pick it up automatically)
+2. Create content files in `lib/course-data/` (e.g. `c3-module-1.ts`) with the next available moduleId
+3. Add each module to the `COURSES` map in `app/(protected)/course/[moduleId]/page.tsx`
+
+### Adding a new module to an existing course
+1. Create the content file with the next moduleId
+2. Add it to `COURSES` in the course page
+3. Update `available: false → true` in `lib/course-data/courses.ts` when ready to publish
+4. No DB migration needed (constraint is `module_id >= 1`)
+
+### Course progress
+Progress is stored in `course_progress` (Supabase) and mirrored to `localStorage`.
+- **On page load:** server fetches the progress row and passes it to `CoursePlayer` as `initialProgress` — no client-side DB fetch on mount.
+- **On lesson completion:** `CoursePlayer` upserts `{ current_lesson, current_slide, completed }` to the DB (fire-and-forget).
+- **Module 0 (starter):** localStorage only — not written to DB.
+
+### Navigation flow
+```
+/dashboard → course cards
+  → click course → /courses/[courseSlug] — hero + module grid
+    → click module → /course/[moduleId] — full-screen player
 ```
 
 ---
@@ -106,22 +149,26 @@ Four tables — all with RLS enabled:
 
 | Table | Purpose |
 |---|---|
-| `purchases` | Created by Stripe webhook on successful payment. Grants course access. |
-| `course_progress` | Tracks `current_lesson` + `current_slide` per user per module. |
+| `purchases` | Created by Stripe webhook on successful payment. Grants access to all courses. |
+| `course_progress` | Tracks `current_lesson`, `current_slide`, `completed` per user per module. `module_id >= 1`. |
 | `subscribers` | Email addresses from the homepage opt-in form. |
-| `feedback` | End-of-module survey responses (stars, text answers, optional testimonial). Service-role insert only — review in Supabase dashboard. |
+| `feedback` | End-of-module survey responses. Service-role insert only. |
 
 ---
 
 ## Access Control Flow
 
 ```
-User visits /dashboard or /course/[id]
+User visits /dashboard, /courses/*, or /course/*
   → middleware checks Supabase session
   → no session → redirect /login
-  → session exists → (protected)/layout.tsx queries purchases table
+  → session OK → page renders
+
+Individual module pages (/course/[moduleId]):
+  → server checks purchases table
   → no purchase → redirect /pricing
-  → purchase found → page renders
+  → purchase found → module loads
+  (Module 0 is exempt — free for all signed-in users)
 ```
 
 Payment flow:
@@ -138,9 +185,9 @@ Feedback flow:
 ```
 End of each module → FeedbackView renders
   → user fills out form → POST /api/feedback
-  → row saved to feedback table (with user_id if logged in)
-  → Resend notification email sent to nate.guy@reusser.com
-  → thank-you screen shown (never blocks on email failure)
+  → row saved to feedback table
+  → Resend notification sent to nate.guy@reusser.com (fire-and-forget)
+  → thank-you screen shown
 ```
 
 ---
@@ -171,31 +218,44 @@ See `.env.local.example` for the full list. Summary:
 - ✅ Business plan written
 - ✅ Brand system locked (Clear Sky + DM Serif + Inter)
 - ✅ Next.js app scaffolded with full stack (auth, payments, blog, course player)
-- ✅ All 6 course modules built (`lib/course-data/module-1.ts` through `module-6.ts`)
+- ✅ Course 1 "AI Foundations" — all 6 modules built (`module-1.ts` through `module-6.ts`)
+- ✅ Course 2 "AI at Work" — Module 1 built (`c2-module-1.ts`), modules 2–6 stubbed as Coming Soon
+- ✅ Dashboard redesigned — course cards link to course overview pages
+- ✅ Course overview pages live at `/courses/[courseSlug]` (hero + module grid)
+- ✅ Course progress wired to Supabase DB (reads on load, writes on lesson completion)
 - ✅ Supabase project created, schema run, auth verified
 - ✅ Stripe products created — 3 prices (monthly $15, yearly $120, forever $299)
 - ✅ Stripe checkout + webhook wired up (subscriptions + one-time payment handled)
 - ✅ Resend account set up, domain verified, email confirmation re-enabled in Supabase
-- ✅ Email capture wired up (homepage → `/api/subscribe` → Supabase `subscribers` table)
-- ✅ Feedback forms wired up (end of each module → `/api/feedback` → Supabase `feedback` table + Resend notify)
-- ✅ Blog wired up with 8 posts (MDX in `content/blog/`)
-- ✅ Favicon, OG image, Apple icon all generated
+- ✅ Email capture wired up (homepage → `/api/subscribe` → `subscribers` table)
+- ✅ Feedback forms wired up (end of each module → `/api/feedback` → `feedback` table + Resend notify)
+- ✅ Blog live with 8 posts (MDX in `content/blog/`)
+- ✅ Favicon, OG image, Apple icon generated
 - ✅ Domain purchased: learnaiclearly.com
 - ✅ Deployed to Vercel, all env vars set
 - ✅ Vercel Analytics + Speed Insights installed
-- ⏳ Smoke test not yet fully completed (Stripe test mode price IDs needed)
+- ⏳ Supabase migration needed: expand `module_id` constraint (run SQL below)
+- ⏳ Smoke test not yet fully completed
 - ⏳ Domain connection to Vercel not yet confirmed
-- ⏳ `feedback` table needs to be created in Supabase (run the new block in `supabase-schema.sql`)
 - ⏳ Beta testers not yet recruited
+- ⏳ Course 2 modules 2–6 not yet built
+
+### Pending Supabase migration
+Run this in Supabase SQL Editor to support Course 2 module IDs:
+```sql
+ALTER TABLE course_progress DROP CONSTRAINT IF EXISTS course_progress_module_id_check;
+ALTER TABLE course_progress ADD CONSTRAINT course_progress_module_id_check CHECK (module_id >= 1);
+```
 
 ---
 
 ## Immediate Priorities (pick up here)
 
-1. **Run the feedback table migration** — In Supabase SQL Editor, run the `feedback` table block from `supabase-schema.sql` (section: `-- feedback: end-of-module survey responses`)
-2. **Complete smoke test** — Switch Stripe to Test mode, create test price IDs, add to Vercel env vars temporarily, run the full signup → checkout → dashboard → module → feedback flow; verify rows in Supabase and notification email arrives
-3. **Confirm domain is connected** — Vercel → Settings → Domains should show `learnaiclearly.com` as active with no DNS warnings
-4. **Recruit 10–15 beta testers** — have them go through the live Stripe flow (or manually grant access in Supabase `purchases` table)
+1. **Run Supabase migration** — expand the `module_id` constraint (SQL above)
+2. **Build Course 2 modules 2–6** — content files in `lib/course-data/`, then flip `available: true` in `courses.ts`
+3. **Complete smoke test** — full signup → checkout → dashboard → course → module → feedback flow
+4. **Confirm domain is connected** — Vercel → Settings → Domains
+5. **Recruit 10–15 beta testers**
 
 ---
 
@@ -203,13 +263,17 @@ See `.env.local.example` for the full list. Summary:
 
 - Always use the Clear Sky palette and DM Serif + Inter for anything visual
 - This is a **Next.js App Router** project — use server components by default, `'use client'` only when needed
-- Course content lives in `lib/course-data/` as TypeScript — not in any HTML files
+- Course content lives in `lib/course-data/` as TypeScript — not HTML files
 - When writing lesson content: jargon-free, second person ("you"), specific outcomes, one idea per slide
 - Nate's preferred working style: build things, then iterate based on feedback
-- Do not use Netlify or Netlify Forms — this app runs on Vercel with its own API routes
-- Blog posts are MDX files in `content/blog/` — adding a new file there is all it takes to publish
-- Stripe has separate test and live mode price IDs — they are not interchangeable. Test keys (`sk_test_`) only work with test prices; live keys (`sk_live_`) only work with live prices. Always confirm the mode before debugging Stripe errors.
-- Pricing is 3 tiers: Monthly ($15/mo, recurring), Yearly ($120/yr, recurring), Forever ($299 one-time, founder pricing). Plan IDs in code: `monthly`, `yearly`, `forever`.
-- The server Supabase client (`lib/supabase/server.ts`) exports `createClient` — import it as `createClient` or alias it. Do not import `createServerClient` from that path.
+- Do not use Netlify — this app runs on Vercel with its own API routes
+- Blog posts are MDX files in `content/blog/` — adding a new file is all it takes to publish
+- Stripe has separate test and live mode price IDs — not interchangeable. Always confirm the mode before debugging Stripe errors.
+- Pricing is 3 tiers: Monthly ($15/mo), Yearly ($120/yr), Forever ($299 one-time). Plan IDs: `monthly`, `yearly`, `forever`.
+- The server Supabase client (`lib/supabase/server.ts`) exports `createClient` — import it as `createClient`. Do not import `createServerClient` from that path.
 - API routes that need the logged-in user's ID should use the server client + `auth.getUser()`, then fall back gracefully if unauthenticated.
-- Resend notification emails to Nate should always be fire-and-forget (`.catch(console.error)`) — never let a failed notification block a user response.
+- Resend notification emails to Nate should always be fire-and-forget — never let a failed notification block a user response.
+- **Navbar** accepts an optional `initialUser` prop — always pass it from server components that already have the user (dashboard, course pages, home page if needed). Skips the client-side Supabase auth fetch.
+- **Home page** (`app/page.tsx`) must stay a non-async server component so it stays `○` (Static) and is served from Vercel's CDN edge. Do not add `supabase.auth.getUser()` to it.
+- **CoursePlayer** uses `startTransition` for lesson-completion state updates and `useMemo` for the sidebar — keep these optimizations in place when editing that component.
+- `lib/course-data/courses.ts` is the single source of truth for course-level metadata — dashboard cards and course overview pages both read from it. Always update this file when adding or publishing a new module.
