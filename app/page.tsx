@@ -168,8 +168,8 @@ export default function HomePage() {
               {[
                 {
                   num: '01',
-                  title: 'Start with the Free Starter Kit',
-                  body: 'Download your free guide: 10 things you can do with AI today. Written in plain English, ready to use in the next 30 minutes.',
+                  title: 'Start with the Free Course',
+                  body: 'Start with "10 Things You Can Do With AI Today" — two short lessons, ten practical tasks, each with a ready-to-use prompt. No credit card needed.',
                 },
                 {
                   num: '02',
@@ -225,44 +225,103 @@ export default function HomePage() {
                 letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: 16,
                 color: 'white',
               }}>
-                Six modules now. <em style={{ color: 'var(--accent-lt)', fontStyle: 'italic' }}>More launching soon.</em>
+                Four courses. <em style={{ color: 'var(--accent-lt)', fontStyle: 'italic' }}>Built for your life.</em>
               </h2>
               <p style={{ fontSize: 17, color: 'rgba(255,255,255,0.65)', lineHeight: 1.65, maxWidth: 540 }}>
-                Each module is a focused set of short lessons built around what you can actually do — not how the technology works.
+                One subscription unlocks everything — four full courses, each built around what you actually do, not how the technology works.
               </p>
             </div>
 
-            <div className="grid-3" style={{ gap: 16 }}>
+            <div className="grid-2" style={{ gap: 20 }}>
               {[
-                { num: 'Module 01', title: 'AI 101: What It Is & Why It Matters', desc: 'Understand what AI actually is, in plain terms. Feel confident in any conversation about it.' },
-                { num: 'Module 02', title: 'ChatGPT & Your Work: Getting Things Done', desc: 'Draft emails, summarize documents, brainstorm ideas, and do research in minutes — not hours.' },
-                { num: 'Module 03', title: 'Think Smarter: AI for Research, Planning & Decisions', desc: 'Automate repetitive tasks, build your own templates, and reclaim five or more hours every week.' },
-                { num: 'Module 04', title: 'Creating Content with AI: Your Voice, Amplified', desc: 'Write social posts, create proposals, respond to reviews, and plan campaigns — without a marketing team.' },
-                { num: 'Module 05', title: 'AI Tools Beyond ChatGPT: Image, Audio & More', desc: 'Explore image generators, voice tools, and specialized AI. Know what to trust and what to question.' },
-                { num: 'Module 06', title: 'Your AI Life — Staying Current and Going Further', desc: 'Choose the right tools for your needs, build your daily workflow, and keep growing as AI evolves.' },
-              ].map(({ num, title, desc }) => (
-                <div key={num} style={{
+                {
+                  icon: '🧠',
+                  tag: 'Beginner',
+                  title: 'AI Foundations',
+                  desc: 'A plain-English introduction to AI for everyday people. Learn what it is, how to use it confidently, and build habits that save you real time every week.',
+                  bullets: [
+                    'What AI actually is — explained simply',
+                    'How to use ChatGPT and other tools from day one',
+                    'Prompts, research, writing, and planning',
+                  ],
+                },
+                {
+                  icon: '⚡',
+                  tag: 'Professional',
+                  title: 'AI at Work',
+                  desc: 'Built for working professionals who want to reclaim time, look sharper, and become indispensable. Practical skills for the tasks eating 30–40% of your week.',
+                  bullets: [
+                    'Tame your inbox in a fraction of the time',
+                    'Turn rough notes into polished reports in minutes',
+                    'Build reusable workflows for your most repetitive tasks',
+                  ],
+                },
+                {
+                  icon: '🏪',
+                  tag: 'Small Business',
+                  title: 'AI for Your Business',
+                  desc: 'For small business owners who wear every hat. Reclaim time, look more professional, and grow without adding headcount.',
+                  bullets: [
+                    'Handle customer comms faster without losing your voice',
+                    'Create consistent marketing content without a team',
+                    'Proposals, SOPs, and admin docs in minutes',
+                  ],
+                },
+                {
+                  icon: '🌅',
+                  tag: 'Retirement',
+                  title: 'AI for a Richer Retirement',
+                  desc: 'For people who finally have time to do what matters — and want AI to help them do it better. Health, family, travel, creative projects, and staying sharp.',
+                  bullets: [
+                    'Understand medical info and prepare for appointments',
+                    'Stay closer to family and capture your stories',
+                    'Plan travel, pursue hobbies, and keep learning',
+                  ],
+                },
+              ].map(({ icon, tag, title, desc, bullets }) => (
+                <div key={title} style={{
                   background: 'rgba(255,255,255,0.05)',
                   border: '1px solid rgba(255,255,255,0.08)',
                   borderRadius: 20,
-                  padding: '28px 24px',
+                  padding: '32px 28px',
                 }}>
-                  <div style={{
-                    fontSize: 11, fontWeight: 700, letterSpacing: '0.1em',
-                    textTransform: 'uppercase', color: 'var(--accent-lt)', marginBottom: 10,
-                  }}>
-                    {num}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+                    <span style={{ fontSize: 28 }}>{icon}</span>
+                    <span style={{
+                      fontSize: 10, fontWeight: 700, letterSpacing: '0.1em',
+                      textTransform: 'uppercase', color: 'var(--accent-lt)',
+                      background: 'rgba(61,122,138,0.25)',
+                      padding: '3px 10px', borderRadius: 999,
+                    }}>
+                      {tag}
+                    </span>
                   </div>
                   <div style={{
                     fontFamily: 'var(--font-dm-serif), Georgia, serif',
-                    fontSize: 18, fontWeight: 400,
-                    color: 'white', marginBottom: 10, lineHeight: 1.3,
+                    fontSize: 22, fontWeight: 400,
+                    color: 'white', marginBottom: 12, lineHeight: 1.25,
                   }}>
                     {title}
                   </div>
-                  <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', lineHeight: 1.6 }}>
+                  <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.55)', lineHeight: 1.65, marginBottom: 20 }}>
                     {desc}
                   </p>
+                  <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    {bullets.map((b) => (
+                      <li key={b} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 13, color: 'rgba(255,255,255,0.7)' }}>
+                        <span style={{ color: 'var(--accent-lt)', fontWeight: 700, flexShrink: 0, marginTop: 1 }}>✓</span>
+                        {b}
+                      </li>
+                    ))}
+                  </ul>
+                  <div style={{
+                    marginTop: 24, paddingTop: 20,
+                    borderTop: '1px solid rgba(255,255,255,0.08)',
+                    fontSize: 11, color: 'rgba(255,255,255,0.3)',
+                    fontWeight: 700, letterSpacing: '0.08em',
+                  }}>
+                    6 MODULES · ~3 HOURS · 30 LESSONS
+                  </div>
                 </div>
               ))}
             </div>
@@ -423,7 +482,7 @@ export default function HomePage() {
               display: 'inline-flex', flexDirection: 'column', gap: 10, textAlign: 'left',
             }}>
               {[
-                '6 modules to start — more launching soon',
+                'All 4 courses — 24 modules included',
                 'New courses as they launch',
                 'Go at your own pace, on any device',
               ].map((item) => (
