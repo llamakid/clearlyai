@@ -115,7 +115,10 @@ export default function SignupPage() {
           }}>
             Create your account
           </h1>
-          <p style={{ fontSize: 15, color: 'var(--ink-mid)' }}>
+          <p style={{ fontSize: 15, color: 'var(--ink-mid)', marginBottom: 4 }}>
+            No credit card required — just your email.
+          </p>
+          <p style={{ fontSize: 14, color: 'var(--ink-lt)' }}>
             Already have one?{' '}
             <Link href="/login" style={{ color: 'var(--accent)', fontWeight: 600 }}>Sign in</Link>
           </p>
@@ -156,8 +159,9 @@ export default function SignupPage() {
             </button>
 
             <p style={{ fontSize: 12, color: 'var(--ink-lt)', textAlign: 'center', lineHeight: 1.5 }}>
-              By creating an account you agree to our terms of service.
-              Your payment is handled securely by Stripe.
+              Free to join. No credit card needed now — you&apos;ll only be asked for payment
+              if you later choose to unlock all courses.{' '}
+              <Link href="/terms" style={{ color: 'var(--ink-lt)' }}>Terms of service.</Link>
             </p>
           </form>
         </div>
