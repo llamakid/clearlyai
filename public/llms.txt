@@ -1,0 +1,44 @@
+# Clearly, AI
+
+> A plain-English AI school for non-technical adults. Learn it. Use it. Own it.
+
+Clearly, AI teaches working professionals, small business owners, retirees, and curious learners how to use artificial intelligence confidently. Every lesson is practical, jargon-free, and designed for people with no technical background. One subscription unlocks all courses.
+
+Founded by Nate Guy. Domain: learnaiclearly.com
+
+## Courses
+
+All courses include 6 modules, ~30 lessons, and approximately 3 hours of content. One subscription unlocks everything.
+
+- [AI Foundations](https://learnaiclearly.com/courses/ai-foundations): The starting point. A plain-English introduction to AI for everyday people — what it is, how to use ChatGPT and other tools from day one, how to write effective prompts, and how to apply AI to writing, research, and planning. For beginners with no tech background.
+
+- [AI at Work](https://learnaiclearly.com/courses/ai-at-work): For working professionals who want to reclaim time and become indispensable. Covers email management, meeting prep and follow-up, turning rough notes into polished reports, and building reusable AI workflows for repetitive tasks.
+
+- [AI for Your Business](https://learnaiclearly.com/courses/ai-for-your-business): For small business owners who wear every hat. Covers customer communications, marketing content without an agency, proposals and SOPs, operations, and competitive research — all without a tech team.
+
+- [AI for a Richer Retirement](https://learnaiclearly.com/courses/ai-richer-retirement): For people who finally have time for what matters. Covers using AI for health questions, staying closer to family, travel planning, creative projects like memoir writing, and staying safe online.
+
+## Key Pages
+
+- [Home](https://learnaiclearly.com): Overview of the school, who it's for, all four courses, and pricing summary
+- [Pricing](https://learnaiclearly.com/pricing): Three plans — Monthly ($15/mo), Yearly ($120/yr, saves 33%), Forever ($299 one-time founding rate). All plans include every current and future course.
+- [FAQ](https://learnaiclearly.com/faq): Common questions about the courses, billing, cancellation, and getting started with no tech background
+- [Blog](https://learnaiclearly.com/blog): Plain-English articles about AI for non-technical readers
+
+## Blog Posts
+
+- [5 AI Prompts That Save an Hour of Work This Week](https://learnaiclearly.com/blog/five-prompts-that-save-an-hour)
+- [AI for the Business Owner Who Does Everything](https://learnaiclearly.com/blog/ai-for-small-business-owners)
+- [AI Isn't Going to Take Your Job. But Here's What It Will Change.](https://learnaiclearly.com/blog/ai-isnt-going-to-take-your-job)
+- [I Asked AI to Help Me Write a Business Email. Here's What Happened.](https://learnaiclearly.com/blog/i-asked-ai-to-write-a-business-email)
+- [The One Mistake Everyone Makes When Using ChatGPT](https://learnaiclearly.com/blog/the-one-mistake-everyone-makes-with-chatgpt)
+- [What the News Gets Wrong About AI](https://learnaiclearly.com/blog/ai-what-the-news-gets-wrong)
+- [What's the Difference Between ChatGPT, Copilot, and Gemini?](https://learnaiclearly.com/blog/chatgpt-vs-copilot-vs-gemini)
+- [You Can Ask AI the Questions You'd Never Ask Anyone Else](https://learnaiclearly.com/blog/questions-youd-never-ask-anyone-else)
+- [You Don't Need to Be Technical to Use AI. Here's Proof.](https://learnaiclearly.com/blog/you-dont-need-to-be-technical)
+
+## About
+
+Clearly, AI is an online school focused on making artificial intelligence accessible to non-technical adults. The target audiences are working professionals (35–54), small business owners (38–58), and curious learners and retirees (55–75). Content is always jargon-free, practical, and written in plain English.
+
+Contact: nate@learnaiclearly.com

@@ -76,9 +76,83 @@ const plans = [
   },
 ]
 
+const courseSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Clearly, AI Courses',
+  description: 'All courses included in one subscription — no tech background needed.',
+  url: 'https://learnaiclearly.com/pricing',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      item: {
+        '@type': 'Course',
+        name: 'AI Foundations',
+        description: 'A plain-English introduction to artificial intelligence for everyday people. Learn what AI is, how to use ChatGPT, write effective prompts, and apply AI to writing, research, and planning.',
+        provider: { '@type': 'Organization', name: 'Clearly, AI', url: 'https://learnaiclearly.com' },
+        url: 'https://learnaiclearly.com/courses/ai-foundations',
+        educationalLevel: 'Beginner',
+        timeRequired: 'PT3H',
+        numberOfCredits: 6,
+        offers: { '@type': 'Offer', price: '15.00', priceCurrency: 'USD', priceValidUntil: '2026-12-31', availability: 'https://schema.org/InStock' },
+      },
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      item: {
+        '@type': 'Course',
+        name: 'AI at Work',
+        description: 'Practical AI skills for working professionals who want to reclaim time and become indispensable. Covers email, meetings, reports, and reusable workflows.',
+        provider: { '@type': 'Organization', name: 'Clearly, AI', url: 'https://learnaiclearly.com' },
+        url: 'https://learnaiclearly.com/courses/ai-at-work',
+        educationalLevel: 'Intermediate',
+        timeRequired: 'PT3H',
+        numberOfCredits: 6,
+        offers: { '@type': 'Offer', price: '15.00', priceCurrency: 'USD', priceValidUntil: '2026-12-31', availability: 'https://schema.org/InStock' },
+      },
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      item: {
+        '@type': 'Course',
+        name: 'AI for Your Business',
+        description: 'For small business owners who wear every hat. Covers customer communications, marketing content, proposals, operations, and research — no tech team needed.',
+        provider: { '@type': 'Organization', name: 'Clearly, AI', url: 'https://learnaiclearly.com' },
+        url: 'https://learnaiclearly.com/courses/ai-for-your-business',
+        educationalLevel: 'Intermediate',
+        timeRequired: 'PT3H',
+        numberOfCredits: 6,
+        offers: { '@type': 'Offer', price: '15.00', priceCurrency: 'USD', priceValidUntil: '2026-12-31', availability: 'https://schema.org/InStock' },
+      },
+    },
+    {
+      '@type': 'ListItem',
+      position: 4,
+      item: {
+        '@type': 'Course',
+        name: 'AI for a Richer Retirement',
+        description: 'For people who finally have time for what matters. Covers health questions, family connection, travel planning, creative projects, and staying safe online.',
+        provider: { '@type': 'Organization', name: 'Clearly, AI', url: 'https://learnaiclearly.com' },
+        url: 'https://learnaiclearly.com/courses/ai-richer-retirement',
+        educationalLevel: 'Beginner',
+        timeRequired: 'PT3H',
+        numberOfCredits: 6,
+        offers: { '@type': 'Offer', price: '15.00', priceCurrency: 'USD', priceValidUntil: '2026-12-31', availability: 'https://schema.org/InStock' },
+      },
+    },
+  ],
+}
+
 export default function PricingPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema) }}
+      />
       <Navbar />
       <main style={{ minHeight: '80vh', padding: '72px 32px' }}>
         <div style={{ maxWidth: 1040, margin: '0 auto' }}>
