@@ -100,6 +100,32 @@ export const COURSES_META: CourseMeta[] = [
     ],
   },
   {
+    slug: 'better-prompts',
+    title: 'Better Prompts, Better Results',
+    subtitle: 'The one skill that makes every AI tool 10x more useful.',
+    description:
+      'Most people get mediocre results from AI — not because the tools are bad, but because they don\'t know how to ask. This course teaches you the practical skill of prompting: how to write requests that get you genuinely useful answers, every time.',
+    icon: '🎯',
+    tag: 'Universal',
+    totalLessons: 30,
+    estimatedTime: '~3 hours',
+    whatYoullLearn: [
+      'Why most people get mediocre AI results — and the simple fix',
+      'The four-part formula behind every great prompt',
+      'How to add context that transforms the quality of any response',
+      'How to follow up and iterate your way to exactly what you need',
+      'Ready-to-use prompt templates for your most common tasks',
+    ],
+    modules: [
+      { id: 25, num: 1, title: "Why Your Prompts Aren't Working", desc: 'Understand the gap between weak and strong prompts — and get your first win today.', lessons: 5, available: true },
+      { id: 26, num: 2, title: 'The Four Building Blocks of a Great Prompt', desc: 'Role, Task, Context, Format — the simple formula that makes every prompt better.', lessons: 5, available: true },
+      { id: 27, num: 3, title: 'Context Is Everything', desc: 'Two sentences of context can transform your results. Learn exactly what to share and how.', lessons: 5, available: true },
+      { id: 28, num: 4, title: 'The Art of the Follow-Up', desc: 'The first response is just a draft. Learn how to iterate your way to exactly what you need.', lessons: 5, available: true },
+      { id: 29, num: 5, title: 'Prompts for Real Life', desc: 'Proven prompt patterns for email, research, brainstorming, writing, and planning.', lessons: 5, available: true },
+      { id: 30, num: 6, title: 'Your Personal Prompt Library', desc: 'Save your best prompts, build reusable templates, and develop a system that gets sharper every week.', lessons: 5, available: true },
+    ],
+  },
+  {
     slug: 'ai-richer-retirement',
     title: 'AI for a Richer Retirement',
     subtitle: 'More time. More connection. More confidence.',

@@ -219,9 +219,7 @@ See `.env.local.example` for the full list. Summary:
 
 ## Current Status
 
-- ✅ Business plan written
-- ✅ Brand system locked (Clear Sky + DM Serif + Inter)
-- ✅ Next.js app scaffolded with full stack (auth, payments, blog, course player)
+### Infrastructure (all done)
 - ✅ Business plan written
 - ✅ Brand system locked (Clear Sky + DM Serif + Inter)
 - ✅ Next.js app scaffolded with full stack (auth, payments, blog, course player)
@@ -238,32 +236,32 @@ See `.env.local.example` for the full list. Summary:
 - ✅ Feedback forms wired up (end of each module → `/api/feedback` → `feedback` table + Resend notify)
 - ✅ Blog live with 8 posts (MDX in `content/blog/`)
 - ✅ Favicon, OG image, Apple icon generated
-- ✅ Domain purchased: learnaiclearly.com
+- ✅ Domain purchased and connected: learnaiclearly.com
 - ✅ Deployed to Vercel, all env vars set
 - ✅ Vercel Analytics + Speed Insights installed
-- ✅ "Course Home" sidebar button navigates to course overview page (not dashboard)
-- ⏳ Supabase migration needed: expand `module_id` constraint (run SQL below)
-- ⏳ Smoke test not yet fully completed
-- ⏳ Domain connection to Vercel not yet confirmed
-- ⏳ Beta testers not yet recruited
-- ⏳ Course loading performance — module pages have noticeable load time; investigate and reduce (Supabase query waterfall, bundle size, or streaming)
+- ✅ Smoke test completed — full signup → checkout → dashboard → course → module → feedback flow verified
+- ✅ Supabase `module_id` constraint expanded to support Course 2 (moduleIds 7–12)
 
-### Pending Supabase migration
-Run this in Supabase SQL Editor to support Course 2 module IDs:
-```sql
-ALTER TABLE course_progress DROP CONSTRAINT IF EXISTS course_progress_module_id_check;
-ALTER TABLE course_progress ADD CONSTRAINT course_progress_module_id_check CHECK (module_id >= 1);
-```
+### SEO / Discovery
+- ✅ **Site is live** at learnaiclearly.com
+- ✅ Google Search Console verified
+- ✅ Bing Webmaster Tools verified
+- ⏳ Perplexity — waiting for GSC and Bing to finish indexing before submitting
+
+### Growth
+- ⏳ First paid users not yet acquired
+- ⏳ Email list not yet actively marketed to
+- ⏳ Course loading performance — module pages have noticeable load time; investigate the Supabase query waterfall (purchases check + progress fetch are sequential), bundle size from importing all 12 course data files, and whether React Suspense / streaming can help
 
 ---
 
 ## Immediate Priorities (pick up here)
 
-1. **Run Supabase migration** — expand the `module_id` constraint (SQL above)
-2. **Improve course loading performance** — module pages have noticeable load time; investigate the Supabase query waterfall (purchases check + progress fetch are sequential), bundle size from importing all 12 course data files, and whether React Suspense / streaming can help
-3. **Complete smoke test** — full signup → checkout → dashboard → course → module → feedback flow
-4. **Confirm domain is connected** — Vercel → Settings → Domains
-5. **Recruit 10–15 beta testers**
+1. **Get first paid users** — direct outreach, social posts, LinkedIn, community posts targeting the three audiences (working professionals 35–54, small business owners 38–58, curious learners 55–75)
+2. **Build email list** — promote the free starter course as a lead magnet; drive signups to the subscriber list
+3. **Content marketing** — keep publishing blog posts (MDX in `content/blog/`); target long-tail search terms non-technical adults use when looking up AI
+4. **Submit to Perplexity** — once GSC and Bing show indexing progress
+5. **Improve course loading performance** — Supabase query waterfall (purchases check + progress fetch are sequential), bundle size, React Suspense / streaming
 
 ---
 
