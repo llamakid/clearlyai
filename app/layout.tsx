@@ -38,6 +38,9 @@ export const metadata: Metadata = {
     description:
       'A plain-English AI school for non-technical adults. No jargon. No tech background needed. Real results.',
   },
+  verification: {
+    google: 'dTG5n9ngUufE0PCDAML8uPaRDiXmghHHMxe2bF-ksDs',
+  },
 }
 
 const organizationSchema = {
