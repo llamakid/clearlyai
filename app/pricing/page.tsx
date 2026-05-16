@@ -1,6 +1,26 @@
+import type { Metadata } from 'next'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import CheckoutButton from './CheckoutButton'
+
+export const metadata: Metadata = {
+  title: 'Pricing — Clearly, AI',
+  description: 'Flexible plans starting at $15/mo. Monthly, yearly, or lifetime access to every AI course. No tech background needed. Cancel anytime.',
+  openGraph: {
+    title: 'Pricing — Clearly, AI',
+    description: 'Flexible plans starting at $15/mo. Monthly, yearly, or lifetime access to every AI course. Cancel anytime.',
+    url: 'https://learnaiclearly.com/pricing',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Pricing — Clearly, AI',
+    description: 'Flexible plans starting at $15/mo. Monthly, yearly, or lifetime access to every AI course. Cancel anytime.',
+  },
+  alternates: {
+    canonical: 'https://learnaiclearly.com/pricing',
+  },
+}
 
 const plans = [
   {

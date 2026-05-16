@@ -1,6 +1,26 @@
+import type { Metadata } from 'next'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import Link from 'next/link'
+
+export const metadata: Metadata = {
+  title: 'FAQ — Clearly, AI',
+  description: 'Common questions about Clearly, AI — our courses, pricing, refunds, and what to expect. No tech background needed to get started.',
+  openGraph: {
+    title: 'FAQ — Clearly, AI',
+    description: 'Common questions about Clearly, AI — our courses, pricing, refunds, and what to expect.',
+    url: 'https://learnaiclearly.com/faq',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'FAQ — Clearly, AI',
+    description: 'Common questions about Clearly, AI — our courses, pricing, refunds, and what to expect.',
+  },
+  alternates: {
+    canonical: 'https://learnaiclearly.com/faq',
+  },
+}
 
 const sections = [
   {
@@ -76,9 +96,25 @@ const sections = [
   },
 ]
 
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: sections.flatMap((section) =>
+    section.items.map(({ q, a }) => ({
+      '@type': 'Question',
+      name: q,
+      acceptedAnswer: { '@type': 'Answer', text: a },
+    }))
+  ),
+}
+
 export default function FAQPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       <Navbar />
       <main style={{ minHeight: '80vh', padding: '72px 32px 96px' }}>
         <div style={{ maxWidth: 720, margin: '0 auto' }}>

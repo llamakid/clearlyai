@@ -40,6 +40,19 @@ export const metadata: Metadata = {
   },
 }
 
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'EducationalOrganization',
+  name: 'Clearly, AI',
+  url: 'https://learnaiclearly.com',
+  description: 'A plain-English AI school for non-technical adults. Learn it. Use it. Own it.',
+  founder: {
+    '@type': 'Person',
+    name: 'Nate Guy',
+  },
+  knowsAbout: ['Artificial Intelligence', 'Machine Learning', 'ChatGPT', 'AI Tools', 'Productivity'],
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -48,6 +61,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${dmSerif.variable} ${inter.variable}`}>
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
         {children}
         <Analytics />
         <SpeedInsights />

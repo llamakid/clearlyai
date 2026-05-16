@@ -1,8 +1,28 @@
+import type { Metadata } from 'next'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import dynamic from 'next/dynamic'
 
 const EmailSignup = dynamic(() => import('@/components/EmailSignup'))
+
+export const metadata: Metadata = {
+  title: 'Clearly, AI — AI School for Non-Technical Adults',
+  description: 'A plain-English AI school for working professionals, small business owners, and curious learners. No jargon, no tech background needed. Start the free course today.',
+  openGraph: {
+    title: 'Clearly, AI — AI School for Non-Technical Adults',
+    description: 'A plain-English AI school for working professionals, small business owners, and curious learners. No jargon, no tech background needed.',
+    url: 'https://learnaiclearly.com',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Clearly, AI — AI School for Non-Technical Adults',
+    description: 'A plain-English AI school for working professionals, small business owners, and curious learners. No jargon, no tech background needed.',
+  },
+  alternates: {
+    canonical: 'https://learnaiclearly.com',
+  },
+}
 
 export default function HomePage() {
   return (

@@ -22,6 +22,23 @@ export async function generateMetadata({
   return {
     title: `${post.title} — Clearly, AI`,
     description: post.excerpt,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      url: `https://learnaiclearly.com/blog/${slug}`,
+      type: 'article',
+      publishedTime: post.date,
+      authors: ['Nate Guy'],
+      siteName: 'Clearly, AI',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt,
+    },
+    alternates: {
+      canonical: `https://learnaiclearly.com/blog/${slug}`,
+    },
   }
 }
 
@@ -35,8 +52,33 @@ export default async function BlogPostPage({
 
   if (!post) notFound()
 
+  const blogSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: post.date,
+    dateModified: post.date,
+    author: {
+      '@type': 'Person',
+      name: 'Nate Guy',
+      url: 'https://learnaiclearly.com',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Clearly, AI',
+      url: 'https://learnaiclearly.com',
+    },
+    url: `https://learnaiclearly.com/blog/${slug}`,
+    mainEntityOfPage: `https://learnaiclearly.com/blog/${slug}`,
+  }
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
+      />
       <Navbar />
       <main>
         {/* Post header */}
