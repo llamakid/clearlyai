@@ -41,14 +41,9 @@ create policy "users can read own purchases"
   on purchases for select
   using (auth.uid() = user_id);
 
--- purchases: only the service role (webhook) can insert/update
-create policy "service role can insert purchases"
-  on purchases for insert
-  with check (true);  -- restricted by service role key, not user session
-
-create policy "service role can update purchases"
-  on purchases for update
-  using (true);  -- restricted by service role key
+-- purchases: the service role (webhook) bypasses RLS entirely — no policy needed.
+-- Do NOT add insert/update policies here; with check (true) would allow any
+-- authenticated user to write purchase rows via the anon key.
 
 -- course_progress: users can read their own progress
 create policy "users can read own progress"
