@@ -9,6 +9,7 @@ create table if not exists purchases (
   id                      uuid primary key default gen_random_uuid(),
   user_id                 uuid not null references auth.users(id) on delete cascade,
   stripe_session_id       text unique,
+  stripe_customer_id      text,
   stripe_subscription_id  text unique,
   plan_type               text not null default 'forever'
                             check (plan_type in ('monthly', 'yearly', 'forever')),

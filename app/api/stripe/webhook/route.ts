@@ -49,12 +49,14 @@ export async function POST(request: Request) {
     const subscriptionId = isSubscription
       ? (typeof session.subscription === 'string' ? session.subscription : session.subscription?.id ?? null)
       : null
+    const customerId = typeof session.customer === 'string' ? session.customer : session.customer?.id ?? null
 
     const { error } = await supabaseAdmin
       .from('purchases')
       .upsert({
         user_id: userId,
         stripe_session_id: session.id,
+        stripe_customer_id: customerId,
         stripe_subscription_id: subscriptionId,
         plan_type: planType,
         subscription_status: isSubscription ? 'active' : null,

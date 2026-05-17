@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { COURSES_META } from '@/lib/course-data/courses'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import ManageSubscriptionButton from '@/components/ManageSubscriptionButton'
 import Link from 'next/link'
 
 export default async function DashboardPage({
@@ -24,6 +25,12 @@ export default async function DashboardPage({
       p.plan_type === 'forever' ||
       p.subscription_status === 'active' ||
       p.subscription_status === 'past_due'
+  ) ?? false
+
+  const hasActiveSubscription = purchases?.some(
+    (p) =>
+      p.plan_type !== 'forever' &&
+      (p.subscription_status === 'active' || p.subscription_status === 'past_due')
   ) ?? false
 
   return (
@@ -51,17 +58,20 @@ export default async function DashboardPage({
             </div>
           )}
 
-          <div style={{ marginBottom: 40 }}>
-            <h1 style={{
-              fontFamily: 'var(--font-dm-serif), Georgia, serif',
-              fontSize: 32,
-              marginBottom: 8,
-            }}>
-              Your courses
-            </h1>
-            <p style={{ fontSize: 15, color: 'var(--ink-mid)' }}>
-              Welcome back{user?.email ? `, ${user.email.split('@')[0]}` : ''}. Pick up where you left off.
-            </p>
+          <div style={{ marginBottom: 40, display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
+            <div>
+              <h1 style={{
+                fontFamily: 'var(--font-dm-serif), Georgia, serif',
+                fontSize: 32,
+                marginBottom: 8,
+              }}>
+                Your courses
+              </h1>
+              <p style={{ fontSize: 15, color: 'var(--ink-mid)' }}>
+                Welcome back{user?.email ? `, ${user.email.split('@')[0]}` : ''}. Pick up where you left off.
+              </p>
+            </div>
+            {hasActiveSubscription && <ManageSubscriptionButton />}
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
