@@ -229,10 +229,10 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── Course overview ── */}
+        {/* ── Curriculum teaser ── */}
         <section id="curriculum" className="section-pad" style={{ background: 'var(--ink)' }}>
           <div style={{ maxWidth: 1120, margin: '0 auto' }}>
-            <div style={{ marginBottom: 48 }}>
+            <div style={{ marginBottom: 40 }}>
               <div style={{
                 fontSize: 11, fontWeight: 700, letterSpacing: '0.1em',
                 textTransform: 'uppercase', color: 'var(--accent-lt)', marginBottom: 12,
@@ -245,110 +245,50 @@ export default function HomePage() {
                 letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: 16,
                 color: 'white',
               }}>
-                Four courses. <em style={{ color: 'var(--accent-lt)', fontStyle: 'italic' }}>Built for your life.</em>
+                Five courses. <em style={{ color: 'var(--accent-lt)', fontStyle: 'italic' }}>One subscription.</em>
               </h2>
               <p style={{ fontSize: 17, color: 'rgba(255,255,255,0.65)', lineHeight: 1.65, maxWidth: 540 }}>
-                One subscription unlocks everything — four full courses, each built around what you actually do, not how the technology works.
+                Every course is built for non-technical adults — plain English, practical skills, real results. Pick your starting point or take them all.
               </p>
             </div>
 
-            <div className="grid-2" style={{ gap: 20 }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginBottom: 44 }}>
               {[
-                {
-                  icon: '🧠',
-                  tag: 'Beginner',
-                  title: 'AI Foundations',
-                  desc: 'A plain-English introduction to AI for everyday people. Learn what it is, how to use it confidently, and build habits that save you real time every week.',
-                  bullets: [
-                    'What AI actually is — explained simply',
-                    'How to use ChatGPT and other tools from day one',
-                    'Prompts, research, writing, and planning',
-                  ],
-                },
-                {
-                  icon: '⚡',
-                  tag: 'Professional',
-                  title: 'AI at Work',
-                  desc: 'Built for working professionals who want to reclaim time, look sharper, and become indispensable. Practical skills for the tasks eating 30–40% of your week.',
-                  bullets: [
-                    'Tame your inbox in a fraction of the time',
-                    'Turn rough notes into polished reports in minutes',
-                    'Build reusable workflows for your most repetitive tasks',
-                  ],
-                },
-                {
-                  icon: '🏪',
-                  tag: 'Small Business',
-                  title: 'AI for Your Business',
-                  desc: 'For small business owners who wear every hat. Reclaim time, look more professional, and grow without adding headcount.',
-                  bullets: [
-                    'Handle customer comms faster without losing your voice',
-                    'Create consistent marketing content without a team',
-                    'Proposals, SOPs, and admin docs in minutes',
-                  ],
-                },
-                {
-                  icon: '🌅',
-                  tag: 'Retirement',
-                  title: 'AI for a Richer Retirement',
-                  desc: 'For people who finally have time to do what matters — and want AI to help them do it better. Health, family, travel, creative projects, and staying sharp.',
-                  bullets: [
-                    'Understand medical info and prepare for appointments',
-                    'Stay closer to family and capture your stories',
-                    'Plan travel, pursue hobbies, and keep learning',
-                  ],
-                },
-              ].map(({ icon, tag, title, desc, bullets }) => (
+                { icon: '🧠', title: 'AI Foundations', tag: 'Beginner' },
+                { icon: '⚡', title: 'AI at Work', tag: 'Professional' },
+                { icon: '🏪', title: 'AI for Your Business', tag: 'Small Business' },
+                { icon: '🎯', title: 'Better Prompts, Better Results', tag: 'Universal' },
+                { icon: '🌅', title: 'AI for a Richer Retirement', tag: 'Retirement' },
+              ].map(({ icon, title, tag }) => (
                 <div key={title} style={{
                   background: 'rgba(255,255,255,0.05)',
                   border: '1px solid rgba(255,255,255,0.08)',
-                  borderRadius: 20,
-                  padding: '32px 28px',
+                  borderRadius: 12,
+                  padding: '12px 18px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 10,
                 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-                    <span style={{ fontSize: 28 }}>{icon}</span>
-                    <span style={{
-                      fontSize: 10, fontWeight: 700, letterSpacing: '0.1em',
-                      textTransform: 'uppercase', color: 'var(--accent-lt)',
-                      background: 'rgba(61,122,138,0.25)',
-                      padding: '3px 10px', borderRadius: 999,
-                    }}>
-                      {tag}
-                    </span>
-                  </div>
-                  <div style={{
-                    fontFamily: 'var(--font-dm-serif), Georgia, serif',
-                    fontSize: 22, fontWeight: 400,
-                    color: 'white', marginBottom: 12, lineHeight: 1.25,
-                  }}>
-                    {title}
-                  </div>
-                  <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.55)', lineHeight: 1.65, marginBottom: 20 }}>
-                    {desc}
-                  </p>
-                  <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
-                    {bullets.map((b) => (
-                      <li key={b} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 13, color: 'rgba(255,255,255,0.7)' }}>
-                        <span style={{ color: 'var(--accent-lt)', fontWeight: 700, flexShrink: 0, marginTop: 1 }}>✓</span>
-                        {b}
-                      </li>
-                    ))}
-                  </ul>
-                  <div style={{
-                    marginTop: 24, paddingTop: 20,
-                    borderTop: '1px solid rgba(255,255,255,0.08)',
-                    fontSize: 11, color: 'rgba(255,255,255,0.3)',
-                    fontWeight: 700, letterSpacing: '0.08em',
-                  }}>
-                    6 MODULES · ~3 HOURS · 30 LESSONS
+                  <span style={{ fontSize: 18 }}>{icon}</span>
+                  <div>
+                    <div style={{ fontSize: 13, fontWeight: 600, color: 'white', lineHeight: 1.2 }}>{title}</div>
+                    <div style={{ fontSize: 10, color: 'var(--accent-lt)', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginTop: 2 }}>{tag}</div>
                   </div>
                 </div>
               ))}
             </div>
 
-            <div style={{ marginTop: 44 }}>
+            <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'center' }}>
               <a href="/signup" className="btn btn-primary" style={{ fontSize: 16, padding: '16px 40px' }}>
                 Start the Free Course
+              </a>
+              <a href="/curriculum" style={{
+                fontSize: 15, fontWeight: 600,
+                color: 'rgba(255,255,255,0.7)',
+                textDecoration: 'none',
+                display: 'flex', alignItems: 'center', gap: 6,
+              }}>
+                See all five courses →
               </a>
             </div>
           </div>
