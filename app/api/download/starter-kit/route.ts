@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   )
 
-  void supabase
+  await supabase
     .from('downloads')
     .insert({
       asset: 'starter-kit',
