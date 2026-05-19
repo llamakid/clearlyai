@@ -3,17 +3,21 @@ import { COURSES_META } from '@/lib/course-data/courses'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import ManageSubscriptionButton from '@/components/ManageSubscriptionButton'
+import EmailVerificationBanner from '@/components/EmailVerificationBanner'
 import Link from 'next/link'
 
 export default async function DashboardPage({
   searchParams,
 }: {
-  searchParams: Promise<{ welcome?: string }>
+  searchParams: Promise<{ welcome?: string; verified?: string; verify_error?: string }>
 }) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   const params = await searchParams
   const showWelcome = params.welcome === '1'
+  const justVerified = params.verified === '1'
+  const verifyError = params.verify_error === '1'
+  const needsVerification = user!.app_metadata?.email_verified === false
 
   const { data: purchases } = await supabase
     .from('purchases')
@@ -38,6 +42,47 @@ export default async function DashboardPage({
       <Navbar initialUser={user} />
       <main style={{ minHeight: '80vh', padding: '52px 32px' }}>
         <div style={{ maxWidth: 860, margin: '0 auto' }}>
+
+          {needsVerification && !justVerified && (
+            <EmailVerificationBanner email={user!.email!} />
+          )}
+
+          {justVerified && (
+            <div style={{
+              background: '#f0fdf4',
+              border: '1px solid #86efac',
+              borderRadius: 12,
+              padding: '14px 20px',
+              marginBottom: 28,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 12,
+            }}>
+              <span style={{ fontSize: 20 }}>✓</span>
+              <p style={{ fontWeight: 600, fontSize: 14, color: '#166534' }}>
+                Email verified! You&apos;re all set.
+              </p>
+            </div>
+          )}
+
+          {verifyError && (
+            <div style={{
+              background: '#fff7ed',
+              border: '1px solid #fb923c',
+              borderRadius: 12,
+              padding: '14px 20px',
+              marginBottom: 28,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 12,
+            }}>
+              <span style={{ fontSize: 20 }}>⚠️</span>
+              <p style={{ fontSize: 14, color: '#9a3412' }}>
+                That verification link was invalid or already used.{' '}
+                <span style={{ fontWeight: 600 }}>Check your inbox for a newer link, or use the resend button below.</span>
+              </p>
+            </div>
+          )}
 
           {showWelcome && (
             <div style={{

@@ -12,7 +12,6 @@ export default function SignupPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const [done, setDone] = useState(false)
   const router = useRouter()
 
   const handleSignup = async (e: React.FormEvent) => {
@@ -26,66 +25,31 @@ export default function SignupPage() {
       return
     }
 
-    const supabase = createClient()
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: `${window.location.origin}/api/auth/callback`,
-      },
+    // Server-side signup: creates account + sends verification email
+    const res = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
     })
 
-    if (error) {
-      setError(error.message)
+    const json = await res.json()
+    if (!res.ok) {
+      setError(json.error ?? 'Something went wrong. Please try again.')
       setLoading(false)
       return
     }
 
-    // If Supabase returned a session, the user is confirmed immediately — go straight to dashboard.
-    // If no session, email confirmation is required — show the "check your inbox" screen.
-    if (data.session) {
-      router.push('/dashboard')
-      router.refresh()
-    } else {
-      setDone(true)
+    // Account created — sign in immediately and go to dashboard
+    const supabase = createClient()
+    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password })
+    if (signInError) {
+      setError('Account created but sign-in failed. Please go to the login page.')
+      setLoading(false)
+      return
     }
-  }
 
-  if (done) {
-    return (
-      <main style={{
-        minHeight: '100vh',
-        background: 'var(--bg)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 24,
-      }}>
-        <div style={{ width: '100%', maxWidth: 440, textAlign: 'center' }}>
-          <div style={{ fontSize: 52, marginBottom: 20 }}>📬</div>
-          <h1 style={{
-            fontFamily: 'var(--font-dm-serif), Georgia, serif',
-            fontSize: 28,
-            marginBottom: 12,
-          }}>
-            Check your inbox
-          </h1>
-          <p style={{ fontSize: 16, color: 'var(--ink-mid)', lineHeight: 1.6, marginBottom: 24 }}>
-            We sent a confirmation link to <strong>{email}</strong>.
-            Click it to activate your account and get started.
-          </p>
-          <p style={{ fontSize: 14, color: 'var(--ink-lt)' }}>
-            Didn&apos;t get it? Check your spam folder, or{' '}
-            <button
-              onClick={() => setDone(false)}
-              style={{ background: 'none', border: 'none', color: 'var(--accent)', cursor: 'pointer', fontSize: 14, fontWeight: 600 }}
-            >
-              try again
-            </button>.
-          </p>
-        </div>
-      </main>
-    )
+    router.push('/dashboard')
+    router.refresh()
   }
 
   return (
