@@ -115,7 +115,7 @@ Access is gated by the `purchases` table — a single purchase unlocks **all** c
 | Course 1 | AI Foundations | 1–6 | `ai-foundations` |
 | Course 2 | AI at Work | 7–12 | `ai-at-work` |
 
-Module 0 is the free starter course — not in the `course_progress` table (schema constraint: `module_id >= 1`).
+Module 0 is the free starter course — progress is tracked in `course_progress` like all other modules (schema constraint: `module_id >= 0`).
 
 ### Adding a new course
 1. Add course metadata to `lib/course-data/courses.ts` (dashboard + course pages pick it up automatically)
@@ -284,4 +284,4 @@ See `.env.local.example` for the full list. Summary:
 - **CoursePlayer** uses `startTransition` for lesson-completion state updates and `useMemo` for the sidebar — keep these optimizations in place when editing that component.
 - **CoursePlayer** accepts a `courseSlug` prop (passed from the server page) — the "← Course Home" sidebar button links to `/courses/[courseSlug]`. The top-bar logo links to `/dashboard`.
 - `lib/course-data/courses.ts` is the single source of truth for course-level metadata — dashboard cards and course overview pages both read from it. Always update this file when adding or publishing a new module.
-- Course progress fetch in `app/(protected)/course/[moduleId]/page.tsx` uses `moduleNum >= 1` — covers all current and future paid modules. Module 0 (starter) skips the DB entirely.
+- Course progress fetch in `app/(protected)/course/[moduleId]/page.tsx` runs for all modules including module 0 (starter). The DB constraint is `module_id >= 0`.

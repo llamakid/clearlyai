@@ -85,9 +85,9 @@ export default function CoursePlayer({ course, courseSlug, userId, initialProgre
   }, [storageKey])
 
   // Upsert progress to DB — fire and forget, never blocks UI.
-  // Skipped for module 0 (not in schema) and unauthenticated users.
+  // Skipped for unauthenticated users.
   const saveProgressToDB = useCallback((lesson: number, slide: number, moduleCompleted: boolean) => {
-    if (!userId || course.moduleId === 0) return
+    if (!userId) return
     createClient()
       .from('course_progress')
       .upsert(

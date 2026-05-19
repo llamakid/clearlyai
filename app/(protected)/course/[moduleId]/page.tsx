@@ -101,18 +101,14 @@ export default async function CoursePage({
     }
   }
 
-  // Fetch saved progress (modules 1-6 only — module 0 not in schema constraint)
+  // Fetch saved progress for all modules including module 0
   const moduleNum = parseInt(moduleId)
-  let initialProgress: { current_lesson: number; current_slide: number; completed: boolean } | null = null
-  if (moduleNum >= 1) {
-    const { data } = await supabase
-      .from('course_progress')
-      .select('current_lesson, current_slide, completed')
-      .eq('user_id', user!.id)
-      .eq('module_id', moduleNum)
-      .maybeSingle()
-    initialProgress = data
-  }
+  const { data: initialProgress } = await supabase
+    .from('course_progress')
+    .select('current_lesson, current_slide, completed')
+    .eq('user_id', user!.id)
+    .eq('module_id', moduleNum)
+    .maybeSingle()
 
   const courseSlug = moduleNum === 0 ? '' : (COURSES_META.find(c => c.modules.some(m => m.id === moduleNum))?.slug ?? 'ai-foundations')
 
