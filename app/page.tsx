@@ -245,7 +245,7 @@ export default function HomePage() {
                 letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: 16,
                 color: 'white',
               }}>
-                Five courses. <em style={{ color: 'var(--accent-lt)', fontStyle: 'italic' }}>One subscription.</em>
+                All courses. <em style={{ color: 'var(--accent-lt)', fontStyle: 'italic' }}>One subscription.</em>
               </h2>
               <p style={{ fontSize: 17, color: 'rgba(255,255,255,0.65)', lineHeight: 1.65, maxWidth: 540 }}>
                 Every course is built for non-technical adults — plain English, practical skills, real results. Pick your starting point or take them all.
@@ -288,7 +288,7 @@ export default function HomePage() {
                 textDecoration: 'none',
                 display: 'flex', alignItems: 'center', gap: 6,
               }}>
-                See all five courses →
+                See all courses →
               </a>
             </div>
           </div>
@@ -442,7 +442,7 @@ export default function HomePage() {
               display: 'inline-flex', flexDirection: 'column', gap: 10, textAlign: 'left',
             }}>
               {[
-                'All 4 courses — 24 modules included',
+                'All courses — every module included',
                 'New courses as they launch',
                 'Go at your own pace, on any device',
               ].map((item) => (
