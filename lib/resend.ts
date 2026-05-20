@@ -13,5 +13,6 @@ export function getResend(): Resend {
 }
 
 export function fromAddress(): string {
-  return process.env.RESEND_FROM_EMAIL ?? 'nate@learnaiclearly.com'
+  const addr = process.env.RESEND_FROM_EMAIL ?? 'nate@learnaiclearly.com'
+  return `Clearly, AI <${addr}>`
 }

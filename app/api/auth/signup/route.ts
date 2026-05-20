@@ -43,14 +43,19 @@ export async function POST(request: Request) {
 
   // Fire-and-forget — never block account creation on email delivery
   try {
-    await getResend().emails.send({
+    const { data: emailData, error: emailError } = await getResend().emails.send({
       from: fromAddress(),
       to: email,
       subject: 'Verify your Clearly, AI email',
       html: verificationEmailHtml(verifyUrl),
     })
+    if (emailError) {
+      console.error('[signup] Resend error:', JSON.stringify(emailError))
+    } else {
+      console.log('[signup] Verification email sent, id:', emailData?.id)
+    }
   } catch (e) {
-    console.error('Verification email failed to send:', e)
+    console.error('[signup] Verification email threw:', e)
   }
 
   return NextResponse.json({ ok: true })
