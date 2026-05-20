@@ -46,17 +46,26 @@ app/
   globals.css                           Global styles + CSS custom properties
   icon.tsx / apple-icon.tsx             Favicon + Apple touch icon (generated)
   opengraph-image.tsx                   OG image (generated)
+  curriculum/page.tsx                   Public curriculum overview page (all 5 courses)
+  faq/page.tsx                          Public FAQ page
   (auth)/login/page.tsx                 Login form
   (auth)/signup/page.tsx                Signup form
+  verify-required/page.tsx              Post-signup "check your email" gate
   (protected)/layout.tsx                Auth gate (checks Supabase session server-side)
   (protected)/dashboard/page.tsx        Course dashboard — shows course cards
   (protected)/courses/[courseSlug]/     Course overview page (hero + module grid)
   (protected)/course/[moduleId]/        Individual module player
   api/auth/callback/route.ts            Supabase email confirmation callback
+  api/auth/signup/route.ts              Handles signup + sends confirmation email
+  api/auth/signout/route.ts             Signs user out and clears session
+  api/auth/verify-email/route.ts        Verifies email token from confirmation link
+  api/auth/resend-verification/route.ts Resends confirmation email on request
   api/stripe/checkout/route.ts          Creates Stripe Checkout session
+  api/stripe/portal/route.ts            Creates Stripe Customer Portal session (manage subscription)
   api/stripe/webhook/route.ts           Receives payment → writes to purchases table
   api/subscribe/route.ts                Homepage email capture → subscribers table
   api/feedback/route.ts                 End-of-module feedback → feedback table + Resend notify
+  api/download/starter-kit/route.ts     Serves the downloadable starter kit PDF/file
   blog/page.tsx                         Blog index
   blog/[slug]/page.tsx                  MDX blog post
   pricing/page.tsx                      Pricing page
@@ -69,6 +78,8 @@ components/
                                         components that already have the user)
   Footer.tsx                            Site-wide footer
   EmailSignup.tsx                       Email capture form — lazy-loaded on home page via dynamic()
+  EmailVerificationBanner.tsx           Banner shown to unverified users prompting email confirmation
+  ManageSubscriptionButton.tsx          Client component — POSTs to /api/stripe/portal for sub management
   CoursePlayer.tsx                      Main course player (lessons + slides + nav).
                                         Accepts `userId` + `initialProgress` props from server.
                                         Reads initial position from DB; writes back on lesson completion.
@@ -92,9 +103,12 @@ lib/
   course-data/starter.ts                Free starter course (module 0 — not gated, not in DB)
   course-data/module-1.ts through 6.ts  Course 1 "AI Foundations" content (moduleIds 1–6)
   course-data/c2-module-1.ts through 6.ts  Course 2 "AI at Work" content (moduleIds 7–12)
+  course-data/c3-module-1.ts through 6.ts  Course 3 "AI for Your Business" content (moduleIds 13–18)
+  course-data/c4-module-1.ts through 6.ts  Course 4 "AI for a Richer Retirement" content (moduleIds 19–24)
+  course-data/c5-module-1.ts through 6.ts  Course 5 "Better Prompts, Better Results" content (moduleIds 25–30)
 
 content/blog/
-  *.mdx                                 Blog posts — add new ones here (8 posts live)
+  *.mdx                                 Blog posts — add new ones here (26+ posts live)
 
 middleware.ts                           Protects /dashboard, /courses/*, /course/* behind auth
 supabase-schema.sql                     Full schema — run in Supabase SQL Editor
@@ -106,7 +120,7 @@ SETUP.md                                Step-by-step setup guide (Supabase, Stri
 
 ## Course Architecture
 
-### Two courses, one subscription
+### Five courses, one subscription
 Access is gated by the `purchases` table — a single purchase unlocks **all** courses. Do not build per-course gating.
 
 ### Course numbering
@@ -114,19 +128,22 @@ Access is gated by the `purchases` table — a single purchase unlocks **all** c
 |---|---|---|---|
 | Course 1 | AI Foundations | 1–6 | `ai-foundations` |
 | Course 2 | AI at Work | 7–12 | `ai-at-work` |
+| Course 3 | AI for Your Business | 13–18 | `ai-for-your-business` |
+| Course 4 | AI for a Richer Retirement | 19–24 | `ai-richer-retirement` |
+| Course 5 | Better Prompts, Better Results | 25–30 | `better-prompts` |
 
 Module 0 is the free starter course — progress is tracked in `course_progress` like all other modules (schema constraint: `module_id >= 0`).
 
 ### Adding a new course
 1. Add course metadata to `lib/course-data/courses.ts` (dashboard + course pages pick it up automatically)
-2. Create content files in `lib/course-data/` (e.g. `c3-module-1.ts`) with the next available moduleId
+2. Create content files in `lib/course-data/` (e.g. `c6-module-1.ts`) with the next available moduleId block (next block starts at 31)
 3. Add each module to the `COURSES` map in `app/(protected)/course/[moduleId]/page.tsx`
 
 ### Adding a new module to an existing course
 1. Create the content file with the next moduleId
 2. Add it to `COURSES` in the course page
 3. Update `available: false → true` in `lib/course-data/courses.ts` when ready to publish
-4. No DB migration needed (constraint is `module_id >= 1`)
+4. No DB migration needed (constraint is `module_id >= 0`)
 
 ### Course progress
 Progress is stored in `course_progress` (Supabase) and mirrored to `localStorage`.
@@ -223,45 +240,53 @@ See `.env.local.example` for the full list. Summary:
 - ✅ Business plan written
 - ✅ Brand system locked (Clear Sky + DM Serif + Inter)
 - ✅ Next.js app scaffolded with full stack (auth, payments, blog, course player)
-- ✅ Course 1 "AI Foundations" — all 6 modules built (`module-1.ts` through `module-6.ts`)
-- ✅ Course 2 "AI at Work" — all 6 modules built (`c2-module-1.ts` through `c2-module-6.ts`)
-- ✅ Dashboard redesigned — course cards link to course overview pages
+- ✅ All 5 courses fully built — 30 modules, 150 lessons total
+  - Course 1: AI Foundations (moduleIds 1–6)
+  - Course 2: AI at Work (moduleIds 7–12)
+  - Course 3: AI for Your Business (moduleIds 13–18)
+  - Course 4: AI for a Richer Retirement (moduleIds 19–24)
+  - Course 5: Better Prompts, Better Results (moduleIds 25–30)
+- ✅ Dashboard — course cards link to course overview pages
 - ✅ Course overview pages live at `/courses/[courseSlug]` (hero + module grid)
+- ✅ Public curriculum page at `/curriculum` (all 5 courses visible without login)
+- ✅ FAQ page at `/faq`
 - ✅ Course progress wired to Supabase DB (reads on load, writes on lesson completion)
 - ✅ Supabase project created, schema run, auth verified
+- ✅ Email verification flow — confirm on signup, `verify-required` gate, resend endpoint, banner for unverified users
 - ✅ Stripe products created — 3 prices (monthly $15, yearly $120, forever $299)
 - ✅ Stripe checkout + webhook wired up (subscriptions + one-time payment handled)
+- ✅ Stripe Customer Portal wired up (`/api/stripe/portal` → `ManageSubscriptionButton`)
 - ✅ Resend account set up, domain verified, email confirmation re-enabled in Supabase
 - ✅ Email capture wired up (homepage → `/api/subscribe` → `subscribers` table)
 - ✅ Feedback forms wired up (end of each module → `/api/feedback` → `feedback` table + Resend notify)
-- ✅ Blog live with 8 posts (MDX in `content/blog/`)
+- ✅ Downloadable starter kit (`/api/download/starter-kit`)
+- ✅ Blog live with 26+ posts (MDX in `content/blog/`)
 - ✅ Favicon, OG image, Apple icon generated
 - ✅ Domain purchased and connected: learnaiclearly.com
 - ✅ Deployed to Vercel, all env vars set
 - ✅ Vercel Analytics + Speed Insights installed
 - ✅ Smoke test completed — full signup → checkout → dashboard → course → module → feedback flow verified
-- ✅ Supabase `module_id` constraint expanded to support Course 2 (moduleIds 7–12)
 
 ### SEO / Discovery
 - ✅ **Site is live** at learnaiclearly.com
 - ✅ Google Search Console verified
 - ✅ Bing Webmaster Tools verified
-- ⏳ Perplexity — waiting for GSC and Bing to finish indexing before submitting
+- ⏳ Perplexity — submit once GSC and Bing show solid indexing progress
 
 ### Growth
 - ⏳ First paid users not yet acquired
 - ⏳ Email list not yet actively marketed to
-- ⏳ Course loading performance — module pages have noticeable load time; investigate the Supabase query waterfall (purchases check + progress fetch are sequential), bundle size from importing all 12 course data files, and whether React Suspense / streaming can help
+- ⏳ Course loading performance — module pages have noticeable load time; investigate the Supabase query waterfall (purchases check + progress fetch are sequential), bundle size from importing all 30 course data files, and whether React Suspense / streaming can help
 
 ---
 
 ## Immediate Priorities (pick up here)
 
 1. **Get first paid users** — direct outreach, social posts, LinkedIn, community posts targeting the three audiences (working professionals 35–54, small business owners 38–58, curious learners 55–75)
-2. **Build email list** — promote the free starter course as a lead magnet; drive signups to the subscriber list
+2. **Build email list** — promote the free starter course and downloadable starter kit as lead magnets; drive signups to the subscriber list
 3. **Content marketing** — keep publishing blog posts (MDX in `content/blog/`); target long-tail search terms non-technical adults use when looking up AI
-4. **Submit to Perplexity** — once GSC and Bing show indexing progress
-5. **Improve course loading performance** — Supabase query waterfall (purchases check + progress fetch are sequential), bundle size, React Suspense / streaming
+4. **Submit to Perplexity** — once GSC and Bing show solid indexing progress
+5. **Improve course loading performance** — Supabase query waterfall (purchases check + progress fetch are sequential), bundle size from 30 course files, React Suspense / streaming
 
 ---
 
@@ -283,5 +308,8 @@ See `.env.local.example` for the full list. Summary:
 - **Home page** (`app/page.tsx`) must stay a non-async server component so it stays `○` (Static) and is served from Vercel's CDN edge. Do not add `supabase.auth.getUser()` to it.
 - **CoursePlayer** uses `startTransition` for lesson-completion state updates and `useMemo` for the sidebar — keep these optimizations in place when editing that component.
 - **CoursePlayer** accepts a `courseSlug` prop (passed from the server page) — the "← Course Home" sidebar button links to `/courses/[courseSlug]`. The top-bar logo links to `/dashboard`.
-- `lib/course-data/courses.ts` is the single source of truth for course-level metadata — dashboard cards and course overview pages both read from it. Always update this file when adding or publishing a new module.
+- `lib/course-data/courses.ts` is the single source of truth for course-level metadata — dashboard, curriculum page, and course overview pages all read from it. Always update this file when adding or publishing a new module.
 - Course progress fetch in `app/(protected)/course/[moduleId]/page.tsx` runs for all modules including module 0 (starter). The DB constraint is `module_id >= 0`.
+- There are now 5 courses (30 modules, moduleIds 1–30). Next available moduleId block starts at 31.
+- **ManageSubscriptionButton** is a client component that POSTs to `/api/stripe/portal` — only render it for users who have an active subscription.
+- **EmailVerificationBanner** shows for signed-in users who haven't confirmed their email yet. Don't remove it from layouts that render for unverified users.
