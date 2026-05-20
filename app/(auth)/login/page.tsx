@@ -27,7 +27,14 @@ function LoginForm() {
     const { error } = await supabase.auth.signInWithPassword({ email, password })
 
     if (error) {
-      setError(error.message)
+      const msg = error.message.toLowerCase()
+      if (msg.includes('invalid login') || msg.includes('invalid credentials')) {
+        setError('Incorrect email or password. Please try again.')
+      } else if (msg.includes('email not confirmed')) {
+        setError("Your email isn't verified yet. Check your inbox for a verification link, or sign up again if you never received one.")
+      } else {
+        setError(error.message)
+      }
       setLoading(false)
       return
     }
@@ -70,12 +77,17 @@ function LoginForm() {
         {loading ? 'Signing in…' : 'Sign in'}
       </button>
 
-      <p style={{ textAlign: 'center', fontSize: 14, color: 'var(--ink-mid)' }}>
-        Don&apos;t have an account?{' '}
-        <Link href="/signup" style={{ color: 'var(--accent)', fontWeight: 600 }}>
-          Create one
+      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 14, color: 'var(--ink-mid)' }}>
+        <span>
+          Don&apos;t have an account?{' '}
+          <Link href="/signup" style={{ color: 'var(--accent)', fontWeight: 600 }}>
+            Create one
+          </Link>
+        </span>
+        <Link href="/forgot-password" style={{ color: 'var(--accent)' }}>
+          Forgot password?
         </Link>
-      </p>
+      </div>
     </form>
   )
 }

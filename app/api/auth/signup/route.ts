@@ -24,7 +24,7 @@ export async function POST(request: Request) {
   const { data, error } = await admin.auth.admin.createUser({
     email,
     password,
-    email_confirm: false, // allows immediate sign-in while we track verification ourselves
+    email_confirm: true, // mark as confirmed so signInWithPassword works immediately; app tracks verification separately
     app_metadata: {
       email_verified: false,
       email_verification_token: verificationToken,
