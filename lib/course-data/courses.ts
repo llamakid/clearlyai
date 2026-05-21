@@ -126,6 +126,32 @@ export const COURSES_META: CourseMeta[] = [
     ],
   },
   {
+    slug: 'ai-career-growth',
+    title: 'AI for Career Growth',
+    subtitle: 'Advance faster. Negotiate better. Be undeniable.',
+    description:
+      'Built for ambitious working professionals who want to use AI not just to save time, but to actually get ahead. Promotions, professional brand, negotiation, learning, and long-game career strategy — all powered by AI.',
+    icon: '🚀',
+    tag: 'Professional',
+    totalLessons: 30,
+    estimatedTime: '~3 hours',
+    whatYoullLearn: [
+      'How AI-fluent professionals are advancing faster right now',
+      'How to document your wins and position yourself for promotion',
+      'How to build a LinkedIn presence that works while you sleep',
+      'How to research your market value and negotiate with confidence',
+      'How to learn faster, pivot smarter, and plan your long-game career strategy',
+    ],
+    modules: [
+      { id: 31, num: 1, title: 'Your Career, Your Advantage', desc: 'Understand why AI fluency is career-defining right now — and get your first career win today.', lessons: 5, available: true },
+      { id: 32, num: 2, title: 'Position Yourself for the Promotion', desc: 'Document your wins, write a self-review that lands, and walk into the promotion conversation prepared.', lessons: 5, available: true },
+      { id: 33, num: 3, title: 'Your Professional Brand', desc: 'Sharpen your LinkedIn, find your voice, and show up consistently — without spending hours on content.', lessons: 5, available: true },
+      { id: 34, num: 4, title: "Negotiate Like You've Done Your Homework", desc: 'Know your market value, script the conversation, and handle pushback without folding.', lessons: 5, available: true },
+      { id: 35, num: 5, title: 'Grow Faster Than Your Job Description', desc: 'Close skill gaps faster, stay ahead of your field, and build a learning system that compounds.', lessons: 5, available: true },
+      { id: 36, num: 6, title: "The Career Professional's AI Playbook", desc: 'Job searching, networking, career pivots, and your long-game strategy — all in one playbook.', lessons: 5, available: true },
+    ],
+  },
+  {
     slug: 'ai-richer-retirement',
     title: 'AI for a Richer Retirement',
     subtitle: 'More time. More connection. More confidence.',

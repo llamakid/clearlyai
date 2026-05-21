@@ -32,6 +32,12 @@ import c5module3 from '@/lib/course-data/c5-module-3'
 import c5module4 from '@/lib/course-data/c5-module-4'
 import c5module5 from '@/lib/course-data/c5-module-5'
 import c5module6 from '@/lib/course-data/c5-module-6'
+import c6module1 from '@/lib/course-data/c6-module-1'
+import c6module2 from '@/lib/course-data/c6-module-2'
+import c6module3 from '@/lib/course-data/c6-module-3'
+import c6module4 from '@/lib/course-data/c6-module-4'
+import c6module5 from '@/lib/course-data/c6-module-5'
+import c6module6 from '@/lib/course-data/c6-module-6'
 import type { CourseData } from '@/lib/course-data/types'
 import { COURSES_META } from '@/lib/course-data/courses'
 
@@ -67,6 +73,12 @@ const COURSES: Record<string, CourseData> = {
   '28': c5module4,
   '29': c5module5,
   '30': c5module6,
+  '31': c6module1,
+  '32': c6module2,
+  '33': c6module3,
+  '34': c6module4,
+  '35': c6module5,
+  '36': c6module6,
 }
 
 export default async function CoursePage({

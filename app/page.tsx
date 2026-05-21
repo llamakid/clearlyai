@@ -259,6 +259,7 @@ export default function HomePage() {
                 { icon: '🏪', title: 'AI for Your Business', tag: 'Small Business' },
                 { icon: '🎯', title: 'Better Prompts, Better Results', tag: 'Universal' },
                 { icon: '🌅', title: 'AI for a Richer Retirement', tag: 'Retirement' },
+                { icon: '🚀', title: 'AI for Career Growth', tag: 'Professional' },
               ].map(({ icon, title, tag }) => (
                 <div key={title} style={{
                   background: 'rgba(255,255,255,0.05)',
