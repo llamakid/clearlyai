@@ -176,6 +176,68 @@ export default function PricingPage() {
             </p>
           </div>
 
+          {/* Free tier */}
+          <div className="card" style={{
+            padding: '28px 32px',
+            marginBottom: 16,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: 24,
+            borderLeft: '4px solid var(--accent)',
+          }}>
+            <div style={{ flex: '1 1 200px' }}>
+              <div style={{
+                display: 'inline-block',
+                background: 'var(--accent-lt)',
+                color: 'var(--accent-dk)',
+                fontSize: 11, fontWeight: 700,
+                letterSpacing: '0.07em', textTransform: 'uppercase',
+                padding: '4px 12px', borderRadius: 999,
+                marginBottom: 10,
+              }}>
+                Free
+              </div>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 4 }}>
+                <span style={{
+                  fontFamily: 'var(--font-dm-serif), Georgia, serif',
+                  fontSize: 40, color: 'var(--ink)', lineHeight: 1,
+                }}>$0</span>
+                <span style={{ fontSize: 14, color: 'var(--ink-lt)' }}>forever</span>
+              </div>
+              <p style={{ fontSize: 14, color: 'var(--ink-mid)', lineHeight: 1.5 }}>
+                Start with the free AI starter course — no account required, no credit card, no catch.
+              </p>
+            </div>
+
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 8, flex: '1 1 200px' }}>
+              {[
+                '10 practical AI tasks with ready-to-use prompts',
+                '2 short lessons, plain English',
+                'Downloadable AI Starter Kit PDF',
+              ].map(item => (
+                <li key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 14, color: 'var(--ink-mid)' }}>
+                  <span style={{ color: 'var(--accent)', fontWeight: 700, flexShrink: 0, marginTop: 1 }}>✓</span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+
+            <div style={{ flex: '0 0 auto', textAlign: 'center' }}>
+              <a href="/signup" className="btn btn-ghost" style={{ fontSize: 15, padding: '13px 28px', display: 'block', whiteSpace: 'nowrap' }}>
+                Start the free course →
+              </a>
+              <p style={{ marginTop: 8, fontSize: 12, color: 'var(--ink-lt)' }}>No credit card needed</p>
+            </div>
+          </div>
+
+          <div style={{ textAlign: 'center', margin: '8px 0 24px' }}>
+            <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--ink-lt)' }}>
+              Or unlock everything with a plan
+            </span>
+          </div>
+
           {/* Pricing cards */}
           <div style={{
             display: 'grid',

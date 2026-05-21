@@ -62,7 +62,7 @@ export default function SignupPage() {
       padding: 24,
     }}>
       <div style={{ width: '100%', maxWidth: 440 }}>
-        <div style={{ textAlign: 'center', marginBottom: 36 }}>
+        <div style={{ textAlign: 'center', marginBottom: 24 }}>
           <Link href="/" style={{
             fontFamily: 'var(--font-dm-serif), Georgia, serif',
             fontSize: 26,
@@ -79,13 +79,33 @@ export default function SignupPage() {
           }}>
             Create your account
           </h1>
-          <p style={{ fontSize: 15, color: 'var(--ink-mid)', marginBottom: 4 }}>
-            No credit card required — just your email.
-          </p>
           <p style={{ fontSize: 14, color: 'var(--ink-lt)' }}>
             Already have one?{' '}
             <Link href="/login" style={{ color: 'var(--accent)', fontWeight: 600 }}>Sign in</Link>
           </p>
+        </div>
+
+        <div style={{
+          background: 'var(--accent-lt)',
+          border: '1px solid var(--accent)',
+          borderRadius: 12,
+          padding: '16px 20px',
+          marginBottom: 20,
+        }}>
+          <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-dk)', marginBottom: 8 }}>
+            You&apos;re one step from your free starter course:
+          </p>
+          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 5 }}>
+            {[
+              '10 practical AI tasks with ready-to-use prompts',
+              '2 short lessons — no tech background needed',
+              'No credit card required, ever',
+            ].map(item => (
+              <li key={item} style={{ fontSize: 13, color: 'var(--accent-dk)', display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span style={{ fontWeight: 700, flexShrink: 0 }}>✓</span> {item}
+              </li>
+            ))}
+          </ul>
         </div>
 
         <div className="card" style={{ padding: 36 }}>
