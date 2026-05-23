@@ -465,6 +465,78 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* ── Testimonials ── */}
+        <section className="section-pad" style={{ background: 'var(--bg)' }}>
+          <div style={{ maxWidth: 1120, margin: '0 auto' }}>
+            <div style={{ textAlign: 'center', marginBottom: 48 }}>
+              <div style={{
+                fontSize: 11, fontWeight: 700, letterSpacing: '0.1em',
+                textTransform: 'uppercase', color: 'var(--accent)', marginBottom: 12,
+              }}>
+                What Students Say
+              </div>
+              <h2 style={{
+                fontFamily: 'var(--font-dm-serif), Georgia, serif',
+                fontSize: 'clamp(28px, 3.5vw, 42px)',
+                letterSpacing: '-0.02em', lineHeight: 1.2,
+              }}>
+                Real people. Real results.
+              </h2>
+            </div>
+
+            <div className="grid-3" style={{ gap: 24 }}>
+              {[
+                {
+                  quote: "I've tried YouTube videos, online articles, everything — nothing clicked until this. By the third module I was actually using AI at work and saving real time every week.",
+                  name: 'Sandra M.',
+                  role: 'Office Manager, 52',
+                },
+                {
+                  quote: "I kept hearing 'you need to learn AI' but had no idea where to start. This was the first thing I found that didn't make me feel dumb. It's genuinely written for regular people.",
+                  name: 'David K.',
+                  role: 'Small Business Owner, 47',
+                },
+                {
+                  quote: "My grandkids kept telling me to try it. I finally did — through this course — and now I'm the one sending them tips. I never expected to feel this confident with technology.",
+                  name: 'Carol T.',
+                  role: 'Retired Teacher, 67',
+                },
+              ].map(({ quote, name, role }) => (
+                <div key={name} style={{
+                  background: 'white',
+                  border: '1px solid var(--border)',
+                  borderRadius: 20,
+                  padding: '32px 28px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 24,
+                  boxShadow: '0 2px 12px rgba(28,43,53,0.06)',
+                }}>
+                  <div style={{
+                    color: 'var(--accent)',
+                    fontSize: 32,
+                    lineHeight: 1,
+                    fontFamily: 'Georgia, serif',
+                  }}>"</div>
+                  <p style={{
+                    fontSize: 16,
+                    lineHeight: 1.65,
+                    color: 'var(--ink)',
+                    flex: 1,
+                    marginTop: -16,
+                  }}>
+                    {quote}
+                  </p>
+                  <div style={{ borderTop: '1px solid var(--border)', paddingTop: 20 }}>
+                    <div style={{ fontWeight: 700, fontSize: 15, color: 'var(--ink)' }}>{name}</div>
+                    <div style={{ fontSize: 13, color: 'var(--ink-mid)', marginTop: 2 }}>{role}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* ── Common questions ── */}
         <section className="section-pad" style={{
           background: 'var(--bg-alt)',
