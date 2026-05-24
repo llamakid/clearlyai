@@ -1,7 +1,7 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   // Dev-only bypass — never runs in production
   if (process.env.NODE_ENV !== 'production' && process.env.SKIP_AUTH === 'true') {
     return NextResponse.next({ request })
@@ -28,8 +28,15 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  // Refresh session — required for Server Components to pick up auth state
-  const { data: { user } } = await supabase.auth.getUser()
+  // Refresh session — required for Server Components to pick up auth state.
+  // Wrapped in try/catch so a Supabase connectivity blip never kills a page load.
+  let user = null
+  try {
+    const { data } = await supabase.auth.getUser()
+    user = data.user
+  } catch {
+    return supabaseResponse
+  }
 
   const { pathname } = request.nextUrl
 
