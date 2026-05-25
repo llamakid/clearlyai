@@ -25,6 +25,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL || 'https://learnaiclearly.com'
   ),
+  icons: {
+    icon: [{ url: '/icon', type: 'image/png', sizes: '32x32' }],
+    shortcut: '/icon',
+    apple: [{ url: '/apple-icon', type: 'image/png', sizes: '180x180' }],
+  },
   openGraph: {
     title: 'Clearly, AI — Learn it. Use it. Own it.',
     description: 'A plain-English AI school for non-technical adults.',
