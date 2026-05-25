@@ -52,8 +52,8 @@ export async function POST(request: Request) {
               Got it — you're on the list.
             </h1>
             <p style="font-size:16px;line-height:1.6;">
-              Thanks for signing up for <strong>Clearly, AI</strong>. I'll be in touch when the course opens —
-              no spam, no fluff, just the good stuff.
+              Thanks for joining the <strong>Clearly, AI</strong> newsletter. We'll be sending practical AI tips
+              straight to your inbox — no jargon, no fluff, just things you can actually use.
             </p>
             <p style="font-size:14px;color:#666;line-height:1.6;">
               — Nate
