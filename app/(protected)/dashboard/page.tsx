@@ -19,13 +19,13 @@ const TRACKS = [
     slugs: ['ai-at-work', 'ai-career-growth'],
   },
   {
-    label: 'For Business Owners',
-    description: 'More output, lower overhead — no tech team needed.',
+    label: 'For Small Business Owners',
+    description: 'More output. Lower overhead. No tech team needed.',
     slugs: ['ai-for-your-business'],
   },
   {
-    label: 'For Retirees',
-    description: 'More time for what matters, powered by AI.',
+    label: 'For Retirement & Beyond',
+    description: 'More time. More connection. More confidence.',
     slugs: ['ai-richer-retirement'],
   },
 ]
@@ -40,7 +40,7 @@ function CourseCard({ course, isLocked }: { course: CourseMeta; isLocked: boolea
         padding: '24px',
         display: 'flex',
         flexDirection: 'column',
-        height: '100%',
+        flex: 1,
         opacity: isLocked ? 0.72 : 1,
         cursor: isLocked ? 'default' : 'pointer',
         boxSizing: 'border-box',
@@ -210,7 +210,7 @@ export default async function DashboardPage({
           </div>
 
           {/* Audience tracks */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 52 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 44 }}>
             {TRACKS.map((track) => {
               const trackCourses = track.slugs
                 .map((s) => coursesBySlug[s])
@@ -236,7 +236,7 @@ export default async function DashboardPage({
 
                   {/* Starter card — full width, only in Start Here */}
                   {track.includeStarter && (
-                    <Link href="/course/0" style={{ textDecoration: 'none', display: 'block', marginBottom: 12 }}>
+                    <Link href="/course/0" style={{ textDecoration: 'none', display: 'block', marginBottom: 16 }}>
                       <div className="card card-hover" style={{
                         padding: '20px 24px',
                         display: 'flex',
@@ -278,19 +278,20 @@ export default async function DashboardPage({
                   {/* Course grid */}
                   <div style={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                    gap: 12,
+                    gridTemplateColumns: 'repeat(2, 1fr)',
+                    gap: 16,
+                    alignItems: 'stretch',
                   }}>
                     {trackCourses.map((course) =>
                       !hasPurchase ? (
-                        <div key={course.slug} style={{ display: 'flex' }}>
+                        <div key={course.slug} style={{ display: 'flex', flexDirection: 'column' }}>
                           <CourseCard course={course} isLocked={true} />
                         </div>
                       ) : (
                         <Link
                           key={course.slug}
                           href={`/courses/${course.slug}`}
-                          style={{ textDecoration: 'none', display: 'flex' }}
+                          style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column' }}
                         >
                           <CourseCard course={course} isLocked={false} />
                         </Link>
