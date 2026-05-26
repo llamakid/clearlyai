@@ -280,6 +280,34 @@ See `.env.local.example` for the full list. Summary:
 
 ---
 
+## Evening Session Todo (pick up here first)
+
+AI Tools launch checklist — work through in order:
+
+1. **Commit the subscribe email copy fix on `main`** — already edited, just needs a commit + push
+2. **Add `tool_usage` table to Supabase** — the rate limiting in both tool API routes references this table; it must exist before going live or the tools will 500. Add via Supabase SQL Editor:
+   ```sql
+   create table tool_usage (
+     id uuid primary key default gen_random_uuid(),
+     user_id uuid references auth.users(id) on delete cascade not null,
+     tool text not null,
+     date date not null default current_date,
+     count integer not null default 1,
+     unique(user_id, tool, date)
+   );
+   alter table tool_usage enable row level security;
+   create policy "Users can read own usage" on tool_usage for select using (auth.uid() = user_id);
+   ```
+3. **Install Anthropic SDK** — `npm install @anthropic-ai/sdk` and add `ANTHROPIC_API_KEY` to `.env.local`
+4. **Wire up Write tool** (`app/api/tools/write/route.ts`) — replace mock with real Claude Haiku call; handle the `refine` parameter (shorter / friendlier / more professional)
+5. **Wire up Explain tool** (`app/api/tools/explain/route.ts`) — replace mock with real Claude Haiku call returning structured JSON (summary, takeaways, meaning, suggestedResponse)
+6. **Test both tools locally** — auth gate, rate limit, real output, copy button, refinement actions
+7. **Merge `feature/ai-tools` into `main`** — the branch has the AI Tools pages, API routes, and Navbar link
+8. **Add `ANTHROPIC_API_KEY` to Vercel** — Environment Variables → add for production
+9. **Push and smoke test live** — verify both tools work end-to-end on learnaiclearly.com
+
+---
+
 ## Immediate Priorities (pick up here)
 
 1. **Get first paid users** — direct outreach, social posts, LinkedIn, community posts targeting the three audiences (working professionals 35–54, small business owners 38–58, curious learners 55–75)
