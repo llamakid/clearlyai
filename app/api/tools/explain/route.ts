@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import Anthropic from '@anthropic-ai/sdk'
+
+const anthropic = new Anthropic()
 
 const DAILY_LIMIT = 5
 
@@ -37,17 +40,19 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Please provide some text to explain.' }, { status: 400 })
   }
 
-  // TODO: swap mock for real Claude call
-  // import Anthropic from '@anthropic-ai/sdk'
-  // const client = new Anthropic()
-  // const message = await client.messages.create({
-  //   model: 'claude-haiku-4-5-20251001',
-  //   max_tokens: 1024,
-  //   messages: [{ role: 'user', content: buildExplainPrompt(text) }],
-  // })
-  // parse JSON from message.content[0].text
+  const message = await anthropic.messages.create({
+    model: 'claude-haiku-4-5-20251001',
+    max_tokens: 1024,
+    messages: [{ role: 'user', content: buildExplainPrompt(text) }],
+  })
 
-  const result = getMockExplainResult(text)
+  const raw = message.content[0].type === 'text' ? message.content[0].text : ''
+  let result: Record<string, unknown>
+  try {
+    result = JSON.parse(raw)
+  } catch {
+    result = { summary: raw, takeaways: [], meaning: '', suggestedResponse: undefined }
+  }
 
   try {
     await supabase.from('tool_usage').upsert(
@@ -59,23 +64,24 @@ export async function POST(req: NextRequest) {
   return NextResponse.json(result)
 }
 
-function getMockExplainResult(text: string) {
-  const wordCount = text.trim().split(/\s+/).length
-  const looksLikeEmail = /hi |hello |dear |regards|sincerely/i.test(text)
+function buildExplainPrompt(text: string): string {
+  return `You are a plain-English explainer. A non-technical adult has pasted the following text and needs help understanding it.
 
-  return {
-    summary:
-      'This is a preview of what the AI will explain. In real mode, it reads what you pasted and gives you a clear, plain-English summary — no jargon, no confusion.\n\n(Preview mode is active. Connect the AI key to get real explanations.)',
-    takeaways: [
-      'The main point of what you pasted would appear here',
-      'Important dates, deadlines, or numbers would be called out',
-      'Anything you need to do or decide would be listed clearly',
-    ],
-    meaning:
-      'In real mode, this section explains what the text means for you personally — whether it needs action, whether it\'s good or bad news, and what you should do next.',
-    suggestedResponse:
-      wordCount < 300 || looksLikeEmail
-        ? `Hi there,\n\nThank you for your message. I'll look into this and get back to you shortly.\n\nBest,\n[Your name]\n\n---\n⚠️ Preview mode — connect the AI key to generate real responses.`
-        : undefined,
-  }
+Analyze the text and respond with ONLY a valid JSON object in this exact shape:
+{
+  "summary": "A 2-3 sentence plain-English summary of what this text is about. No jargon.",
+  "takeaways": ["Key point 1", "Key point 2", "Key point 3"],
+  "meaning": "1-2 sentences on what this means for the reader personally — does it require action? Is it good or bad news? What should they do next?",
+  "suggestedResponse": "A short, friendly reply they could send back — only include this field if the text is a message or email that warrants a reply, otherwise omit the field entirely."
+}
+
+Rules:
+- Use plain, everyday language. Imagine explaining to a 60-year-old who is not tech-savvy.
+- takeaways should be 2-4 bullet points, each a single sentence.
+- Do not include any text outside the JSON object.
+
+Text to explain:
+"""
+${text}
+"""`
 }
