@@ -49,6 +49,7 @@ export default function Navbar({ initialUser }: NavbarProps = {}) {
         </Link>
 
         <div className="nav-desktop">
+          <Link href="/tools" style={navLink}>AI Tools</Link>
           <Link href="/pricing" style={navLink}>Pricing</Link>
           <Link href="/blog" style={navLink}>Blog</Link>
           {user ? (
@@ -84,6 +85,7 @@ export default function Navbar({ initialUser }: NavbarProps = {}) {
 
       {menuOpen && (
         <div className="nav-mobile-menu">
+          <Link href="/tools" className="nav-mobile-link" onClick={close}>AI Tools</Link>
           <Link href="/pricing" className="nav-mobile-link" onClick={close}>Pricing</Link>
           <Link href="/blog" className="nav-mobile-link" onClick={close}>Blog</Link>
           {user ? (

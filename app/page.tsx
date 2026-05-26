@@ -229,6 +229,85 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* ── AI Tools ── */}
+        <section className="section-pad" style={{
+          background: 'var(--bg-alt)',
+          borderTop: '1px solid var(--border)',
+          borderBottom: '1px solid var(--border)',
+        }}>
+          <div style={{ maxWidth: 1120, margin: '0 auto' }}>
+            <div style={{ marginBottom: 48 }}>
+              <div style={{
+                fontSize: 11, fontWeight: 700, letterSpacing: '0.1em',
+                textTransform: 'uppercase', color: 'var(--accent)', marginBottom: 12,
+              }}>
+                Free AI Tools
+              </div>
+              <h2 style={{
+                fontFamily: 'var(--font-dm-serif), Georgia, serif',
+                fontSize: 'clamp(28px, 3.5vw, 42px)',
+                letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: 16,
+              }}>
+                Use AI right now. <em style={{ color: 'var(--accent)', fontStyle: 'italic' }}>No prompts needed.</em>
+              </h2>
+              <p style={{ fontSize: 17, color: 'var(--ink-mid)', lineHeight: 1.65, maxWidth: 540 }}>
+                Two simple tools that do the work for you — just describe what you need and AI handles the rest. Free with any account.
+              </p>
+            </div>
+
+            <div className="grid-2" style={{ gap: 20, maxWidth: 800 }}>
+              {[
+                {
+                  href: '/tools/write',
+                  icon: '✍️',
+                  title: 'Write This For Me',
+                  desc: 'Turn your ideas into polished writing — emails, social posts, or text messages. No blank page, no second-guessing.',
+                  examples: ['Follow-up email after a meeting', 'LinkedIn announcement', 'Thank-you note'],
+                },
+                {
+                  href: '/tools/explain',
+                  icon: '🔍',
+                  title: 'Explain This To Me',
+                  desc: 'Paste anything confusing and get a clear, plain-English breakdown — what it means, what matters, what to do next.',
+                  examples: ['Confusing contract clause', 'Medical insurance letter', 'Technical job listing'],
+                },
+              ].map(tool => (
+                <a key={tool.href} href={tool.href} style={{ textDecoration: 'none' }}>
+                  <div className="card card-hover" style={{
+                    padding: '32px 28px',
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 14,
+                  }}>
+                    <span style={{ fontSize: 36, lineHeight: 1 }}>{tool.icon}</span>
+                    <div style={{ fontFamily: 'var(--font-dm-serif), Georgia, serif', fontSize: 22, color: 'var(--ink)', lineHeight: 1.2 }}>
+                      {tool.title}
+                    </div>
+                    <p style={{ fontSize: 15, color: 'var(--ink-mid)', lineHeight: 1.65, flexGrow: 1 }}>
+                      {tool.desc}
+                    </p>
+                    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                      {tool.examples.map(ex => (
+                        <span key={ex} style={{
+                          fontSize: 12, fontWeight: 600,
+                          background: 'var(--accent-lt)', color: 'var(--accent-dk)',
+                          padding: '3px 10px', borderRadius: 20,
+                        }}>
+                          {ex}
+                        </span>
+                      ))}
+                    </div>
+                    <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--accent)' }}>
+                      Try it free →
+                    </span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* ── Curriculum teaser ── */}
         <section id="curriculum" className="section-pad" style={{ background: 'var(--ink)' }}>
           <div style={{ maxWidth: 1120, margin: '0 auto' }}>
