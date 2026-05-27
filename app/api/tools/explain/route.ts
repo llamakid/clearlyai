@@ -43,7 +43,14 @@ export async function POST(req: NextRequest) {
   const message = await anthropic.messages.create({
     model: 'claude-haiku-4-5-20251001',
     max_tokens: 1024,
-    messages: [{ role: 'user', content: buildExplainPrompt(text) }],
+    system: [
+      {
+        type: 'text',
+        text: EXPLAIN_SYSTEM_PROMPT,
+        cache_control: { type: 'ephemeral' },
+      },
+    ],
+    messages: [{ role: 'user', content: `Text to explain:\n"""\n${text}\n"""` }],
   })
 
   const raw = message.content[0].type === 'text' ? message.content[0].text : ''
@@ -64,8 +71,7 @@ export async function POST(req: NextRequest) {
   return NextResponse.json(result)
 }
 
-function buildExplainPrompt(text: string): string {
-  return `You are a plain-English explainer. A non-technical adult has pasted the following text and needs help understanding it.
+const EXPLAIN_SYSTEM_PROMPT = `You are a plain-English explainer. A non-technical adult has pasted text and needs help understanding it.
 
 Analyze the text and respond with ONLY a valid JSON object in this exact shape:
 {
@@ -78,10 +84,4 @@ Analyze the text and respond with ONLY a valid JSON object in this exact shape:
 Rules:
 - Use plain, everyday language. Imagine explaining to a 60-year-old who is not tech-savvy.
 - takeaways should be 2-4 bullet points, each a single sentence.
-- Do not include any text outside the JSON object.
-
-Text to explain:
-"""
-${text}
-"""`
-}
+- Do not include any text outside the JSON object.`

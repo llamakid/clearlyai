@@ -43,6 +43,13 @@ export async function POST(req: NextRequest) {
   const message = await anthropic.messages.create({
     model: 'claude-haiku-4-5-20251001',
     max_tokens: 1024,
+    system: [
+      {
+        type: 'text',
+        text: WRITE_SYSTEM_PROMPT,
+        cache_control: { type: 'ephemeral' },
+      },
+    ],
     messages: [{ role: 'user', content: buildWritePrompt(type, about, forWho, tone, refine) }],
   })
   const result = message.content[0].type === 'text' ? message.content[0].text : ''
@@ -56,6 +63,8 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({ result })
 }
+
+const WRITE_SYSTEM_PROMPT = `You are a professional writer helping non-technical adults write clear, natural-sounding content. Write in plain, warm language — never salesy or overly formal. Return only the requested content, no explanations or preamble.`
 
 function buildWritePrompt(
   type: string,
