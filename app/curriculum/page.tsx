@@ -32,7 +32,7 @@ export default function CurriculumPage() {
             All courses. <em style={{ color: 'var(--accent-lt)', fontStyle: 'italic' }}>One subscription.</em>
           </h1>
           <p style={{ fontSize: 18, color: 'rgba(255,255,255,0.65)', lineHeight: 1.7, maxWidth: 560, margin: '0 auto 36px' }}>
-            Every course is built for non-technical adults — plain English, practical skills, real results.
+            Every course is built for people without a tech background. Plain English, real skills, no jargon.
             One subscription unlocks all of it.
           </p>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -73,8 +73,7 @@ export default function CurriculumPage() {
                 10 Things You Can Do With AI Today
               </div>
               <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.8)', lineHeight: 1.6, margin: 0 }}>
-                A quick, no-pressure introduction. Ten practical things you can try right now — each one
-                comes with a ready-to-use prompt. No tech background needed.
+                A quick, no-pressure introduction. Ten practical things you can try right now, each with a ready-to-use prompt. No tech background needed.
               </p>
             </div>
             <a href="/course/0" style={{
@@ -103,7 +102,7 @@ export default function CurriculumPage() {
               fontSize: 'clamp(26px, 3vw, 38px)',
               letterSpacing: '-0.02em', color: 'var(--ink)', marginBottom: 12,
             }}>
-              Pick your starting point — or take them all.
+              Pick your starting point, or take them all.
             </h2>
             <p style={{ fontSize: 16, color: 'var(--ink-mid)', maxWidth: 520, margin: '0 auto' }}>
               Each course is self-contained. Start with whatever fits your life right now.
@@ -186,7 +185,7 @@ export default function CurriculumPage() {
             One subscription. <em style={{ color: 'var(--accent-lt)', fontStyle: 'italic' }}>All courses.</em>
           </h2>
           <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.65)', lineHeight: 1.65, marginBottom: 36 }}>
-            Start the free course today — no credit card, no commitment. Upgrade when you're ready.
+            Start the free course today. No credit card, no commitment. Upgrade when you're ready.
           </p>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
             <a href="/signup" className="btn btn-primary" style={{ fontSize: 15, padding: '14px 32px' }}>

@@ -37,7 +37,7 @@ const plans = [
       'Go at your own pace, any device',
       'Progress saved automatically',
     ],
-    buttonLabel: 'Start monthly — $15/mo',
+    buttonLabel: 'Get started, $15/mo',
     highlight: false,
   },
   {
@@ -47,14 +47,14 @@ const plans = [
     period: '/yr',
     subNote: '$10/mo · billed once a year',
     badge: 'Best Value',
-    description: 'The best value for committed learners — one payment, full access all year.',
+    description: 'The best value for people who are serious about this. One payment, full access all year.',
     features: [
       'Everything in Monthly',
       'Save 33% vs. monthly billing',
       'New courses as they launch',
       'Go at your own pace, any device',
     ],
-    buttonLabel: 'Start yearly — $120/yr',
+    buttonLabel: 'Get started, $120/yr',
     highlight: true,
   },
   {
@@ -62,16 +62,16 @@ const plans = [
     label: 'Forever',
     price: '$299',
     period: ' one-time',
-    subNote: 'Founding rate — price goes up after we open to everyone',
+    subNote: 'Founding rate. Price goes up once we open to everyone.',
     badge: 'Founding Member',
-    description: 'Become a Founding Member and get lifetime access to everything we build — every course, every lesson, every update. The library keeps growing. Your price never changes.',
+    description: 'Become a Founding Member and get lifetime access to everything we build. Every course, every lesson, every update. The library keeps growing and your price never changes.',
     features: [
       'Everything in Yearly',
-      'Founding Member pricing — locked in forever',
+      'Founding Member pricing, locked in forever',
       'All future courses included',
       'Never think about it again',
     ],
-    buttonLabel: 'Claim founding member access — $299',
+    buttonLabel: 'Claim founding member access, $299',
     highlight: false,
   },
 ]
@@ -80,7 +80,7 @@ const courseSchema = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
   name: 'Clearly, AI Courses',
-  description: 'All courses included in one subscription — no tech background needed.',
+  description: 'All courses included in one subscription. No tech background needed.',
   url: 'https://learnaiclearly.com/pricing',
   itemListElement: [
     {
@@ -119,7 +119,7 @@ const courseSchema = {
       item: {
         '@type': 'Course',
         name: 'AI for Your Business',
-        description: 'For small business owners who wear every hat. Covers customer communications, marketing content, proposals, operations, and research — no tech team needed.',
+        description: 'For small business owners who wear every hat. Covers customer communications, marketing content, proposals, operations, and research. No tech team needed.',
         provider: { '@type': 'Organization', name: 'Clearly, AI', url: 'https://learnaiclearly.com' },
         url: 'https://learnaiclearly.com/courses/ai-for-your-business',
         educationalLevel: 'Intermediate',
@@ -207,7 +207,7 @@ export default function PricingPage() {
                 <span style={{ fontSize: 14, color: 'var(--ink-lt)' }}>forever</span>
               </div>
               <p style={{ fontSize: 14, color: 'var(--ink-mid)', lineHeight: 1.5 }}>
-                Start with the free AI starter course — no account required, no credit card, no catch.
+                Start with the free AI starter course. No account required, no credit card, no catch.
               </p>
             </div>
 
@@ -364,7 +364,7 @@ export default function PricingPage() {
                 },
                 {
                   q: 'What\'s the difference between the plans?',
-                  a: 'All plans give you the same access — every current module and every new course we add. Monthly and yearly renew automatically; Forever is a single payment with no renewals.',
+                  a: 'All plans give you the same access to every current module and every new course we add. Monthly and yearly renew automatically. Forever is a single payment with no renewals.',
                 },
                 {
                   q: 'Can I switch plans later?',
@@ -372,7 +372,7 @@ export default function PricingPage() {
                 },
                 {
                   q: 'How long does the course take?',
-                  a: 'About 4–6 hours total across 6 modules. Most people do one module per week. There\'s no deadline — go at the pace that works for you.',
+                  a: 'About 4 to 6 hours total across 6 modules. Most people do one module per week. There\'s no deadline. Go at the pace that works for you.',
                 },
               ].map(({ q, a }) => (
                 <div key={q} className="card" style={{ padding: '20px 24px' }}>

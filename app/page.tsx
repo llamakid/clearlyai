@@ -50,7 +50,7 @@ export default function HomePage() {
               textTransform: 'uppercase',
             }}>
               <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)', flexShrink: 0, display: 'inline-block' }} />
-              Plain English . Real Results · Zero Jargon · No Tech Background Needed
+              Plain English · Real Results · Zero Jargon · No Tech Background
             </div>
 
             <h1 style={{
@@ -73,7 +73,7 @@ export default function HomePage() {
               maxWidth: 580,
               margin: '0 auto 40px',
             }}>
-              Clearly, AI is a friendly school for everyday people who want to use artificial intelligence confidently — no tech background required. Practical lessons that make your work and life genuinely easier.
+              Clearly, AI is a school for everyday people who actually want to use AI. No jargon, no tech background, no overwhelm. Just practical lessons you can put to work right away.
             </p>
 
             <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -81,7 +81,7 @@ export default function HomePage() {
                 Start the Free Course
               </a>
               <a href="/pricing" className="btn btn-ghost" style={{ fontSize: 15, padding: '15px 32px' }}>
-                See Plans — from $15/mo
+                See Plans, from $15/mo
               </a>
             </div>
 
@@ -125,10 +125,10 @@ export default function HomePage() {
               gap: 24,
             }}>
               {[
-                { icon: '😤', title: 'You feel like everyone else already gets it.', body: "Colleagues mention AI tools in meetings. You nod along and Google it later." },
-                { icon: '🤯', title: 'Every tutorial assumes you\'re a developer.', body: 'The guides online are full of terms like "prompts," "models," and "tokens" — with no explanation.' },
-                { icon: '⏳', title: "You're drowning in repetitive work.", body: "Emails, reports, social posts, proposals — tasks that eat hours every single week." },
-                { icon: '😟', title: "You worry about being left behind.", body: "AI is changing everything. You want to keep up — but you don't know where to start." },
+                { icon: '😤', title: 'You feel like everyone else already gets it.', body: "Colleagues mention AI tools in meetings. You nod along and look it up later." },
+                { icon: '🤯', title: 'Every tutorial assumes you\'re a developer.', body: 'The guides online are full of terms like "prompts," "models," and "tokens" with no explanation for what any of it means.' },
+                { icon: '⏳', title: "You're drowning in repetitive work.", body: "Emails, reports, social posts, proposals. Tasks that eat hours every single week." },
+                { icon: '😟', title: "You worry about being left behind.", body: "AI is changing fast and you want to keep up. You just don't know where to start." },
               ].map(({ icon, title, body }) => (
                 <li key={title} style={{
                   display: 'flex',
@@ -180,7 +180,7 @@ export default function HomePage() {
                 Simple steps. <em style={{ color: 'var(--accent)', fontStyle: 'italic' }}>Real progress.</em>
               </h2>
               <p style={{ fontSize: 17, color: 'var(--ink-mid)', lineHeight: 1.65, maxWidth: 540 }}>
-                We designed every part of Clearly, AI to build your confidence from day one — not overwhelm you.
+                Every part of this is designed to build your confidence, not add to your to-do list.
               </p>
             </div>
 
@@ -189,17 +189,17 @@ export default function HomePage() {
                 {
                   num: '01',
                   title: 'Start with the Free Course',
-                  body: 'Start with "10 Things You Can Do With AI Today" — two short lessons, ten practical tasks, each with a ready-to-use prompt. No credit card needed.',
+                  body: 'The free course is called "10 Things You Can Do With AI Today." Two short lessons, ten practical tasks, each with a prompt you can use right now. No credit card needed.',
                 },
                 {
                   num: '02',
                   title: 'Follow the Curriculum at Your Own Pace',
-                  body: 'Short lessons, each focused on one practical skill. No homework, no pressure. Just learn when it works for you.',
+                  body: 'Short lessons, each focused on one thing you can actually do. No homework, no pressure, no deadline. Learn when it works for you.',
                 },
                 {
                   num: '03',
-                  title: 'Apply It to Your Real Life — This Week',
-                  body: "Every lesson ends with something you can actually use today. You'll feel the difference in hours, not months.",
+                  title: 'Apply It to Your Real Life This Week',
+                  body: "Every lesson ends with something you can put to use today. Most people feel the difference within a few days.",
                 },
               ].map(({ num, title, body }) => (
                 <div key={num} style={{
@@ -251,7 +251,7 @@ export default function HomePage() {
                 Use AI right now. <em style={{ color: 'var(--accent)', fontStyle: 'italic' }}>No prompts needed.</em>
               </h2>
               <p style={{ fontSize: 17, color: 'var(--ink-mid)', lineHeight: 1.65, maxWidth: 540 }}>
-                Two simple tools that do the work for you — just describe what you need and AI handles the rest. Free with any account.
+                Two simple tools that do the work for you. Describe what you need and AI handles the rest. Free with any account.
               </p>
             </div>
 
@@ -261,14 +261,14 @@ export default function HomePage() {
                   href: '/tools/write',
                   icon: '✍️',
                   title: 'Write This For Me',
-                  desc: 'Turn your ideas into polished writing — emails, social posts, or text messages. No blank page, no second-guessing.',
+                  desc: 'Turn your ideas into polished writing. Emails, social posts, text messages. No blank page, no second-guessing.',
                   examples: ['Follow-up email after a meeting', 'LinkedIn announcement', 'Thank-you note'],
                 },
                 {
                   href: '/tools/explain',
                   icon: '🔍',
                   title: 'Explain This To Me',
-                  desc: 'Paste anything confusing and get a clear, plain-English breakdown — what it means, what matters, what to do next.',
+                  desc: 'Paste anything confusing and get a plain-English breakdown of what it means, what matters, and what to do next.',
                   examples: ['Confusing contract clause', 'Medical insurance letter', 'Technical job listing'],
                 },
               ].map(tool => (
@@ -327,7 +327,7 @@ export default function HomePage() {
                 All courses. <em style={{ color: 'var(--accent-lt)', fontStyle: 'italic' }}>One subscription.</em>
               </h2>
               <p style={{ fontSize: 17, color: 'rgba(255,255,255,0.65)', lineHeight: 1.65, maxWidth: 540 }}>
-                Every course is built for non-technical adults — plain English, practical skills, real results. Pick your starting point or take them all.
+                Every course is built for people without a tech background. Plain English, real skills. Start anywhere or take them all.
               </p>
             </div>
 
@@ -401,21 +401,21 @@ export default function HomePage() {
                   emoji: '💼',
                   tag: 'The Professional',
                   title: 'You want to work smarter and stay relevant.',
-                  desc: "You're great at your job. Younger colleagues are already using AI and you want to keep up — without spending a month learning something new. We get you there in hours.",
+                  desc: "You're good at your job. Younger colleagues are already using AI and you don't want to fall behind, but you also don't have a month to spend learning something new. We get you up to speed in a few hours.",
                   pain: '"I just need someone to show me the practical stuff, not the theory."',
                 },
                 {
                   emoji: '🏪',
                   tag: 'The Business Owner',
                   title: 'You need AI to do the work of three people.',
-                  desc: "You're running lean. Writing content, handling reviews, creating proposals, managing social media — AI can handle a huge chunk of that. We'll show you exactly how.",
+                  desc: "You're doing everything yourself. Writing content, handling reviews, creating proposals, managing social. AI can take a real chunk of that off your plate. We'll show you exactly what to do.",
                   pain: '"I don\'t have time to figure this out on my own. Just show me what works."',
                 },
                 {
                   emoji: '🌱',
                   tag: 'The Curious Learner',
                   title: "You want to understand what everyone's talking about.",
-                  desc: "You've heard about AI on the news, in conversations, everywhere. You're ready to understand it — and use it. We start at the very beginning and never make you feel silly for asking.",
+                  desc: "You keep hearing about AI and you're finally ready to understand it. We start at the very beginning, go slow, and nobody's going to make you feel silly for asking.",
                   pain: '"I just don\'t want to feel left out. Or break anything."',
                 },
               ].map(({ emoji, tag, title, desc, pain }) => (
@@ -521,7 +521,7 @@ export default function HomePage() {
               display: 'inline-flex', flexDirection: 'column', gap: 10, textAlign: 'left',
             }}>
               {[
-                'All courses — every module included',
+                'All courses, every module included',
                 'New courses as they launch',
                 'Go at your own pace, on any device',
               ].map((item) => (
@@ -565,17 +565,17 @@ export default function HomePage() {
             <div className="grid-3" style={{ gap: 24 }}>
               {[
                 {
-                  quote: "I've tried YouTube videos, online articles, everything — nothing clicked until this. By the third module I was actually using AI at work and saving real time every week.",
+                  quote: "Honestly I didn't expect much. I've tried to learn this stuff before and always quit. But I kept going with this one. Now I use it pretty much every day at work and it's just a lot less scary than I thought it would be.",
                   name: 'Sandra M.',
                   role: 'Office Manager, 52',
                 },
                 {
-                  quote: "I kept hearing 'you need to learn AI' but had no idea where to start. This was the first thing I found that didn't make me feel dumb. It's genuinely written for regular people.",
+                  quote: "I run my business myself so I kept putting this off because every resource I found assumed I already knew things I didn't. This one actually starts at zero. I didn't feel lost once.",
                   name: 'David K.',
                   role: 'Small Business Owner, 47',
                 },
                 {
-                  quote: "My grandkids kept telling me to try it. I finally did — through this course — and now I'm the one sending them tips. I never expected to feel this confident with technology.",
+                  quote: "My grandson kept bugging me about AI so I finally looked into it. I figured I'd get through one lesson and give up. I did not give up. I've been showing my friends at book club and they all want to know where I learned it.",
                   name: 'Carol T.',
                   role: 'Retired Teacher, 67',
                 },
@@ -645,7 +645,7 @@ export default function HomePage() {
                 },
                 {
                   q: 'How much time does it take each week?',
-                  a: 'Each lesson is 8–12 minutes long. Most members spend 20–30 minutes a week and still see meaningful results. You can go faster if you want — there\'s no schedule you have to follow.',
+                  a: 'Each lesson runs about 8 to 12 minutes. Most people spend 20 to 30 minutes a week and still see real results. Go faster if you want. There\'s no schedule to follow.',
                 },
                 {
                   q: "What if I fall behind or can't keep up?",
@@ -653,7 +653,7 @@ export default function HomePage() {
                 },
                 {
                   q: 'Can I cancel any time?',
-                  a: "Yes — no contracts, no cancellation fees, no runaround. Cancel any time directly from your account. We'd rather earn your trust than lock you in.",
+                  a: "Yes. No contracts, no cancellation fees, no runaround. Cancel any time from your account. We'd rather earn your trust than trap you in something.",
                 },
                 {
                   q: "I'm 60+. Is this really for me?",
@@ -692,7 +692,7 @@ export default function HomePage() {
               Get practical AI tips<br />in your inbox.
             </h2>
             <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: 17, marginBottom: 32, lineHeight: 1.65 }}>
-              Short, plain-English ideas you can actually use — sent weekly, no spam.
+              Short, plain-English ideas you can actually use. Sent weekly, no spam.
             </p>
             <EmailSignup />
             <p style={{ marginTop: 16, fontSize: 13, color: 'rgba(255,255,255,0.5)' }}>
