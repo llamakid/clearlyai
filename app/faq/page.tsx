@@ -5,17 +5,17 @@ import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'FAQ — Clearly, AI',
-  description: 'Common questions about Clearly, AI — our courses, pricing, refunds, and what to expect. No tech background needed to get started.',
+  description: 'Common questions about Clearly, AI: courses, pricing, refunds, and what to expect. No tech background needed to get started.',
   openGraph: {
     title: 'FAQ — Clearly, AI',
-    description: 'Common questions about Clearly, AI — our courses, pricing, refunds, and what to expect.',
+    description: 'Common questions about Clearly, AI: courses, pricing, refunds, and what to expect.',
     url: 'https://learnaiclearly.com/faq',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'FAQ — Clearly, AI',
-    description: 'Common questions about Clearly, AI — our courses, pricing, refunds, and what to expect.',
+    description: 'Common questions about Clearly, AI: courses, pricing, refunds, and what to expect.',
   },
   alternates: {
     canonical: 'https://learnaiclearly.com/faq',
@@ -32,15 +32,15 @@ const sections = [
       },
       {
         q: 'I\'m not a "computer person." Will I be lost?',
-        a: 'No. We avoid jargon on purpose. Every concept is explained in plain English, with real-life examples — not code or theory. Thousands of people just like you have learned to use AI confidently without any tech background.',
+        a: 'No. We avoid jargon on purpose. Every concept is explained in plain English with real-life examples, not code or theory. We start at the very beginning and assume nothing.',
       },
       {
         q: 'I\'m retired / not working. Is AI still useful for me?',
-        a: 'Absolutely. You\'ll learn how to use AI to write letters, plan trips, research health questions, draft emails, find information faster, and a lot more — all things that make everyday life easier.',
+        a: 'Absolutely. You\'ll learn how to use AI to write letters, plan trips, research health questions, draft emails, find information faster, and a lot more. All things that make everyday life a bit easier.',
       },
       {
         q: 'I\'ve tried to learn tech things before and given up. How is this different?',
-        a: 'Most tech courses assume you already know things. We don\'t. Lessons are short (5–10 minutes each), written in plain language, and build on each other one step at a time. You set the pace — there\'s no timer, no pressure, no failing.',
+        a: 'Most tech courses assume you already know things. We don\'t. Lessons are short (5 to 10 minutes each), written in plain language, and build on each other one step at a time. You set the pace. No timer, no pressure, no failing.',
       },
     ],
   },
@@ -49,23 +49,23 @@ const sections = [
     items: [
       {
         q: 'What will I actually be able to do after this?',
-        a: 'By the end of Course 1, you\'ll understand what AI is, how to have a useful conversation with it, how to ask good questions, and how to apply it to real tasks in your daily life. Course 2 goes deeper — applying AI to work, writing, research, and more.',
+        a: 'By the end of Course 1, you\'ll understand what AI is, how to have a useful conversation with it, how to ask good questions, and how to apply it to real tasks in your daily life. Course 2 goes deeper into work, writing, research, and more.',
       },
       {
         q: 'How long does it take?',
-        a: 'Each course is about 4–6 hours total, split across 6 modules. Most people do one module per sitting — about 45–60 minutes. There\'s no schedule to keep. Go at your own pace, pause whenever you want, and pick back up where you left off.',
+        a: 'Each course is about 4 to 6 hours total, split across 6 modules. Most people do one module per sitting, around 45 to 60 minutes. There\'s no schedule to keep. Pause whenever you want and pick back up where you left off.',
       },
       {
         q: 'What if I don\'t understand something?',
-        a: 'You can replay any lesson as many times as you want. If something still isn\'t clicking, email us at nate@learnaiclearly.com — we\'re a small team and we actually respond.',
+        a: 'You can replay any lesson as many times as you want. If something still isn\'t clicking, email us at nate@learnaiclearly.com. We\'re a small team and we actually respond.',
       },
       {
         q: 'What devices can I use?',
-        a: 'Any device with a web browser — laptop, desktop, tablet, or phone. Nothing to download or install. Your progress saves automatically so you can switch devices anytime.',
+        a: 'Any device with a web browser: laptop, desktop, tablet, or phone. Nothing to download or install. Your progress saves automatically so you can switch devices anytime.',
       },
       {
         q: 'Will the content get outdated?',
-        a: 'AI does move fast, and we update the course regularly to keep up. All plans include every update and every new course we add — you won\'t pay again to access new material.',
+        a: 'AI does move fast, and we update the course regularly to keep up. All plans include every update and every new course we add. You won\'t pay again to access new material.',
       },
     ],
   },
@@ -74,11 +74,11 @@ const sections = [
     items: [
       {
         q: 'What\'s the difference between the plans?',
-        a: 'All three plans give you the same access — every current module and every new course we add. Monthly ($15/mo) and Yearly ($120/yr) renew automatically. Forever ($299 one-time) is a single payment with no renewals, ever.',
+        a: 'All three plans give you the same access to every current module and every new course we add. Monthly ($15/mo) and Yearly ($120/yr) renew automatically. Forever ($299 one-time) is a single payment with no renewals, ever.',
       },
       {
         q: 'Can I cancel anytime?',
-        a: 'Yes. Monthly and Yearly subscriptions can be cancelled anytime — no questions asked, no hoops to jump through. You keep access through the end of your paid period.',
+        a: 'Yes. Monthly and Yearly subscriptions can be cancelled anytime. No questions asked, no hoops to jump through. You keep access through the end of your paid period.',
       },
       {
         q: 'Is there a refund policy?',
@@ -86,7 +86,7 @@ const sections = [
       },
       {
         q: 'Is my payment information safe?',
-        a: 'Yes. We use Stripe for all payments — the same system used by Amazon, Apple, and millions of other businesses. We never see or store your card number.',
+        a: 'Yes. We use Stripe for all payments, the same system used by Amazon, Apple, and millions of other businesses. We never see or store your card number.',
       },
       {
         q: 'Can I switch plans?',
@@ -176,7 +176,7 @@ export default function FAQPage() {
               Still have a question?
             </h2>
             <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: 15, marginBottom: 24, lineHeight: 1.6 }}>
-              Email us and you'll hear back from a real person — usually within a day.
+              Email us and you'll hear back from a real person, usually within a day.
             </p>
             <a
               href="mailto:nate@learnaiclearly.com"

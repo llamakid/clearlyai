@@ -9,14 +9,14 @@ import Link from 'next/link'
 const TRACKS = [
   {
     label: 'Start Here',
-    description: 'New to AI? The free starter gets you going in minutes — then build your foundation.',
+    description: 'New to AI? The free starter gets you going in minutes. Then build your foundation.',
     slugs: ['ai-foundations', 'better-prompts'],
     includeStarter: true,
   },
   {
     label: 'For Professionals',
     description: 'Reclaim time, look sharper, and get ahead at work.',
-    slugs: ['ai-at-work', 'ai-career-growth'],
+    slugs: ['ai-at-work'],
   },
   {
     label: 'For Small Business Owners',
@@ -192,7 +192,7 @@ export default async function DashboardPage({
               <span style={{ fontSize: 28 }}>🎉</span>
               <div>
                 <p style={{ fontWeight: 700, marginBottom: 4, fontSize: 15 }}>You&apos;re in! Welcome to Clearly, AI.</p>
-                <p style={{ fontSize: 14, color: 'var(--ink-mid)' }}>Start with the free starter course below — no credit card needed.</p>
+                <p style={{ fontSize: 14, color: 'var(--ink-mid)' }}>Start with the free starter course below. No credit card needed.</p>
               </div>
             </div>
           )}
@@ -323,7 +323,7 @@ export default async function DashboardPage({
                   Ready to unlock everything?
                 </p>
                 <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.8)', maxWidth: 420 }}>
-                  Get full access to all courses — plus every new course as it launches.
+                  Get full access to all courses, plus every new course as it launches.
                 </p>
               </div>
               <Link href="/pricing" style={{

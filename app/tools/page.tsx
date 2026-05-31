@@ -9,7 +9,7 @@ const TOOLS = [
     href: '/tools/write',
     icon: '✍️',
     title: 'Write This For Me',
-    desc: 'Turn your ideas into polished writing — no blank page, no second-guessing. Emails, social posts, text messages.',
+    desc: 'Turn your ideas into polished writing. No blank page, no second-guessing. Emails, social posts, text messages.',
     tags: ['Email', 'Social post', 'Text message'],
     cta: 'Start writing →',
   },
@@ -17,7 +17,7 @@ const TOOLS = [
     href: '/tools/explain',
     icon: '🔍',
     title: 'Explain This To Me',
-    desc: 'Paste anything confusing — an email, a contract, a news story. Get a clear, plain-English breakdown.',
+    desc: 'Paste anything confusing: an email, a contract, a news story. Get a plain-English breakdown of what it means.',
     tags: ['Confusing emails', 'Legal text', 'Technical jargon'],
     cta: 'Explain something →',
   },
@@ -48,7 +48,7 @@ export default function ToolsPage() {
               Free with any account
             </div>
             <h1 style={{ fontFamily: 'var(--font-h)', fontSize: 40, marginBottom: 14, lineHeight: 1.15 }}>
-              Put AI to work —<br />no prompts needed
+              Put AI to work.<br />No prompts needed.
             </h1>
             <p style={{ fontSize: 17, color: 'var(--ink-mid)', maxWidth: 460, margin: '0 auto', lineHeight: 1.6 }}>
               Two simple tools. Real results. Just tell us what you need.

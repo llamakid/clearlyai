@@ -260,7 +260,7 @@ export default async function CoursePage({
                   Unlock all modules
                 </p>
                 <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.8)', maxWidth: 420 }}>
-                  Get full access to this course — plus every other course on Clearly, AI.
+                  Get full access to this course, plus every other course on Clearly, AI.
                 </p>
               </div>
               <Link href="/pricing" style={{
