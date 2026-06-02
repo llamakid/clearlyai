@@ -231,6 +231,7 @@ See `.env.local.example` for the full list. Summary:
 | `NEXT_PUBLIC_SITE_URL` | `https://learnaiclearly.com` in production |
 | `RESEND_API_KEY` | resend.com → API Keys |
 | `RESEND_FROM_EMAIL` | `nate@learnaiclearly.com` |
+| `ANTHROPIC_API_KEY` | console.anthropic.com → API Keys (powers AI Tools) |
 
 ---
 
@@ -266,6 +267,7 @@ See `.env.local.example` for the full list. Summary:
 - ✅ Deployed to Vercel, all env vars set
 - ✅ Vercel Analytics + Speed Insights installed
 - ✅ Smoke test completed — full signup → checkout → dashboard → course → module → feedback flow verified
+- ✅ AI Tools built and live — Write (`/tools/write`) and Explain (`/tools/explain`) wired to Claude Haiku with auth gate, rate limiting (`tool_usage` table), and copy/refinement actions
 
 ### SEO / Discovery
 - ✅ **Site is live** at learnaiclearly.com
@@ -277,34 +279,6 @@ See `.env.local.example` for the full list. Summary:
 - ⏳ First paid users not yet acquired
 - ⏳ Email list not yet actively marketed to
 - ⏳ Course loading performance — module pages have noticeable load time; investigate the Supabase query waterfall (purchases check + progress fetch are sequential), bundle size from importing all 30 course data files, and whether React Suspense / streaming can help
-
----
-
-## Evening Session Todo (pick up here first)
-
-AI Tools launch checklist — work through in order:
-
-1. **Commit the subscribe email copy fix on `main`** — already edited, just needs a commit + push
-2. **Add `tool_usage` table to Supabase** — the rate limiting in both tool API routes references this table; it must exist before going live or the tools will 500. Add via Supabase SQL Editor:
-   ```sql
-   create table tool_usage (
-     id uuid primary key default gen_random_uuid(),
-     user_id uuid references auth.users(id) on delete cascade not null,
-     tool text not null,
-     date date not null default current_date,
-     count integer not null default 1,
-     unique(user_id, tool, date)
-   );
-   alter table tool_usage enable row level security;
-   create policy "Users can read own usage" on tool_usage for select using (auth.uid() = user_id);
-   ```
-3. **Install Anthropic SDK** — `npm install @anthropic-ai/sdk` and add `ANTHROPIC_API_KEY` to `.env.local`
-4. **Wire up Write tool** (`app/api/tools/write/route.ts`) — replace mock with real Claude Haiku call; handle the `refine` parameter (shorter / friendlier / more professional)
-5. **Wire up Explain tool** (`app/api/tools/explain/route.ts`) — replace mock with real Claude Haiku call returning structured JSON (summary, takeaways, meaning, suggestedResponse)
-6. **Test both tools locally** — auth gate, rate limit, real output, copy button, refinement actions
-7. **Merge `feature/ai-tools` into `main`** — the branch has the AI Tools pages, API routes, and Navbar link
-8. **Add `ANTHROPIC_API_KEY` to Vercel** — Environment Variables → add for production
-9. **Push and smoke test live** — verify both tools work end-to-end on learnaiclearly.com
 
 ---
 
