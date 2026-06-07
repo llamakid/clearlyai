@@ -12,6 +12,7 @@ const TOOLS = [
     desc: 'Turn your ideas into polished writing. No blank page, no second-guessing. Emails, social posts, text messages.',
     tags: ['Email', 'Social post', 'Text message'],
     cta: 'Start writing →',
+    external: false,
   },
   {
     href: '/tools/explain',
@@ -20,6 +21,16 @@ const TOOLS = [
     desc: 'Paste anything confusing: an email, a contract, a news story. Get a plain-English breakdown of what it means.',
     tags: ['Confusing emails', 'Legal text', 'Technical jargon'],
     cta: 'Explain something →',
+    external: false,
+  },
+  {
+    href: 'https://chatgpt.com/g/g-6a25ce026df08191ad2ae0fedd361400-clearly-explain-this',
+    icon: '🤖',
+    title: 'Clearly: Explain This',
+    desc: 'Turns confusing information into clear, plain-English explanations — without jargon, assumptions, or judgment. Powered by ChatGPT.',
+    tags: ['Documents', 'News stories', 'Tech concepts'],
+    cta: 'Try the GPT →',
+    external: true,
   },
 ]
 
@@ -28,7 +39,7 @@ export default function ToolsPage() {
     <>
       <Navbar />
       <main style={{ minHeight: '80vh', padding: '60px 32px' }}>
-        <div style={{ maxWidth: 760, margin: '0 auto' }}>
+        <div style={{ maxWidth: 900, margin: '0 auto' }}>
 
           <div style={{ textAlign: 'center', marginBottom: 52 }}>
             <div style={{
@@ -51,17 +62,17 @@ export default function ToolsPage() {
               Put AI to work.<br />No prompts needed.
             </h1>
             <p style={{ fontSize: 17, color: 'var(--ink-mid)', maxWidth: 460, margin: '0 auto', lineHeight: 1.6 }}>
-              Two simple tools. Real results. Just tell us what you need.
+              Simple tools. Real results. Just tell us what you need.
             </p>
           </div>
 
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
             gap: 16,
           }}>
-            {TOOLS.map(tool => (
-              <Link key={tool.href} href={tool.href} style={{ textDecoration: 'none' }}>
+            {TOOLS.map(tool => {
+              const cardContent = (
                 <div className="card card-hover" style={{
                   padding: '32px',
                   height: '100%',
@@ -69,7 +80,20 @@ export default function ToolsPage() {
                   flexDirection: 'column',
                   gap: 12,
                 }}>
-                  <span style={{ fontSize: 36, lineHeight: 1 }}>{tool.icon}</span>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
+                    <span style={{ fontSize: 36, lineHeight: 1 }}>{tool.icon}</span>
+                    {tool.external && (
+                      <span style={{
+                        fontSize: 11, fontWeight: 700,
+                        background: '#f0f0f0', color: '#666',
+                        padding: '3px 9px', borderRadius: 20,
+                        letterSpacing: '0.04em',
+                        whiteSpace: 'nowrap',
+                      }}>
+                        Opens in ChatGPT
+                      </span>
+                    )}
+                  </div>
                   <h2 style={{ fontFamily: 'var(--font-h)', fontSize: 24, color: 'var(--ink)', lineHeight: 1.2 }}>
                     {tool.title}
                   </h2>
@@ -91,8 +115,24 @@ export default function ToolsPage() {
                     {tool.cta}
                   </span>
                 </div>
-              </Link>
-            ))}
+              )
+
+              return tool.external ? (
+                <a
+                  key={tool.href}
+                  href={tool.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: 'none' }}
+                >
+                  {cardContent}
+                </a>
+              ) : (
+                <Link key={tool.href} href={tool.href} style={{ textDecoration: 'none' }}>
+                  {cardContent}
+                </Link>
+              )
+            })}
           </div>
 
         </div>
