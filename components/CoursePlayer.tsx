@@ -172,12 +172,12 @@ export default function CoursePlayer({ course, courseSlug, userId, initialProgre
       width: 300, background: 'var(--bg-alt)', borderRight: '1px solid var(--border)',
       display: 'flex', flexDirection: 'column', flexShrink: 0, overflowY: 'auto',
     }}>
-      <Link href={courseSlug ? `/courses/${courseSlug}` : '/dashboard'} style={{
+      <Link href={courseSlug ? `/courses/${courseSlug}` : userId ? '/dashboard' : '/'} style={{
         display: 'flex', alignItems: 'center', gap: 6, padding: '10px 20px',
         fontSize: 12, fontWeight: 600, color: 'var(--ink-lt)', textDecoration: 'none',
         borderBottom: '1px solid var(--border)', transition: 'color 0.15s',
       }}>
-        {courseSlug ? '← Course Home' : '← Back to Dashboard'}
+        {courseSlug ? '← Course Home' : userId ? '← Back to Dashboard' : '← Back to Home'}
       </Link>
       <div style={{ padding: '20px 20px 12px', borderBottom: '1px solid var(--border)' }}>
         <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: 4 }}>Module {course.moduleId}</div>
@@ -231,6 +231,23 @@ export default function CoursePlayer({ course, courseSlug, userId, initialProgre
           Take the Module {course.moduleId} Quiz →
         </button>
       )}
+      {!userId && (
+        <div style={{
+          margin: '12px 16px', padding: '14px 16px', borderRadius: 'var(--r)',
+          background: 'var(--accent-lt)', border: '1px solid var(--accent)',
+        }}>
+          <p style={{ fontSize: 12, color: 'var(--accent-dk)', fontWeight: 500, lineHeight: 1.5, marginBottom: 10 }}>
+            You&apos;re previewing the free course. Create a free account to save your progress.
+          </p>
+          <a href="/signup" style={{
+            display: 'block', textAlign: 'center', padding: '8px 12px', borderRadius: 8,
+            background: 'var(--accent)', color: 'white', fontSize: 12, fontWeight: 700,
+            textDecoration: 'none',
+          }}>
+            Create free account →
+          </a>
+        </div>
+      )}
       {course.nextModuleId && (
         <Link
           href={`/course/${course.nextModuleId}`}
@@ -247,7 +264,7 @@ export default function CoursePlayer({ course, courseSlug, userId, initialProgre
         </Link>
       )}
     </aside>
-  ), [courseState.completed, courseState.quizDone, curLesson, view, course, courseSlug, allLessonsDone, hasQuiz, goLesson])
+  ), [courseState.completed, courseState.quizDone, curLesson, view, course, courseSlug, allLessonsDone, hasQuiz, goLesson, userId])
 
   return (
     <div style={{ height: '100dvh', display: 'flex', flexDirection: 'column', overflow: 'hidden', background: 'var(--bg)' }}>
@@ -256,7 +273,7 @@ export default function CoursePlayer({ course, courseSlug, userId, initialProgre
         height: 56, background: '#1c2b35', display: 'flex', alignItems: 'center',
         justifyContent: 'space-between', padding: '0 24px', flexShrink: 0, zIndex: 20,
       }}>
-        <Link href="/dashboard" style={{ fontFamily: 'var(--font-dm-serif), Georgia, serif', fontSize: 18, color: 'white', textDecoration: 'none' }}>
+        <Link href={userId ? '/dashboard' : '/'} style={{ fontFamily: 'var(--font-dm-serif), Georgia, serif', fontSize: 18, color: 'white', textDecoration: 'none' }}>
           Clearly,&nbsp;<span style={{ color: '#ddeef3' }}>AI</span>
         </Link>
         <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.45)', fontWeight: 500 }}>

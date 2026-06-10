@@ -36,7 +36,7 @@ export default function CurriculumPage() {
             One subscription unlocks all of it.
           </p>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <a href="/signup" className="btn btn-primary" style={{ fontSize: 15, padding: '14px 32px' }}>
+            <a href="/course/0" className="btn btn-primary" style={{ fontSize: 15, padding: '14px 32px' }}>
               Start the Free Course
             </a>
             <a href="/pricing" style={{
@@ -188,7 +188,7 @@ export default function CurriculumPage() {
             Start the free course today. No credit card, no commitment. Upgrade when you're ready.
           </p>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <a href="/signup" className="btn btn-primary" style={{ fontSize: 15, padding: '14px 32px' }}>
+            <a href="/course/0" className="btn btn-primary" style={{ fontSize: 15, padding: '14px 32px' }}>
               Start the Free Course
             </a>
             <a href="/pricing" style={{

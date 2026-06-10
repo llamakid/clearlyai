@@ -192,7 +192,8 @@ Individual module pages (/course/[moduleId]):
   → server checks purchases table
   → no purchase → redirect /pricing
   → purchase found → module loads
-  (Module 0 is exempt — free for all signed-in users)
+  (Module 0 is fully public — served by app/course/0/page.tsx, exempted in
+  proxy.ts, viewable without an account; anonymous progress lives in localStorage)
 ```
 
 Payment flow:
@@ -315,7 +316,7 @@ See `.env.local.example` for the full list. Summary:
 - **CoursePlayer** uses `startTransition` for lesson-completion state updates and `useMemo` for the sidebar — keep these optimizations in place when editing that component.
 - **CoursePlayer** accepts a `courseSlug` prop (passed from the server page) — the "← Course Home" sidebar button links to `/courses/[courseSlug]`. The top-bar logo links to `/dashboard`.
 - `lib/course-data/courses.ts` is the single source of truth for course-level metadata — dashboard, curriculum page, and course overview pages all read from it. Always update this file when adding or publishing a new module.
-- Course progress fetch in `app/(protected)/course/[moduleId]/page.tsx` runs for all modules including module 0 (starter). The DB constraint is `module_id >= 0`.
+- Module 0 (starter course) is served by the public `app/course/0/page.tsx` route — no auth required, exempted in `proxy.ts`. The protected `app/(protected)/course/[moduleId]/page.tsx` handles modules 1+ only. "Start the Free Course" CTAs link to `/course/0` directly, not `/signup`. The DB constraint is `module_id >= 0`.
 - There are now 5 courses (30 modules, moduleIds 1–30). Next available moduleId block starts at 31.
 - **ManageSubscriptionButton** is a client component that POSTs to `/api/stripe/portal` — only render it for users who have an active subscription.
 - **EmailVerificationBanner** shows for signed-in users who haven't confirmed their email yet. Don't remove it from layouts that render for unverified users.

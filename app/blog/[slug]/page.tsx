@@ -139,6 +139,35 @@ export default async function BlogPostPage({
             <div className="prose">
               <MDXRemote source={post.content} />
             </div>
+
+            {/* Starter kit callout */}
+            <div style={{
+              marginTop: 48,
+              background: 'var(--accent-lt)',
+              border: '1px solid var(--accent)',
+              borderRadius: 16,
+              padding: '28px 28px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 20,
+              flexWrap: 'wrap',
+            }}>
+              <span style={{ fontSize: 36, lineHeight: 1 }}>📋</span>
+              <div style={{ flex: 1, minWidth: 220 }}>
+                <p style={{
+                  fontWeight: 700, fontSize: 17, color: 'var(--ink)',
+                  marginBottom: 4, fontFamily: 'var(--font-dm-serif), Georgia, serif',
+                }}>
+                  Want more like this? Grab the free AI Starter Kit.
+                </p>
+                <p style={{ fontSize: 14, color: 'var(--ink-mid)', lineHeight: 1.55, margin: 0 }}>
+                  Practical things you can do with AI today — each with a prompt you can copy and use. Free PDF, plain English.
+                </p>
+              </div>
+              <Link href="/starter-kit" className="btn btn-primary" style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>
+                Get the free kit →
+              </Link>
+            </div>
           </div>
         </div>
 

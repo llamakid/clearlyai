@@ -40,8 +40,11 @@ export async function proxy(request: NextRequest) {
 
   const { pathname } = request.nextUrl
 
-  // Protected routes: /dashboard and /course/*
-  const isProtected = pathname.startsWith('/dashboard') || pathname.startsWith('/course')
+  // Protected routes: /dashboard and /course/* — except /course/0,
+  // the free starter course, which is open to logged-out visitors
+  const isProtected =
+    (pathname.startsWith('/dashboard') || pathname.startsWith('/course')) &&
+    pathname !== '/course/0'
 
   if (isProtected && !user) {
     const loginUrl = request.nextUrl.clone()

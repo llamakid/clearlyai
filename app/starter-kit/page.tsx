@@ -96,7 +96,7 @@ export default function StarterKitPage() {
               Want the full experience? The free course{' '}
               <strong>&ldquo;10 Things You Can Do With AI Today&rdquo;</strong> walks through
               everything step by step.{' '}
-              <a href="/signup" style={{ color: 'var(--accent)', fontWeight: 600 }}>
+              <a href="/course/0" style={{ color: 'var(--accent)', fontWeight: 600 }}>
                 Start it free →
               </a>
             </p>

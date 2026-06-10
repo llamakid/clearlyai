@@ -1,9 +1,16 @@
 import type { Metadata } from 'next'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import SlideContent from '@/components/course/SlideContent'
+import starterCourse from '@/lib/course-data/starter'
 import dynamic from 'next/dynamic'
 
 const EmailSignup = dynamic(() => import('@/components/EmailSignup'))
+
+// A real slide from the free starter course, rendered live in the
+// "see a real lesson" section below
+const SAMPLE_LESSON = starterCourse.lessons[0]
+const SAMPLE_SLIDE = SAMPLE_LESSON.slides[1]
 
 export const metadata: Metadata = {
   title: 'Clearly, AI — AI School for Non-Technical Adults',
@@ -61,8 +68,8 @@ export default function HomePage() {
               marginBottom: 24,
               letterSpacing: '-0.02em',
             }}>
-              AI makes sense<br />
-              <em style={{ color: 'var(--accent)', fontStyle: 'italic' }}>when someone explains it clearly.</em>
+              Put AI to work today —<br />
+              <em style={{ color: 'var(--accent)', fontStyle: 'italic' }}>no tech background needed.</em>
             </h1>
 
             <p style={{
@@ -80,7 +87,7 @@ export default function HomePage() {
               <a href="/tools" className="btn btn-primary" style={{ fontSize: 15, padding: '15px 32px', boxShadow: '0 4px 16px rgba(61,122,138,0.25)' }}>
                 Try a Free AI Tool
               </a>
-              <a href="/signup" className="btn btn-ghost" style={{ fontSize: 15, padding: '15px 32px' }}>
+              <a href="/course/0" className="btn btn-ghost" style={{ fontSize: 15, padding: '15px 32px' }}>
                 Start the Free Course
               </a>
             </div>
@@ -162,79 +169,8 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── How it works ── */}
-        <section className="section-pad" style={{ background: 'var(--bg)' }}>
-          <div style={{ maxWidth: 1120, margin: '0 auto' }}>
-            <div style={{ marginBottom: 48 }}>
-              <div style={{
-                fontSize: 11, fontWeight: 700, letterSpacing: '0.1em',
-                textTransform: 'uppercase', color: 'var(--accent)', marginBottom: 12,
-              }}>
-                How It Works
-              </div>
-              <h2 style={{
-                fontFamily: 'var(--font-dm-serif), Georgia, serif',
-                fontSize: 'clamp(28px, 3.5vw, 42px)',
-                letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: 16,
-              }}>
-                Simple steps. <em style={{ color: 'var(--accent)', fontStyle: 'italic' }}>Real progress.</em>
-              </h2>
-              <p style={{ fontSize: 17, color: 'var(--ink-mid)', lineHeight: 1.65, maxWidth: 540 }}>
-                Every part of this is designed to build your confidence, not add to your to-do list.
-              </p>
-            </div>
-
-            <div className="grid-3" style={{ gap: 24 }}>
-              {[
-                {
-                  num: '01',
-                  title: 'Start with the Free Course',
-                  body: 'The free course is called "10 Things You Can Do With AI Today." Two short lessons, ten practical tasks, each with a prompt you can use right now. No credit card needed.',
-                },
-                {
-                  num: '02',
-                  title: 'Follow the Curriculum at Your Own Pace',
-                  body: 'Short lessons, each focused on one thing you can actually do. No homework, no pressure, no deadline. Learn when it works for you.',
-                },
-                {
-                  num: '03',
-                  title: 'Apply It to Your Real Life This Week',
-                  body: "Every lesson ends with something you can put to use today. Most people feel the difference within a few days.",
-                },
-              ].map(({ num, title, body }) => (
-                <div key={num} style={{
-                  background: 'var(--white)',
-                  borderRadius: 20,
-                  padding: '32px 28px',
-                  border: '1px solid var(--border)',
-                }}>
-                  <div style={{
-                    fontFamily: 'var(--font-dm-serif), Georgia, serif',
-                    fontSize: 48,
-                    color: 'var(--accent-lt)',
-                    lineHeight: 1,
-                    marginBottom: 16,
-                  }}>
-                    {num}
-                  </div>
-                  <div style={{ fontSize: 17, fontWeight: 700, marginBottom: 10, color: 'var(--ink)' }}>
-                    {title}
-                  </div>
-                  <p style={{ fontSize: 14, lineHeight: 1.65, color: 'var(--ink-mid)' }}>
-                    {body}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* ── AI Tools ── */}
-        <section className="section-pad" style={{
-          background: 'var(--bg-alt)',
-          borderTop: '1px solid var(--border)',
-          borderBottom: '1px solid var(--border)',
-        }}>
+        <section className="section-pad" style={{ background: 'var(--bg)' }}>
           <div style={{ maxWidth: 1120, margin: '0 auto' }}>
             <div style={{ marginBottom: 48 }}>
               <div style={{
@@ -308,6 +244,154 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* ── How it works ── */}
+        <section className="section-pad" style={{
+          background: 'var(--bg-alt)',
+          borderTop: '1px solid var(--border)',
+          borderBottom: '1px solid var(--border)',
+        }}>
+          <div style={{ maxWidth: 1120, margin: '0 auto' }}>
+            <div style={{ marginBottom: 48 }}>
+              <div style={{
+                fontSize: 11, fontWeight: 700, letterSpacing: '0.1em',
+                textTransform: 'uppercase', color: 'var(--accent)', marginBottom: 12,
+              }}>
+                How It Works
+              </div>
+              <h2 style={{
+                fontFamily: 'var(--font-dm-serif), Georgia, serif',
+                fontSize: 'clamp(28px, 3.5vw, 42px)',
+                letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: 16,
+              }}>
+                Simple steps. <em style={{ color: 'var(--accent)', fontStyle: 'italic' }}>Real progress.</em>
+              </h2>
+              <p style={{ fontSize: 17, color: 'var(--ink-mid)', lineHeight: 1.65, maxWidth: 540 }}>
+                Every part of this is designed to build your confidence, not add to your to-do list.
+              </p>
+            </div>
+
+            <div className="grid-3" style={{ gap: 24 }}>
+              {[
+                {
+                  num: '01',
+                  title: 'Start with the Free Course',
+                  body: 'The free course is called "10 Things You Can Do With AI Today." Two short lessons, ten practical tasks, each with a prompt you can use right now. No credit card needed.',
+                },
+                {
+                  num: '02',
+                  title: 'Follow the Curriculum at Your Own Pace',
+                  body: 'Short lessons, each focused on one thing you can actually do. No homework, no pressure, no deadline. Learn when it works for you.',
+                },
+                {
+                  num: '03',
+                  title: 'Apply It to Your Real Life This Week',
+                  body: "Every lesson ends with something you can put to use today. Most people feel the difference within a few days.",
+                },
+              ].map(({ num, title, body }) => (
+                <div key={num} style={{
+                  background: 'var(--white)',
+                  borderRadius: 20,
+                  padding: '32px 28px',
+                  border: '1px solid var(--border)',
+                }}>
+                  <div style={{
+                    fontFamily: 'var(--font-dm-serif), Georgia, serif',
+                    fontSize: 48,
+                    color: 'var(--accent-lt)',
+                    lineHeight: 1,
+                    marginBottom: 16,
+                  }}>
+                    {num}
+                  </div>
+                  <div style={{ fontSize: 17, fontWeight: 700, marginBottom: 10, color: 'var(--ink)' }}>
+                    {title}
+                  </div>
+                  <p style={{ fontSize: 14, lineHeight: 1.65, color: 'var(--ink-mid)' }}>
+                    {body}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── Real lesson preview ── */}
+        <section className="section-pad" style={{ background: 'var(--bg)' }}>
+          <div style={{ maxWidth: 880, margin: '0 auto' }}>
+            <div style={{ textAlign: 'center', maxWidth: 600, margin: '0 auto 40px' }}>
+              <div style={{
+                fontSize: 11, fontWeight: 700, letterSpacing: '0.1em',
+                textTransform: 'uppercase', color: 'var(--accent)', marginBottom: 12,
+              }}>
+                See For Yourself
+              </div>
+              <h2 style={{
+                fontFamily: 'var(--font-dm-serif), Georgia, serif',
+                fontSize: 'clamp(28px, 3.5vw, 42px)',
+                letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: 16,
+              }}>
+                This is a real lesson. <em style={{ color: 'var(--accent)', fontStyle: 'italic' }}>Not a brochure.</em>
+              </h2>
+              <p style={{ fontSize: 17, color: 'var(--ink-mid)', lineHeight: 1.65 }}>
+                Below is an actual slide from the free course, exactly as students see it.
+                The copy button even works — try the prompt right now.
+              </p>
+            </div>
+
+            {/* Player frame */}
+            <div style={{
+              borderRadius: 20,
+              overflow: 'hidden',
+              border: '1px solid var(--border)',
+              boxShadow: '0 8px 32px rgba(28,43,53,0.12)',
+            }}>
+              {/* Top bar — mirrors the real course player */}
+              <div style={{
+                height: 48, background: '#1c2b35', display: 'flex', alignItems: 'center',
+                justifyContent: 'space-between', padding: '0 20px',
+              }}>
+                <span style={{ fontFamily: 'var(--font-dm-serif), Georgia, serif', fontSize: 15, color: 'white' }}>
+                  Clearly,&nbsp;<span style={{ color: '#ddeef3' }}>AI</span>
+                </span>
+                <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)', fontWeight: 500 }}>
+                  Module 0 · {starterCourse.subtitle}
+                </span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.55)', fontWeight: 600, whiteSpace: 'nowrap' }}>14% complete</span>
+                  <div style={{ width: 90, height: 4, background: 'rgba(255,255,255,0.12)', borderRadius: 99, overflow: 'hidden' }}>
+                    <div style={{ height: '100%', background: '#ddeef3', borderRadius: 99, width: '14%' }} />
+                  </div>
+                </div>
+              </div>
+
+              {/* Slide */}
+              <div style={{ background: 'var(--bg)', padding: 'clamp(24px, 5vw, 48px)' }}>
+                <div style={{ maxWidth: 640, margin: '0 auto' }}>
+                  <SlideContent slide={SAMPLE_SLIDE} />
+                </div>
+              </div>
+
+              {/* Bottom bar */}
+              <div style={{
+                background: 'var(--bg-alt)', borderTop: '1px solid var(--border)',
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                padding: '14px 20px', gap: 12, flexWrap: 'wrap',
+              }}>
+                <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--ink-mid)' }}>
+                  Lesson 1 · Slide 2 of {SAMPLE_LESSON.slides.length}
+                </span>
+                <a href="/course/0" className="btn btn-primary" style={{ fontSize: 14, padding: '10px 22px' }}>
+                  Continue this lesson free →
+                </a>
+              </div>
+            </div>
+
+            <p style={{ textAlign: 'center', marginTop: 16, fontSize: 13, color: 'var(--ink-lt)' }}>
+              The full free course is 2 lessons and 10 prompts like this one. No account needed to start.
+            </p>
+          </div>
+        </section>
+
         {/* ── Curriculum teaser ── */}
         <section id="curriculum" className="section-pad" style={{ background: 'var(--ink)' }}>
           <div style={{ maxWidth: 1120, margin: '0 auto' }}>
@@ -358,7 +442,7 @@ export default function HomePage() {
             </div>
 
             <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'center' }}>
-              <a href="/signup" className="btn btn-primary" style={{ fontSize: 16, padding: '16px 40px' }}>
+              <a href="/course/0" className="btn btn-primary" style={{ fontSize: 16, padding: '16px 40px' }}>
                 Start the Free Course
               </a>
               <a href="/curriculum" style={{
@@ -543,78 +627,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── Testimonials ── */}
-        <section className="section-pad" style={{ background: 'var(--bg)' }}>
-          <div style={{ maxWidth: 1120, margin: '0 auto' }}>
-            <div style={{ textAlign: 'center', marginBottom: 48 }}>
-              <div style={{
-                fontSize: 11, fontWeight: 700, letterSpacing: '0.1em',
-                textTransform: 'uppercase', color: 'var(--accent)', marginBottom: 12,
-              }}>
-                What Students Say
-              </div>
-              <h2 style={{
-                fontFamily: 'var(--font-dm-serif), Georgia, serif',
-                fontSize: 'clamp(28px, 3.5vw, 42px)',
-                letterSpacing: '-0.02em', lineHeight: 1.2,
-              }}>
-                Real people. Real results.
-              </h2>
-            </div>
-
-            <div className="grid-3" style={{ gap: 24 }}>
-              {[
-                {
-                  quote: "Honestly I didn't expect much. I've tried to learn this stuff before and always quit. But I kept going with this one. Now I use it pretty much every day at work and it's just a lot less scary than I thought it would be.",
-                  name: 'Sandra M.',
-                  role: 'Office Manager, 52',
-                },
-                {
-                  quote: "I run my business myself so I kept putting this off because every resource I found assumed I already knew things I didn't. This one actually starts at zero. I didn't feel lost once.",
-                  name: 'David K.',
-                  role: 'Small Business Owner, 47',
-                },
-                {
-                  quote: "My grandson kept bugging me about AI so I finally looked into it. I figured I'd get through one lesson and give up. I did not give up. I've been showing my friends at book club and they all want to know where I learned it.",
-                  name: 'Carol T.',
-                  role: 'Retired Teacher, 67',
-                },
-              ].map(({ quote, name, role }) => (
-                <div key={name} style={{
-                  background: 'white',
-                  border: '1px solid var(--border)',
-                  borderRadius: 20,
-                  padding: '32px 28px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 24,
-                  boxShadow: '0 2px 12px rgba(28,43,53,0.06)',
-                }}>
-                  <div style={{
-                    color: 'var(--accent)',
-                    fontSize: 32,
-                    lineHeight: 1,
-                    fontFamily: 'Georgia, serif',
-                  }}>"</div>
-                  <p style={{
-                    fontSize: 16,
-                    lineHeight: 1.65,
-                    color: 'var(--ink)',
-                    flex: 1,
-                    marginTop: -16,
-                  }}>
-                    {quote}
-                  </p>
-                  <div style={{ borderTop: '1px solid var(--border)', paddingTop: 20 }}>
-                    <div style={{ fontWeight: 700, fontSize: 15, color: 'var(--ink)' }}>{name}</div>
-                    <div style={{ fontSize: 13, color: 'var(--ink-mid)', marginTop: 2 }}>{role}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* ── Common questions ── */}
         <section className="section-pad" style={{
           background: 'var(--bg-alt)',
@@ -673,6 +685,44 @@ export default function HomePage() {
                 </div>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* ── Starter kit ── */}
+        <section className="section-pad" style={{
+          background: 'var(--bg)',
+          borderTop: '1px solid var(--border)',
+        }}>
+          <div style={{
+            maxWidth: 760, margin: '0 auto',
+            background: 'var(--white)',
+            border: '1px solid var(--border)',
+            borderRadius: 24,
+            padding: '40px 36px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 28,
+            flexWrap: 'wrap',
+            boxShadow: '0 2px 12px rgba(28,43,53,0.06)',
+          }}>
+            <span style={{ fontSize: 52, lineHeight: 1 }}>📋</span>
+            <div style={{ flex: 1, minWidth: 260 }}>
+              <h2 style={{
+                fontFamily: 'var(--font-dm-serif), Georgia, serif',
+                fontSize: 'clamp(22px, 3vw, 28px)',
+                letterSpacing: '-0.02em',
+                lineHeight: 1.2,
+                marginBottom: 8,
+              }}>
+                Not ready to start? <em style={{ color: 'var(--accent)', fontStyle: 'italic' }}>Take the starter kit with you.</em>
+              </h2>
+              <p style={{ fontSize: 15, color: 'var(--ink-mid)', lineHeight: 1.6, margin: 0 }}>
+                A free PDF with practical AI tasks and copy-and-paste prompts. Read it whenever you&apos;re ready.
+              </p>
+            </div>
+            <a href="/starter-kit" className="btn btn-primary" style={{ whiteSpace: 'nowrap', flexShrink: 0, padding: '14px 28px' }}>
+              Get the free kit →
+            </a>
           </div>
         </section>
 

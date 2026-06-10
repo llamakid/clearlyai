@@ -1,7 +1,6 @@
 import { notFound, redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import CoursePlayer from '@/components/CoursePlayer'
-import starterCourse from '@/lib/course-data/starter'
 import module1 from '@/lib/course-data/module-1'
 import module2 from '@/lib/course-data/module-2'
 import module3 from '@/lib/course-data/module-3'
@@ -41,8 +40,9 @@ import c6module6 from '@/lib/course-data/c6-module-6'
 import type { CourseData } from '@/lib/course-data/types'
 import { COURSES_META } from '@/lib/course-data/courses'
 
+// Module 0 (the free starter course) is served by the public app/course/0
+// route — it is intentionally not in this map.
 const COURSES: Record<string, CourseData> = {
-  '0': starterCourse,
   '1': module1,
   '2': module2,
   '3': module3,
@@ -94,26 +94,22 @@ export default async function CoursePage({
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  // Module 0 (starter course) is free for all signed-in users
-  if (moduleId !== '0') {
-    const { data: purchases } = await supabase
-      .from('purchases')
-      .select('plan_type, subscription_status')
-      .eq('user_id', user!.id)
+  const { data: purchases } = await supabase
+    .from('purchases')
+    .select('plan_type, subscription_status')
+    .eq('user_id', user!.id)
 
-    const hasPurchase = purchases?.some(
-      (p) =>
-        p.plan_type === 'forever' ||
-        p.subscription_status === 'active' ||
-        p.subscription_status === 'past_due'
-    )
+  const hasPurchase = purchases?.some(
+    (p) =>
+      p.plan_type === 'forever' ||
+      p.subscription_status === 'active' ||
+      p.subscription_status === 'past_due'
+  )
 
-    if (!hasPurchase) {
-      redirect('/pricing')
-    }
+  if (!hasPurchase) {
+    redirect('/pricing')
   }
 
-  // Fetch saved progress for all modules including module 0
   const moduleNum = parseInt(moduleId)
   const { data: initialProgress } = await supabase
     .from('course_progress')
@@ -122,7 +118,7 @@ export default async function CoursePage({
     .eq('module_id', moduleNum)
     .maybeSingle()
 
-  const courseSlug = moduleNum === 0 ? '' : (COURSES_META.find(c => c.modules.some(m => m.id === moduleNum))?.slug ?? 'ai-foundations')
+  const courseSlug = COURSES_META.find(c => c.modules.some(m => m.id === moduleNum))?.slug ?? 'ai-foundations'
 
   return <CoursePlayer course={course} courseSlug={courseSlug} userId={user!.id} initialProgress={initialProgress} />
 }
