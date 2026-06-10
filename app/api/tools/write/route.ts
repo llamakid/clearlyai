@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { ANON_DAILY_LIMIT, getAnonUsage, recordAnonUsage, anonLimitResponse } from '@/lib/anon-tool-usage'
 import Anthropic from '@anthropic-ai/sdk'
 
 const anthropic = new Anthropic()
@@ -10,28 +11,35 @@ export async function POST(req: NextRequest) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  if (!user) {
-    return NextResponse.json({ error: 'Sign in to use AI Tools.' }, { status: 401 })
-  }
-
   const today = new Date().toISOString().split('T')[0]
   let currentCount = 0
-  try {
-    const { data: usage } = await supabase
-      .from('tool_usage')
-      .select('count')
-      .eq('user_id', user.id)
-      .eq('tool', 'write')
-      .eq('date', today)
-      .maybeSingle()
-    currentCount = usage?.count ?? 0
-    if (currentCount >= DAILY_LIMIT) {
-      return NextResponse.json(
-        { error: `You've used this tool ${DAILY_LIMIT} times today. Come back tomorrow!` },
-        { status: 429 }
-      )
+  let anonHash = ''
+
+  if (user) {
+    try {
+      const { data: usage } = await supabase
+        .from('tool_usage')
+        .select('count')
+        .eq('user_id', user.id)
+        .eq('tool', 'write')
+        .eq('date', today)
+        .maybeSingle()
+      currentCount = usage?.count ?? 0
+      if (currentCount >= DAILY_LIMIT) {
+        return NextResponse.json(
+          { error: `You've used this tool ${DAILY_LIMIT} times today. Come back tomorrow!` },
+          { status: 429 }
+        )
+      }
+    } catch {}
+  } else {
+    const anon = await getAnonUsage(req, 'write', today)
+    currentCount = anon.count
+    anonHash = anon.hash
+    if (currentCount >= ANON_DAILY_LIMIT) {
+      return anonLimitResponse()
     }
-  } catch {}
+  }
 
   const body = await req.json()
   const { type, about, forWho, tone, refine } = body
@@ -54,14 +62,20 @@ export async function POST(req: NextRequest) {
   })
   const result = message.content[0].type === 'text' ? message.content[0].text : ''
 
-  try {
-    await supabase.from('tool_usage').upsert(
-      { user_id: user.id, tool: 'write', date: today, count: currentCount + 1 },
-      { onConflict: 'user_id,tool,date' }
-    )
-  } catch {}
+  const res = NextResponse.json({ result })
 
-  return NextResponse.json({ result })
+  if (user) {
+    try {
+      await supabase.from('tool_usage').upsert(
+        { user_id: user.id, tool: 'write', date: today, count: currentCount + 1 },
+        { onConflict: 'user_id,tool,date' }
+      )
+    } catch {}
+  } else {
+    await recordAnonUsage(req, res, 'write', today, currentCount + 1, anonHash)
+  }
+
+  return res
 }
 
 const WRITE_SYSTEM_PROMPT = `You are a professional writer helping non-technical adults write clear, natural-sounding content. Write in plain, warm language — never salesy or overly formal. Return only the requested content, no explanations or preamble.`

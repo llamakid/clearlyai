@@ -77,18 +77,18 @@ export default function HomePage() {
             </p>
 
             <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <a href="/signup" className="btn btn-primary" style={{ fontSize: 15, padding: '15px 32px', boxShadow: '0 4px 16px rgba(61,122,138,0.25)' }}>
-                Start the Free Course
+              <a href="/tools" className="btn btn-primary" style={{ fontSize: 15, padding: '15px 32px', boxShadow: '0 4px 16px rgba(61,122,138,0.25)' }}>
+                Try a Free AI Tool
               </a>
-              <a href="/pricing" className="btn btn-ghost" style={{ fontSize: 15, padding: '15px 32px' }}>
-                See Plans, from $15/mo
+              <a href="/signup" className="btn btn-ghost" style={{ fontSize: 15, padding: '15px 32px' }}>
+                Start the Free Course
               </a>
             </div>
 
             <p style={{ marginTop: 20, fontSize: 13, color: 'var(--ink-lt)' }}>
-              Free course · No credit card required ·{' '}
-              <a href="/api/download/starter-kit" style={{ color: 'var(--ink-lt)', textDecoration: 'underline' }}>
-                Download the PDF instead
+              No account needed to try · No credit card required ·{' '}
+              <a href="/starter-kit" style={{ color: 'var(--ink-lt)', textDecoration: 'underline' }}>
+                Download the free starter kit
               </a>
             </p>
           </div>
@@ -251,7 +251,7 @@ export default function HomePage() {
                 Use AI right now. <em style={{ color: 'var(--accent)', fontStyle: 'italic' }}>No prompts needed.</em>
               </h2>
               <p style={{ fontSize: 17, color: 'var(--ink-mid)', lineHeight: 1.65, maxWidth: 540 }}>
-                Two simple tools that do the work for you. Describe what you need and AI handles the rest. Free with any account.
+                Two simple tools that do the work for you. Describe what you need and AI handles the rest. Try them right now — no account needed.
               </p>
             </div>
 

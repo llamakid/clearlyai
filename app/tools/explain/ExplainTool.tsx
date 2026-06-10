@@ -25,14 +25,11 @@ export default function ExplainTool({ isLoggedIn }: { isLoggedIn: boolean }) {
   const [text, setText] = useState('')
   const [result, setResult] = useState<ExplainResult | null>(null)
   const [error, setError] = useState('')
-  const [authRequired, setAuthRequired] = useState(!isLoggedIn)
+  const [authRequired, setAuthRequired] = useState(false)
+  const [authMessage, setAuthMessage] = useState('')
 
   async function handleExplain() {
     if (!text.trim()) return
-    if (!isLoggedIn) {
-      setAuthRequired(true)
-      return
-    }
     setStep('loading')
     setError('')
     setAuthRequired(false)
@@ -45,6 +42,7 @@ export default function ExplainTool({ isLoggedIn }: { isLoggedIn: boolean }) {
       const data = await res.json()
       if (res.status === 401) {
         setAuthRequired(true)
+        setAuthMessage(data.error || '')
         setStep('input')
         return
       }
@@ -67,6 +65,7 @@ export default function ExplainTool({ isLoggedIn }: { isLoggedIn: boolean }) {
     setResult(null)
     setError('')
     setAuthRequired(false)
+    setAuthMessage('')
   }
 
   return (
@@ -85,7 +84,12 @@ export default function ExplainTool({ isLoggedIn }: { isLoggedIn: boolean }) {
           <p style={{ fontSize: 15, color: 'var(--ink-mid)', marginBottom: authRequired ? 20 : 28, lineHeight: 1.6 }}>
             Paste any text that confuses you. I'll break it down in plain English.
           </p>
-          {authRequired && <div style={{ marginBottom: 20 }}><SignInPrompt /></div>}
+          {authRequired && <div style={{ marginBottom: 20 }}><SignInPrompt message={authMessage} /></div>}
+          {!isLoggedIn && !authRequired && (
+            <p style={{ fontSize: 13, color: 'var(--accent-dk)', fontWeight: 600, marginTop: -16, marginBottom: 20 }}>
+              ✓ Try it free — no account needed
+            </p>
+          )}
           <div className="form-group" style={{ marginBottom: 20 }}>
             <textarea
               rows={8}
@@ -188,7 +192,7 @@ export default function ExplainTool({ isLoggedIn }: { isLoggedIn: boolean }) {
   )
 }
 
-function SignInPrompt() {
+function SignInPrompt({ message }: { message?: string }) {
   return (
     <div style={{
       background: 'var(--accent-lt)',
@@ -202,8 +206,8 @@ function SignInPrompt() {
       flexWrap: 'wrap',
       marginBottom: 12,
     }}>
-      <p style={{ fontSize: 14, color: 'var(--accent-dk)', fontWeight: 500, margin: 0 }}>
-        Free account needed to generate. Takes 30 seconds.
+      <p style={{ fontSize: 14, color: 'var(--accent-dk)', fontWeight: 500, margin: 0, flex: 1, minWidth: 200 }}>
+        {message || 'Create a free account to keep going. Takes 30 seconds.'}
       </p>
       <a
         href="/signup"

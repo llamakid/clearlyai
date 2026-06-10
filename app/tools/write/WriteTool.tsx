@@ -54,14 +54,11 @@ export default function WriteTool({ isLoggedIn }: { isLoggedIn: boolean }) {
   const [tone, setTone] = useState<Tone>('friendly')
   const [result, setResult] = useState('')
   const [error, setError] = useState('')
-  const [authRequired, setAuthRequired] = useState(!isLoggedIn)
+  const [authRequired, setAuthRequired] = useState(false)
+  const [authMessage, setAuthMessage] = useState('')
   const [copied, setCopied] = useState(false)
 
   async function generate(refine?: string) {
-    if (!isLoggedIn) {
-      setAuthRequired(true)
-      return
-    }
     const prevResult = result
     setStep('loading')
     setError('')
@@ -75,6 +72,7 @@ export default function WriteTool({ isLoggedIn }: { isLoggedIn: boolean }) {
       const data = await res.json()
       if (res.status === 401) {
         setAuthRequired(true)
+        setAuthMessage(data.error || '')
         setStep(prevResult ? 'result' : 'details')
         return
       }
@@ -106,6 +104,7 @@ export default function WriteTool({ isLoggedIn }: { isLoggedIn: boolean }) {
     setResult('')
     setError('')
     setAuthRequired(false)
+    setAuthMessage('')
     setCopied(false)
   }
 
@@ -125,7 +124,12 @@ export default function WriteTool({ isLoggedIn }: { isLoggedIn: boolean }) {
         <div style={card}>
           <h1 style={{ fontFamily: 'var(--font-h)', fontSize: 28, marginBottom: 8 }}>Write This For Me</h1>
           <p style={{ fontSize: 15, color: 'var(--ink-mid)', marginBottom: authRequired ? 20 : 28 }}>What are you writing today?</p>
-          {authRequired && <div style={{ marginBottom: 20 }}><SignInPrompt /></div>}
+          {authRequired && <div style={{ marginBottom: 20 }}><SignInPrompt message={authMessage} /></div>}
+          {!isLoggedIn && !authRequired && (
+            <p style={{ fontSize: 13, color: 'var(--accent-dk)', fontWeight: 600, marginTop: -16, marginBottom: 20 }}>
+              ✓ Try it free — no account needed
+            </p>
+          )}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {TYPES.map(t => (
               <button
@@ -176,7 +180,7 @@ export default function WriteTool({ isLoggedIn }: { isLoggedIn: boolean }) {
           <p style={{ fontSize: 15, color: 'var(--ink-mid)', marginBottom: authRequired ? 20 : 28 }}>
             A few quick questions and I'll write it for you.
           </p>
-          {authRequired && <div style={{ marginBottom: 20 }}><SignInPrompt /></div>}
+          {authRequired && <div style={{ marginBottom: 20 }}><SignInPrompt message={authMessage} /></div>}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
             <div className="form-group">
               <label htmlFor="about">What is it about?</label>
@@ -284,6 +288,7 @@ export default function WriteTool({ isLoggedIn }: { isLoggedIn: boolean }) {
             {result}
           </pre>
           {error && <p className="error-text" style={{ marginBottom: 16 }}>{error}</p>}
+          {authRequired && <div style={{ marginBottom: 16 }}><SignInPrompt message={authMessage} /></div>}
           <div style={{ marginBottom: 24 }}>
             <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--ink-mid)', marginBottom: 10 }}>
               Adjust it:
@@ -332,7 +337,7 @@ export default function WriteTool({ isLoggedIn }: { isLoggedIn: boolean }) {
   )
 }
 
-function SignInPrompt() {
+function SignInPrompt({ message }: { message?: string }) {
   return (
     <div style={{
       background: 'var(--accent-lt)',
@@ -345,8 +350,8 @@ function SignInPrompt() {
       gap: 16,
       flexWrap: 'wrap',
     }}>
-      <p style={{ fontSize: 14, color: 'var(--accent-dk)', fontWeight: 500, margin: 0 }}>
-        Free account needed to generate. Takes 30 seconds.
+      <p style={{ fontSize: 14, color: 'var(--accent-dk)', fontWeight: 500, margin: 0, flex: 1, minWidth: 200 }}>
+        {message || 'Create a free account to keep going. Takes 30 seconds.'}
       </p>
       <a
         href="/signup"

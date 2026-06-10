@@ -6,6 +6,7 @@ import { NextResponse } from 'next/server'
 
 const schema = z.object({
   email: z.string().email('Invalid email'),
+  source: z.enum(['starter-kit']).optional(),
 })
 
 export async function POST(request: Request) {
@@ -22,44 +23,84 @@ export async function POST(request: Request) {
       process.env.SUPABASE_SERVICE_ROLE_KEY!
     )
 
+    const isStarterKit = parsed.data.source === 'starter-kit'
+
     const { data: existing } = await supabase
       .from('subscribers')
       .select('email')
       .eq('email', parsed.data.email)
       .maybeSingle()
 
-    if (existing) {
+    // Existing newsletter subscribers requesting the starter kit still get the kit email
+    if (existing && !isStarterKit) {
       return NextResponse.json({ ok: true })
     }
 
-    const { error } = await supabase
-      .from('subscribers')
-      .insert({ email: parsed.data.email })
+    if (!existing) {
+      const { error } = await supabase
+        .from('subscribers')
+        .insert({ email: parsed.data.email })
 
-    if (error) {
-      console.error('Subscribe error:', error)
-      return apiError('Could not save email')
+      if (error) {
+        console.error('Subscribe error:', error)
+        return apiError('Could not save email')
+      }
     }
+
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://learnaiclearly.com'
+    const starterKitEmail = {
+      subject: 'Your AI Starter Kit — Clearly, AI',
+      html: `
+        <div style="font-family:Inter,sans-serif;max-width:560px;margin:0 auto;color:#1c2b35;">
+          <h1 style="font-family:'DM Serif Display',Georgia,serif;color:#3d7a8a;font-size:26px;margin-bottom:8px;">
+            Here's your AI Starter Kit.
+          </h1>
+          <p style="font-size:16px;line-height:1.6;">
+            Thanks for grabbing the <strong>Clearly, AI Starter Kit</strong> — practical things
+            you can do with AI today, each with a prompt you can copy and use right away.
+          </p>
+          <p style="margin:24px 0;">
+            <a href="${siteUrl}/api/download/starter-kit"
+               style="background:#3d7a8a;color:#ffffff;text-decoration:none;padding:13px 28px;border-radius:10px;font-size:15px;font-weight:700;display:inline-block;">
+              Download the Starter Kit
+            </a>
+          </p>
+          <p style="font-size:16px;line-height:1.6;">
+            When you're ready for more, the free course
+            <a href="${siteUrl}/signup" style="color:#3d7a8a;font-weight:600;">"10 Things You Can Do With AI Today"</a>
+            walks through everything step by step — no credit card needed.
+          </p>
+          <p style="font-size:14px;color:#666;line-height:1.6;">
+            — Nate
+          </p>
+        </div>
+      `,
+    }
+    const newsletterEmail = {
+      subject: 'You\'re on the list — Clearly, AI',
+      html: `
+        <div style="font-family:Inter,sans-serif;max-width:560px;margin:0 auto;color:#1c2b35;">
+          <h1 style="font-family:'DM Serif Display',Georgia,serif;color:#3d7a8a;font-size:26px;margin-bottom:8px;">
+            Got it — you're on the list.
+          </h1>
+          <p style="font-size:16px;line-height:1.6;">
+            Thanks for joining the <strong>Clearly, AI</strong> newsletter. We'll be sending practical AI tips
+            straight to your inbox — no jargon, no fluff, just things you can actually use.
+          </p>
+          <p style="font-size:14px;color:#666;line-height:1.6;">
+            — Nate
+          </p>
+        </div>
+      `,
+    }
+    const emailContent = isStarterKit ? starterKitEmail : newsletterEmail
 
     try {
       await getResend().emails.send({
         from: fromAddress(),
         to: parsed.data.email,
-        subject: 'You\'re on the list — Clearly, AI',
-        html: `
-          <div style="font-family:Inter,sans-serif;max-width:560px;margin:0 auto;color:#1c2b35;">
-            <h1 style="font-family:'DM Serif Display',Georgia,serif;color:#3d7a8a;font-size:26px;margin-bottom:8px;">
-              Got it — you're on the list.
-            </h1>
-            <p style="font-size:16px;line-height:1.6;">
-              Thanks for joining the <strong>Clearly, AI</strong> newsletter. We'll be sending practical AI tips
-              straight to your inbox — no jargon, no fluff, just things you can actually use.
-            </p>
-            <p style="font-size:14px;color:#666;line-height:1.6;">
-              — Nate
-            </p>
-          </div>
-        `,
+        subject: emailContent.subject,
+        html: emailContent.html,
       })
     } catch (emailErr) {
       // Don't fail the signup if email fails — subscriber is already saved

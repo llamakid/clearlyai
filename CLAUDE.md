@@ -166,14 +166,17 @@ The `courseSlug` is derived server-side in the module page by looking up the mod
 
 ## Database Schema (Supabase)
 
-Four tables — all with RLS enabled:
+All tables have RLS enabled:
 
 | Table | Purpose |
 |---|---|
 | `purchases` | Created by Stripe webhook on successful payment. Grants access to all courses. |
 | `course_progress` | Tracks `current_lesson`, `current_slide`, `completed` per user per module. `module_id >= 1`. |
-| `subscribers` | Email addresses from the homepage opt-in form. |
+| `subscribers` | Email addresses from the homepage opt-in form + `/starter-kit` lead magnet. |
 | `feedback` | End-of-module survey responses. Service-role insert only. |
+| `tool_usage` | Daily AI tool usage per logged-in user (rate limit: 5/tool/day). |
+| `anon_tool_usage` | Daily AI tool usage for logged-out visitors, keyed by IP hash (rate limit: 2/tool/day). Service-role only. |
+| `downloads` | Logs starter-kit PDF downloads. |
 
 ---
 
@@ -267,7 +270,8 @@ See `.env.local.example` for the full list. Summary:
 - ✅ Deployed to Vercel, all env vars set
 - ✅ Vercel Analytics + Speed Insights installed
 - ✅ Smoke test completed — full signup → checkout → dashboard → course → module → feedback flow verified
-- ✅ AI Tools built and live — Write (`/tools/write`) and Explain (`/tools/explain`) wired to Claude Haiku with auth gate, rate limiting (`tool_usage` table), and copy/refinement actions
+- ✅ AI Tools built and live — Write (`/tools/write`) and Explain (`/tools/explain`) wired to Claude Haiku with copy/refinement actions. Logged-out visitors get 2 free uses/tool/day (cookie + `anon_tool_usage` IP-hash table via `lib/anon-tool-usage.ts`); logged-in users get 5/tool/day (`tool_usage` table). Homepage hero primary CTA is "Try a Free AI Tool" → `/tools`.
+- ✅ Starter kit PDF email-gated — `/starter-kit` landing page captures email → subscribes (`source: 'starter-kit'`) → triggers download + sends email with download link
 
 ### SEO / Discovery
 - ✅ **Site is live** at learnaiclearly.com

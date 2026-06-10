@@ -113,3 +113,21 @@ create index if not exists purchases_subscription_id_idx on purchases(stripe_sub
 create index if not exists progress_user_module_idx on course_progress(user_id, module_id);
 create index if not exists feedback_module_id_idx on feedback(module_id);
 create index if not exists feedback_submitted_at_idx on feedback(submitted_at desc);
+
+-- ── anon_tool_usage: daily AI tool usage for logged-out visitors ──
+-- Keyed by a SHA-256 hash of the visitor's IP (never the raw IP).
+-- Written only via the service role from the tool API routes.
+create table if not exists anon_tool_usage (
+  ip_hash text not null,
+  tool    text not null,
+  date    date not null,
+  count   integer not null default 0,
+  primary key (ip_hash, tool, date)
+);
+
+alter table anon_tool_usage enable row level security;
+
+-- No client access at all — service role bypasses RLS
+create policy "no public access on anon_tool_usage"
+  on anon_tool_usage for all
+  using (false);

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { ANON_DAILY_LIMIT, getAnonUsage, recordAnonUsage, anonLimitResponse } from '@/lib/anon-tool-usage'
 import Anthropic from '@anthropic-ai/sdk'
 
 const anthropic = new Anthropic()
@@ -10,28 +11,35 @@ export async function POST(req: NextRequest) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  if (!user) {
-    return NextResponse.json({ error: 'Sign in to use AI Tools.' }, { status: 401 })
-  }
-
   const today = new Date().toISOString().split('T')[0]
   let currentCount = 0
-  try {
-    const { data: usage } = await supabase
-      .from('tool_usage')
-      .select('count')
-      .eq('user_id', user.id)
-      .eq('tool', 'explain')
-      .eq('date', today)
-      .maybeSingle()
-    currentCount = usage?.count ?? 0
-    if (currentCount >= DAILY_LIMIT) {
-      return NextResponse.json(
-        { error: `You've used this tool ${DAILY_LIMIT} times today. Come back tomorrow!` },
-        { status: 429 }
-      )
+  let anonHash = ''
+
+  if (user) {
+    try {
+      const { data: usage } = await supabase
+        .from('tool_usage')
+        .select('count')
+        .eq('user_id', user.id)
+        .eq('tool', 'explain')
+        .eq('date', today)
+        .maybeSingle()
+      currentCount = usage?.count ?? 0
+      if (currentCount >= DAILY_LIMIT) {
+        return NextResponse.json(
+          { error: `You've used this tool ${DAILY_LIMIT} times today. Come back tomorrow!` },
+          { status: 429 }
+        )
+      }
+    } catch {}
+  } else {
+    const anon = await getAnonUsage(req, 'explain', today)
+    currentCount = anon.count
+    anonHash = anon.hash
+    if (currentCount >= ANON_DAILY_LIMIT) {
+      return anonLimitResponse()
     }
-  } catch {}
+  }
 
   const body = await req.json()
   const { text } = body
@@ -54,21 +62,29 @@ export async function POST(req: NextRequest) {
   })
 
   const raw = message.content[0].type === 'text' ? message.content[0].text : ''
+  // The model occasionally wraps the JSON in ```json fences despite instructions
+  const cleaned = raw.replace(/^\s*```(?:json)?\s*/, '').replace(/\s*```\s*$/, '')
   let result: Record<string, unknown>
   try {
-    result = JSON.parse(raw)
+    result = JSON.parse(cleaned)
   } catch {
     result = { summary: raw, takeaways: [], meaning: '', suggestedResponse: undefined }
   }
 
-  try {
-    await supabase.from('tool_usage').upsert(
-      { user_id: user.id, tool: 'explain', date: today, count: currentCount + 1 },
-      { onConflict: 'user_id,tool,date' }
-    )
-  } catch {}
+  const res = NextResponse.json(result)
 
-  return NextResponse.json(result)
+  if (user) {
+    try {
+      await supabase.from('tool_usage').upsert(
+        { user_id: user.id, tool: 'explain', date: today, count: currentCount + 1 },
+        { onConflict: 'user_id,tool,date' }
+      )
+    } catch {}
+  } else {
+    await recordAnonUsage(req, res, 'explain', today, currentCount + 1, anonHash)
+  }
+
+  return res
 }
 
 const EXPLAIN_SYSTEM_PROMPT = `You are a plain-English explainer. A non-technical adult has pasted text and needs help understanding it.

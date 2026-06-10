@@ -56,7 +56,7 @@ export default function ToolsPage() {
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
             }}>
-              Free with any account
+              Free to try — no account needed
             </div>
             <h1 style={{ fontFamily: 'var(--font-h)', fontSize: 40, marginBottom: 14, lineHeight: 1.15 }}>
               Put AI to work.<br />No prompts needed.
