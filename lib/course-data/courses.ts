@@ -126,6 +126,32 @@ export const COURSES_META: CourseMeta[] = [
     ],
   },
   {
+    slug: 'ai-career-growth',
+    title: 'AI for Career Growth',
+    subtitle: 'Get promoted. Negotiate better. Build your edge.',
+    description:
+      'Built for working professionals who want to move faster. Use AI to document your wins, ace your self-reviews, negotiate with confidence, build your professional brand, and stay ahead of the curve.',
+    icon: '🚀',
+    tag: 'Professional',
+    totalLessons: 30,
+    estimatedTime: '~3 hours',
+    whatYoullLearn: [
+      'How to document your wins so you\'re never caught off guard at review time',
+      'How to write self-reviews and promotion cases that actually get noticed',
+      'How to negotiate salary with research, preparation, and confidence',
+      'How to build a LinkedIn profile and professional brand that opens doors',
+      'How to grow your skills faster using AI as a personal learning system',
+    ],
+    modules: [
+      { id: 31, num: 1, title: 'Your Career, Your Advantage', desc: 'Understand why right now is a career-defining moment and get your first AI-powered win this week.', lessons: 5, available: true },
+      { id: 32, num: 2, title: 'Position Yourself for the Promotion', desc: 'Document your contributions, write self-reviews that get noticed, and have the promotion conversation with confidence.', lessons: 5, available: true },
+      { id: 33, num: 3, title: 'Your Professional Brand', desc: 'Rebuild your LinkedIn from the ground up, sharpen your pitch, and make recruiters and decision-makers take notice.', lessons: 5, available: true },
+      { id: 34, num: 4, title: 'Negotiate Like You\'ve Done Your Homework', desc: 'Research market rates, prepare your counter, and walk into salary conversations ready for every response.', lessons: 5, available: true },
+      { id: 35, num: 5, title: 'Grow Faster Than Your Job Description', desc: 'Build a personal learning system, close your skill gaps, and stay ahead of what the next level requires.', lessons: 5, available: true },
+      { id: 36, num: 6, title: "The Career Professional's AI Playbook", desc: 'Apply AI to job searching, interview prep, and building a sustainable edge that compounds over time.', lessons: 5, available: true },
+    ],
+  },
+  {
     slug: 'ai-richer-retirement',
     title: 'AI for a Richer Retirement',
     subtitle: 'More time. More connection. More confidence.',

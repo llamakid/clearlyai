@@ -16,7 +16,7 @@ const TRACKS = [
   {
     label: 'For Professionals',
     description: 'Reclaim time, look sharper, and get ahead at work.',
-    slugs: ['ai-at-work'],
+    slugs: ['ai-at-work', 'ai-career-growth'],
   },
   {
     label: 'For Small Business Owners',

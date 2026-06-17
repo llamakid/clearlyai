@@ -106,6 +106,7 @@ lib/
   course-data/c3-module-1.ts through 6.ts  Course 3 "AI for Your Business" content (moduleIds 13–18)
   course-data/c4-module-1.ts through 6.ts  Course 4 "AI for a Richer Retirement" content (moduleIds 19–24)
   course-data/c5-module-1.ts through 6.ts  Course 5 "Better Prompts, Better Results" content (moduleIds 25–30)
+  course-data/c6-module-1.ts through 6.ts  Course 6 "AI for Career Growth" content (moduleIds 31–36)
 
 content/blog/
   *.mdx                                 Blog posts — add new ones here (26+ posts live)
@@ -131,6 +132,7 @@ Access is gated by the `purchases` table — a single purchase unlocks **all** c
 | Course 3 | AI for Your Business | 13–18 | `ai-for-your-business` |
 | Course 4 | AI for a Richer Retirement | 19–24 | `ai-richer-retirement` |
 | Course 5 | Better Prompts, Better Results | 25–30 | `better-prompts` |
+| Course 6 | AI for Career Growth | 31–36 | `ai-career-growth` |
 
 Module 0 is the free starter course — progress is tracked in `course_progress` like all other modules (schema constraint: `module_id >= 0`).
 
@@ -245,12 +247,13 @@ See `.env.local.example` for the full list. Summary:
 - ✅ Business plan written
 - ✅ Brand system locked (Clear Sky + DM Serif + Inter)
 - ✅ Next.js app scaffolded with full stack (auth, payments, blog, course player)
-- ✅ All 5 courses fully built — 30 modules, 150 lessons total
+- ✅ All 6 courses fully built — 36 modules, 180 lessons total
   - Course 1: AI Foundations (moduleIds 1–6)
   - Course 2: AI at Work (moduleIds 7–12)
   - Course 3: AI for Your Business (moduleIds 13–18)
   - Course 4: AI for a Richer Retirement (moduleIds 19–24)
   - Course 5: Better Prompts, Better Results (moduleIds 25–30)
+  - Course 6: AI for Career Growth (moduleIds 31–36)
 - ✅ Dashboard — course cards link to course overview pages
 - ✅ Course overview pages live at `/courses/[courseSlug]` (hero + module grid)
 - ✅ Public curriculum page at `/curriculum` (all 5 courses visible without login)
@@ -317,6 +320,6 @@ See `.env.local.example` for the full list. Summary:
 - **CoursePlayer** accepts a `courseSlug` prop (passed from the server page) — the "← Course Home" sidebar button links to `/courses/[courseSlug]`. The top-bar logo links to `/dashboard`.
 - `lib/course-data/courses.ts` is the single source of truth for course-level metadata — dashboard, curriculum page, and course overview pages all read from it. Always update this file when adding or publishing a new module.
 - Module 0 (starter course) is served by the public `app/course/0/page.tsx` route — no auth required, exempted in `proxy.ts`. The protected `app/(protected)/course/[moduleId]/page.tsx` handles modules 1+ only. "Start the Free Course" CTAs link to `/course/0` directly, not `/signup`. The DB constraint is `module_id >= 0`.
-- There are now 5 courses (30 modules, moduleIds 1–30). Next available moduleId block starts at 31.
+- There are now 6 courses (36 modules, moduleIds 1–36). Next available moduleId block starts at 37.
 - **ManageSubscriptionButton** is a client component that POSTs to `/api/stripe/portal` — only render it for users who have an active subscription.
 - **EmailVerificationBanner** shows for signed-in users who haven't confirmed their email yet. Don't remove it from layouts that render for unverified users.
