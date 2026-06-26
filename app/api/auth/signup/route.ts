@@ -51,8 +51,6 @@ export async function POST(request: Request) {
     })
     if (emailError) {
       console.error('[signup] Resend error:', JSON.stringify(emailError))
-    } else {
-      console.log('[signup] Verification email sent, id:', emailData?.id)
     }
   } catch (e) {
     console.error('[signup] Verification email threw:', e)
