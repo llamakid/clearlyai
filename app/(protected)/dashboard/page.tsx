@@ -30,6 +30,34 @@ const TRACKS = [
   },
 ]
 
+// Provider-specific deep-dive paths — a start-to-finish progression through one
+// AI tool, beginner to advanced. Distinct from the audience tracks above.
+const PROVIDER_SERIES = {
+  label: 'Go Deeper: Master a Tool',
+  description: 'A complete, start-to-finish path through one AI tool — beginner to advanced. First up: Claude.',
+  provider: 'Claude',
+  levels: [
+    {
+      level: 'Beginner',
+      title: 'Getting Started with Claude',
+      subtitle: "Anthropic's Claude, from zero. Chat with confidence.",
+      slug: 'getting-started-with-claude',
+    },
+    {
+      level: 'Intermediate',
+      title: 'Claude for Real Work',
+      subtitle: 'Projects, connectors, and your first taste of Cowork.',
+      comingSoon: true,
+    },
+    {
+      level: 'Advanced',
+      title: 'Claude, Mastered',
+      subtitle: 'Advanced Cowork — plus a hands-on intro to Claude Code.',
+      comingSoon: true,
+    },
+  ],
+}
+
 function CourseCard({ course, isLocked }: { course: CourseMeta; isLocked: boolean }) {
   const availableCount = course.modules.filter((m) => m.available).length
 
@@ -92,6 +120,76 @@ function CourseCard({ course, isLocked }: { course: CourseMeta; isLocked: boolea
           flexShrink: 0,
         }}>
           {isLocked ? 'Locked' : 'Explore →'}
+        </span>
+      </div>
+    </div>
+  )
+}
+
+function ProviderLevelCard({
+  level,
+  index,
+  total,
+  hasPurchase,
+}: {
+  level: (typeof PROVIDER_SERIES.levels)[number]
+  index: number
+  total: number
+  hasPurchase: boolean
+}) {
+  const comingSoon = 'comingSoon' in level && level.comingSoon
+  const locked = !comingSoon && !hasPurchase
+  const interactive = !comingSoon && hasPurchase
+
+  return (
+    <div
+      className={`card${interactive ? ' card-hover' : ''}`}
+      style={{
+        padding: '22px',
+        display: 'flex',
+        flexDirection: 'column',
+        flex: 1,
+        opacity: comingSoon ? 0.62 : locked ? 0.78 : 1,
+        cursor: interactive ? 'pointer' : 'default',
+        boxSizing: 'border-box',
+        borderColor: comingSoon ? 'var(--border)' : 'var(--accent-lt)',
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
+        <span style={{
+          fontSize: 11, fontWeight: 700, letterSpacing: '0.06em',
+          textTransform: 'uppercase', color: 'var(--accent-dk)',
+          background: 'var(--accent-lt)', padding: '2px 8px', borderRadius: 6,
+        }}>
+          {level.level}
+        </span>
+        <span style={{ fontSize: 11, color: 'var(--ink-lt)', fontWeight: 600 }}>
+          Part {index + 1} of {total}
+        </span>
+        {comingSoon && <span style={{ marginLeft: 'auto', fontSize: 14 }}>🔜</span>}
+        {locked && <span style={{ marginLeft: 'auto', fontSize: 14, color: 'var(--ink-lt)' }}>🔒</span>}
+      </div>
+
+      <h3 style={{
+        fontFamily: 'var(--font-h)',
+        fontSize: 17,
+        marginBottom: 6,
+        color: 'var(--ink)',
+        lineHeight: 1.25,
+      }}>
+        {level.title}
+      </h3>
+      <p style={{ fontSize: 13, color: 'var(--ink-mid)', lineHeight: 1.55, marginBottom: 18 }}>
+        {level.subtitle}
+      </p>
+
+      <div style={{ marginTop: 'auto' }}>
+        <span style={{
+          fontSize: 13, fontWeight: 600,
+          color: comingSoon || locked ? 'var(--ink-lt)' : 'var(--accent)',
+          whiteSpace: 'nowrap',
+        }}>
+          {comingSoon ? 'Coming soon' : locked ? 'Locked' : 'Explore →'}
         </span>
       </div>
     </div>
@@ -301,6 +399,74 @@ export default async function DashboardPage({
                 </section>
               )
             })}
+
+            {/* Provider deep-dive series — distinct visual treatment */}
+            <section>
+              <div style={{
+                marginBottom: 20,
+                paddingBottom: 14,
+                borderBottom: '1px solid var(--border)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 10,
+                flexWrap: 'wrap',
+              }}>
+                <span style={{ fontSize: 22, lineHeight: 1 }}>🎓</span>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <h2 style={{
+                      fontFamily: 'var(--font-h)',
+                      fontSize: 21,
+                      color: 'var(--ink)',
+                    }}>
+                      {PROVIDER_SERIES.label}
+                    </h2>
+                    <span style={{
+                      fontSize: 10, fontWeight: 700, letterSpacing: '0.06em',
+                      textTransform: 'uppercase', color: '#fff',
+                      background: 'var(--accent)', padding: '2px 8px', borderRadius: 6,
+                    }}>
+                      New
+                    </span>
+                  </div>
+                  <p style={{ fontSize: 14, color: 'var(--ink-mid)', marginTop: 4 }}>
+                    {PROVIDER_SERIES.description}
+                  </p>
+                </div>
+              </div>
+
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+                gap: 16,
+                alignItems: 'stretch',
+              }}>
+                {PROVIDER_SERIES.levels.map((level, i) => {
+                  const card = (
+                    <ProviderLevelCard
+                      level={level}
+                      index={i}
+                      total={PROVIDER_SERIES.levels.length}
+                      hasPurchase={hasPurchase}
+                    />
+                  )
+                  const isLink = !('comingSoon' in level && level.comingSoon) && hasPurchase && 'slug' in level
+                  return isLink ? (
+                    <Link
+                      key={level.title}
+                      href={`/courses/${(level as { slug: string }).slug}`}
+                      style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column' }}
+                    >
+                      {card}
+                    </Link>
+                  ) : (
+                    <div key={level.title} style={{ display: 'flex', flexDirection: 'column' }}>
+                      {card}
+                    </div>
+                  )
+                })}
+              </div>
+            </section>
           </div>
 
           {!hasPurchase && (

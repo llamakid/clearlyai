@@ -177,6 +177,32 @@ export const COURSES_META: CourseMeta[] = [
       { id: 24, num: 6, title: 'Stay Sharp, Stay Safe', desc: 'Spot scams, protect your privacy, build daily habits, and finish strong.', lessons: 5, available: true },
     ],
   },
+  {
+    slug: 'getting-started-with-claude',
+    title: 'Getting Started with Claude',
+    subtitle: 'Anthropic\'s Claude, from zero. No tech background needed.',
+    description:
+      'A plain-English introduction to Claude — the AI assistant from Anthropic. Learn your way around it, hold real conversations, get everyday work done, and build a daily habit that sticks. The first course in our hands-on Claude path.',
+    icon: '💬',
+    tag: 'Claude · Beginner',
+    totalLessons: 30,
+    estimatedTime: '~3 hours',
+    whatYoullLearn: [
+      'What Claude is, how it\'s different, and how to get set up',
+      'How to hold a real conversation and steer it to what you need',
+      'How to get writing, summarizing, and planning done faster',
+      'How to bring your own files, documents, and images to Claude',
+      'How to use Artifacts and Memory, and build a daily Claude habit',
+    ],
+    modules: [
+      { id: 37, num: 1, title: 'Meet Claude', desc: 'What Claude is, why it feels different, how to get in, and your very first conversation.', lessons: 5, available: true },
+      { id: 38, num: 2, title: 'Your First Real Conversations', desc: 'Talk to Claude like a person, master the follow-up, and steer any answer to exactly what you need.', lessons: 5, available: true },
+      { id: 39, num: 3, title: 'Everyday Wins', desc: 'Writing, summarizing, planning, and brainstorming — the everyday tasks Claude makes faster today.', lessons: 5, available: true },
+      { id: 40, num: 4, title: 'Bring Your Own Stuff', desc: 'Upload files, documents, and images, ask questions about them, and keep your information safe.', lessons: 5, available: true },
+      { id: 41, num: 5, title: 'Things Claude Can Build & Remember', desc: 'Use Artifacts to create things you can keep, and Memory to make Claude work the way you do.', lessons: 5, available: true },
+      { id: 42, num: 6, title: 'Your Claude Habit', desc: 'Web search, knowing when to verify, staying safe, and building Claude into your everyday routine.', lessons: 5, available: true },
+    ],
+  },
 ]
 
 export function getCourseBySlug(slug: string): CourseMeta | undefined {
