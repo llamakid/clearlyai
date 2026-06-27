@@ -108,9 +108,11 @@ lib/
   course-data/c5-module-1.ts through 6.ts  Course 5 "Better Prompts, Better Results" content (moduleIds 25–30)
   course-data/c6-module-1.ts through 6.ts  Course 6 "AI for Career Growth" content (moduleIds 31–36)
   course-data/c7-module-1.ts through 6.ts  Course 7 "Getting Started with Claude" content (moduleIds 37–42)
-                                        — first of a planned provider-specific Claude path (beginner→
-                                        intermediate→advanced). Intermediate (Cowork) + Advanced
-                                        (Claude Code) courses not yet built.
+  course-data/c8-module-1.ts through 6.ts  Course 8 "Claude for Real Work" content (moduleIds 43–48)
+                                        — Courses 7 & 8 are the first two of a 3-course provider-specific
+                                        Claude path (beginner→intermediate→advanced). Course 8 covers
+                                        Projects, connectors, Skills, and Cowork. The Advanced course
+                                        ("Claude, Mastered" — deeper Cowork + Claude Code) is not yet built.
 
 content/blog/
   *.mdx                                 Blog posts — add new ones here (26+ posts live)
@@ -138,6 +140,7 @@ Access is gated by the `purchases` table — a single purchase unlocks **all** c
 | Course 5 | Better Prompts, Better Results | 25–30 | `better-prompts` |
 | Course 6 | AI for Career Growth | 31–36 | `ai-career-growth` |
 | Course 7 | Getting Started with Claude | 37–42 | `getting-started-with-claude` |
+| Course 8 | Claude for Real Work | 43–48 | `claude-for-real-work` |
 
 Module 0 is the free starter course — progress is tracked in `course_progress` like all other modules (schema constraint: `module_id >= 0`).
 
@@ -325,7 +328,7 @@ See `.env.local.example` for the full list. Summary:
 - **CoursePlayer** accepts a `courseSlug` prop (passed from the server page) — the "← Course Home" sidebar button links to `/courses/[courseSlug]`. The top-bar logo links to `/dashboard`.
 - `lib/course-data/courses.ts` is the single source of truth for course-level metadata — dashboard, curriculum page, and course overview pages all read from it. Always update this file when adding or publishing a new module.
 - Module 0 (starter course) is served by the public `app/course/0/page.tsx` route — no auth required, exempted in `proxy.ts`. The protected `app/(protected)/course/[moduleId]/page.tsx` handles modules 1+ only. "Start the Free Course" CTAs link to `/course/0` directly, not `/signup`. The DB constraint is `module_id >= 0`.
-- There are now 7 courses (42 modules, moduleIds 1–42). Next available moduleId block starts at 43.
-- Course 7 "Getting Started with Claude" is the first **provider-specific** course (about Claude itself). The dashboard groups it under a separate "Go Deeper: Master a Tool" provider track (see `PROVIDER_SERIES` in the dashboard page), distinct from the audience-based tracks. The planned Intermediate ("Claude for Real Work" — Cowork) and Advanced ("Claude, Mastered" — Claude Code) courses are shown as "Coming soon" cards in that track and are not yet built.
+- There are now 8 courses (48 modules, moduleIds 1–48). Next available moduleId block starts at 49.
+- Courses 7 & 8 are **provider-specific** courses (about Claude itself). The dashboard groups them under a separate "Go Deeper: Master a Tool" provider track (see `PROVIDER_SERIES` in the dashboard page), distinct from the audience-based tracks. Course 7 (Beginner) and Course 8 (Intermediate, `claude-for-real-work`) are live; the Advanced course ("Claude, Mastered" — deeper Cowork + a hands-on intro to Claude Code) is still shown as a "Coming soon" card and is not yet built. When building it: use moduleId block 49+, add to `courses.ts`, register in the course page `COURSES` map, and flip its `PROVIDER_SERIES` card from `comingSoon` to a `slug`.
 - **ManageSubscriptionButton** is a client component that POSTs to `/api/stripe/portal` — only render it for users who have an active subscription.
 - **EmailVerificationBanner** shows for signed-in users who haven't confirmed their email yet. Don't remove it from layouts that render for unverified users.

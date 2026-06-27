@@ -203,6 +203,32 @@ export const COURSES_META: CourseMeta[] = [
       { id: 42, num: 6, title: 'Your Claude Habit', desc: 'Web search, knowing when to verify, staying safe, and building Claude into your everyday routine.', lessons: 5, available: true },
     ],
   },
+  {
+    slug: 'claude-for-real-work',
+    title: 'Claude for Real Work',
+    subtitle: 'Go beyond the chat box. Make Claude part of how you work.',
+    description:
+      'Turn Claude from a helpful chat into a real part of your workflow. Set up Projects, connect the tools you already use, automate your document work, and hand whole multi-step tasks to Claude\'s Cowork assistant. The second course in our hands-on Claude path.',
+    icon: '💼',
+    tag: 'Claude · Intermediate',
+    totalLessons: 30,
+    estimatedTime: '~3 hours',
+    whatYoullLearn: [
+      'How to set custom instructions so Claude always responds your way',
+      'How to use Projects to give Claude lasting context without repeating yourself',
+      'How to connect Claude to your email, calendar, and files',
+      'How to automate Word, PDF, spreadsheet, and slide work with Skills',
+      'What Cowork is and how to delegate whole multi-step tasks to it',
+    ],
+    modules: [
+      { id: 43, num: 1, title: 'Sharper Conversations', desc: 'Move from one-off chats to a system: custom instructions, roles and styles, and an organized workspace.', lessons: 5, available: true },
+      { id: 44, num: 2, title: 'Projects: Your Persistent Workspace', desc: 'Give Claude lasting context with Projects, so it knows your work without you repeating yourself.', lessons: 5, available: true },
+      { id: 45, num: 3, title: 'Connect Claude to Your Tools', desc: 'Link Claude to your email, calendar, and files — and stay in full control of permissions and privacy.', lessons: 5, available: true },
+      { id: 46, num: 4, title: 'Skills & Document Work', desc: 'Automate the grind: repeatable workflows for Word, PDF, spreadsheets, and slide decks.', lessons: 5, available: true },
+      { id: 47, num: 5, title: 'Meet Cowork', desc: 'Claude\'s desktop assistant that does the work, not just the talking. Get set up and delegate your first task.', lessons: 5, available: true },
+      { id: 48, num: 6, title: 'Delegating Real Tasks', desc: 'Hand Claude whole multi-step deliverables, choose chat vs. Cowork, and keep the agent on the rails.', lessons: 5, available: true },
+    ],
+  },
 ]
 
 export function getCourseBySlug(slug: string): CourseMeta | undefined {

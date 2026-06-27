@@ -46,8 +46,8 @@ const PROVIDER_SERIES = {
     {
       level: 'Intermediate',
       title: 'Claude for Real Work',
-      subtitle: 'Projects, connectors, and your first taste of Cowork.',
-      comingSoon: true,
+      subtitle: 'Projects, connectors, Skills, and Claude Cowork.',
+      slug: 'claude-for-real-work',
     },
     {
       level: 'Advanced',
