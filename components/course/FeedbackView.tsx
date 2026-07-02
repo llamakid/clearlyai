@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react'
 import Link from 'next/link'
 
-export default function FeedbackView({ moduleId, nextModuleId }: { moduleId: number; nextModuleId?: number }) {
+export default function FeedbackView({ moduleId, nextModuleId, onBack }: { moduleId: number; nextModuleId?: number; onBack?: () => void }) {
   const [stars, setStars] = useState(0)
   const [recommend, setRecommend] = useState('')
   const [submitted, setSubmitted] = useState(false)
@@ -39,52 +39,25 @@ export default function FeedbackView({ moduleId, nextModuleId }: { moduleId: num
 
   if (submitted) {
     const isStarter = moduleId === 0
+    const backHref = nextModuleId ? `/course/${nextModuleId}` : isStarter ? '/pricing' : '/dashboard'
+    const backLabel = nextModuleId ? `Continue to Module ${nextModuleId} →` : isStarter ? 'See the full curriculum →' : '← Back to Course Home'
     return (
-      <div style={{ flex: 1, overflowY: 'auto', padding: '40px', display: 'flex', justifyContent: 'center' }}>
+      <div style={{ flex: 1, overflowY: 'auto', padding: '40px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <div style={{ width: '100%', maxWidth: 620, textAlign: 'center', padding: '48px 24px' }}>
-          <div style={{ fontSize: 56, marginBottom: 20 }}>{isStarter ? '🚀' : nextModuleId ? '🙏' : '🎓'}</div>
+          <div style={{ fontSize: 56, marginBottom: 20 }}>🙏</div>
           <h2 style={{ fontFamily: 'var(--font-dm-serif), Georgia, serif', fontSize: 32, color: 'var(--ink)', marginBottom: 12 }}>
-            {isStarter ? "You're ready for more." : nextModuleId ? 'Thank you so much.' : 'You did it. Thank you.'}
+            Thank you so much.
           </h2>
           <p style={{ fontSize: 16, color: 'var(--ink-mid)', lineHeight: 1.65, marginBottom: 28 }}>
-            {isStarter ? (
-              <>Thank you for the feedback — it means a lot.<br /><br />You just learned 10 things most people have never tried. That&apos;s a real head start.<br /><br />The full Clearly, AI curriculum goes deeper — real workflows, smarter prompts, and a personal AI system built around how you actually work.</>
-            ) : nextModuleId ? (
-              <>Your feedback is genuinely valuable — it shapes every lesson, every module, and every experience we build for the people who come after you.<br /><br />You&apos;ve completed Module {moduleId}. You&apos;re not just learning about AI anymore. You&apos;re using it.<br /><br /><strong>Welcome to Clearly, AI.</strong></>
-            ) : (
-              <>All the way through. You&apos;re the person we built this for, and your feedback will help us build it better for everyone who comes after you.<br /><br />Go use AI. You know how.<br /><br /><strong>Welcome to Clearly, AI.</strong></>
-            )}
+            Your feedback is genuinely valuable — it shapes every lesson, every module, and every experience we build for the people who come after you.
           </p>
-          {isStarter ? (
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
-              <Link href="/pricing" style={{
-                display: 'inline-block', padding: '14px 32px',
-                background: 'var(--accent)', color: 'white', borderRadius: 12,
-                fontSize: 15, fontWeight: 700, textDecoration: 'none',
-              }}>
-                See the full curriculum →
-              </Link>
-              <Link href="/dashboard" style={{ fontSize: 14, color: 'var(--ink-lt)', textDecoration: 'underline' }}>
-                Back to course home
-              </Link>
-            </div>
-          ) : nextModuleId ? (
-            <Link href={`/course/${nextModuleId}`} style={{
-              display: 'inline-block', padding: '14px 32px',
-              background: 'var(--accent)', color: 'white', borderRadius: 12,
-              fontSize: 15, fontWeight: 700, textDecoration: 'none',
-            }}>
-              Continue to Module {nextModuleId} →
-            </Link>
-          ) : (
-            <Link href="/dashboard" style={{
-              display: 'inline-block', padding: '14px 32px',
-              background: 'var(--accent)', color: 'white', borderRadius: 12,
-              fontSize: 15, fontWeight: 700, textDecoration: 'none',
-            }}>
-              ← Back to Course Home
-            </Link>
-          )}
+          <Link href={backHref} style={{
+            display: 'inline-block', padding: '14px 32px',
+            background: 'var(--accent)', color: 'white', borderRadius: 12,
+            fontSize: 15, fontWeight: 700, textDecoration: 'none',
+          }}>
+            {backLabel}
+          </Link>
         </div>
       </div>
     )
@@ -94,8 +67,19 @@ export default function FeedbackView({ moduleId, nextModuleId }: { moduleId: num
     <div style={{ flex: 1, overflowY: 'auto', padding: '40px', display: 'flex', justifyContent: 'center' }}>
       <div style={{ width: '100%', maxWidth: 620 }}>
         <div style={{ marginBottom: 32 }}>
+          {onBack && (
+            <button
+              onClick={onBack}
+              style={{
+                background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit',
+                fontSize: 13, color: 'var(--ink-lt)', padding: 0, marginBottom: 16, display: 'block',
+              }}
+            >
+              ← Back
+            </button>
+          )}
           <h2 style={{ fontFamily: 'var(--font-dm-serif), Georgia, serif', fontSize: 36, color: 'var(--ink)', marginBottom: 8 }}>How&apos;d it go?</h2>
-          <p style={{ fontSize: 16, color: 'var(--ink-mid)', lineHeight: 1.6 }}>Your honest feedback directly shapes what Clearly, AI becomes. This takes about 3 minutes and means the world to us.</p>
+          <p style={{ fontSize: 16, color: 'var(--ink-mid)', lineHeight: 1.6 }}>Optional, but it directly shapes what Clearly, AI becomes. Takes about 3 minutes.</p>
         </div>
 
         <form onSubmit={handleSubmit}>

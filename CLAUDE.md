@@ -46,7 +46,7 @@ app/
   globals.css                           Global styles + CSS custom properties
   icon.tsx / apple-icon.tsx             Favicon + Apple touch icon (generated)
   opengraph-image.tsx                   OG image (generated)
-  curriculum/page.tsx                   Public curriculum overview page (all 5 courses)
+  curriculum/page.tsx                   Public curriculum overview page (all courses)
   faq/page.tsx                          Public FAQ page
   (auth)/login/page.tsx                 Login form
   (auth)/signup/page.tsx                Signup form
@@ -146,7 +146,7 @@ Module 0 is the free starter course — progress is tracked in `course_progress`
 
 ### Adding a new course
 1. Add course metadata to `lib/course-data/courses.ts` (dashboard + course pages pick it up automatically)
-2. Create content files in `lib/course-data/` (e.g. `c6-module-1.ts`) with the next available moduleId block (next block starts at 31)
+2. Create content files in `lib/course-data/` (e.g. `c9-module-1.ts`) with the next available moduleId block (next block starts at 49)
 3. Add each module to the `COURSES` map in `app/(protected)/course/[moduleId]/page.tsx`
 
 ### Adding a new module to an existing course
@@ -255,16 +255,20 @@ See `.env.local.example` for the full list. Summary:
 - ✅ Business plan written
 - ✅ Brand system locked (Clear Sky + DM Serif + Inter)
 - ✅ Next.js app scaffolded with full stack (auth, payments, blog, course player)
-- ✅ All 6 courses fully built — 36 modules, 180 lessons total
+- ✅ All 8 courses fully built — 48 modules, 240 lessons total
   - Course 1: AI Foundations (moduleIds 1–6)
   - Course 2: AI at Work (moduleIds 7–12)
   - Course 3: AI for Your Business (moduleIds 13–18)
   - Course 4: AI for a Richer Retirement (moduleIds 19–24)
   - Course 5: Better Prompts, Better Results (moduleIds 25–30)
   - Course 6: AI for Career Growth (moduleIds 31–36)
+  - Course 7: Getting Started with Claude (moduleIds 37–42) — Claude Beginner
+  - Course 8: Claude for Real Work (moduleIds 43–48) — Claude Intermediate
+- ✅ Claude provider-specific track launched (2026-06-26) — Beginner (C7) + Intermediate (C8, incl. Cowork) live; Advanced "Claude, Mastered" (deeper Cowork + Claude Code) still to build (moduleIds 49–54)
+- ✅ Dashboard redesigned — audience tracks + a "Go Deeper: Master a Tool" provider track (`PROVIDER_SERIES`) showing the Claude path beginner→intermediate→advanced
 - ✅ Dashboard — course cards link to course overview pages
 - ✅ Course overview pages live at `/courses/[courseSlug]` (hero + module grid)
-- ✅ Public curriculum page at `/curriculum` (all 5 courses visible without login)
+- ✅ Public curriculum page at `/curriculum` (all courses visible without login — auto-renders from `COURSES_META`)
 - ✅ FAQ page at `/faq`
 - ✅ Course progress wired to Supabase DB (reads on load, writes on lesson completion)
 - ✅ Supabase project created, schema run, auth verified
@@ -294,17 +298,24 @@ See `.env.local.example` for the full list. Summary:
 ### Growth
 - ⏳ First paid users not yet acquired
 - ⏳ Email list not yet actively marketed to
-- ⏳ Course loading performance — module pages have noticeable load time; investigate the Supabase query waterfall (purchases check + progress fetch are sequential), bundle size from importing all 30 course data files, and whether React Suspense / streaming can help
+- ⏳ Course loading performance — module pages have noticeable load time; investigate the Supabase query waterfall (purchases check + progress fetch are sequential), bundle size from importing all 48 course data files, and whether React Suspense / streaming can help
 
 ---
 
 ## Immediate Priorities (pick up here)
 
-1. **Get first paid users** — direct outreach, social posts, LinkedIn, community posts targeting the three audiences (working professionals 35–54, small business owners 38–58, curious learners 55–75)
-2. **Build email list** — promote the free starter course and downloadable starter kit as lead magnets; drive signups to the subscriber list
-3. **Content marketing** — keep publishing blog posts (MDX in `content/blog/`); target long-tail search terms non-technical adults use when looking up AI
-4. **Submit to Perplexity** — once GSC and Bing show solid indexing progress
-5. **Improve course loading performance** — Supabase query waterfall (purchases check + progress fetch are sequential), bundle size from 30 course files, React Suspense / streaming
+1. **Create social posts** — write LinkedIn, Facebook, and Instagram posts to promote the courses and free tools; target the three audiences
+2. **Get first paid users** — direct outreach, social posts, LinkedIn, community posts targeting the three audiences (working professionals 35–54, small business owners 38–58, curious learners 55–75)
+3. **Build email list** — promote the free starter course and downloadable starter kit as lead magnets; drive signups to the subscriber list
+4. **Content marketing** — keep publishing blog posts (MDX in `content/blog/`); target long-tail search terms non-technical adults use when looking up AI
+5. **Finish the Claude Advanced course** — "Claude, Mastered" (deeper Cowork + hands-on Claude Code), moduleId block 49–54; add to `courses.ts`, register in the course page `COURSES` map, flip its `PROVIDER_SERIES` card from `comingSoon` to a `slug`
+6. **Build provider-specific courses for other tools** — mirroring the Claude provider track; add each to `PROVIDER_SERIES` on the dashboard:
+   - **OpenAI (ChatGPT)** course
+   - **Codex** course (OpenAI's coding agent CLI)
+   - **Gemini** course
+   - **Antigravity CLI** course (Google's agentic CLI)
+7. **Submit to Perplexity** — once GSC and Bing show solid indexing progress
+8. **Improve course loading performance** — Supabase query waterfall (purchases check + progress fetch are sequential), bundle size from 48 course files, React Suspense / streaming
 
 ---
 

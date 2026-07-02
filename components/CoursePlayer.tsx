@@ -6,6 +6,7 @@ import type { CourseData } from '@/lib/course-data/types'
 import SlideContent from '@/components/course/SlideContent'
 import QuizView from '@/components/course/QuizView'
 import FeedbackView from '@/components/course/FeedbackView'
+import CompletionView from '@/components/course/CompletionView'
 import { createClient } from '@/lib/supabase/client'
 
 interface CourseState {
@@ -20,7 +21,7 @@ interface InitialProgress {
   completed: boolean
 }
 
-type View = 'slide' | 'quiz' | 'feedback'
+type View = 'slide' | 'quiz' | 'feedback' | 'complete'
 
 interface CoursePlayerProps {
   course: CourseData
@@ -146,7 +147,7 @@ export default function CoursePlayer({ course, courseSlug, userId, initialProgre
   const handleNextBtn = () => {
     if (isLastSlide && isLastLesson) {
       startTransition(() => markLessonDone())
-      setView(hasQuiz ? 'quiz' : 'feedback')
+      setView(hasQuiz ? 'quiz' : 'complete')
     } else if (isLastSlide) {
       startTransition(() => markLessonDone())
       goLesson(curLesson + 1)
@@ -158,7 +159,7 @@ export default function CoursePlayer({ course, courseSlug, userId, initialProgre
   const handleQuizComplete = () => {
     setCourseState(s => ({ ...s, quizDone: true }))
     persistState({ quizDone: true })
-    setView('feedback')
+    setView('complete')
   }
 
   const nextBtnLabel = isLastSlide && isLastLesson
@@ -353,8 +354,18 @@ export default function CoursePlayer({ course, courseSlug, userId, initialProgre
             <QuizView quiz={course.quiz ?? []} moduleId={course.moduleId} onComplete={handleQuizComplete} />
           )}
 
+          {view === 'complete' && (
+            <CompletionView
+              moduleId={course.moduleId}
+              nextModuleId={course.nextModuleId}
+              courseSlug={courseSlug}
+              userId={userId}
+              onGiveFeedback={() => setView('feedback')}
+            />
+          )}
+
           {view === 'feedback' && (
-            <FeedbackView moduleId={course.moduleId} nextModuleId={course.nextModuleId} />
+            <FeedbackView moduleId={course.moduleId} nextModuleId={course.nextModuleId} onBack={() => setView('complete')} />
           )}
         </main>
       </div>
