@@ -24,6 +24,15 @@ const TOOLS = [
     external: false,
   },
   {
+    href: '/tools/audit',
+    icon: '📡',
+    title: 'AI Search Checkup',
+    desc: 'Can AI tools like ChatGPT find and recommend your website? Get a score out of 100 and a plain-English list of what to fix.',
+    tags: ['Your website', 'AI visibility', 'Free report'],
+    cta: 'Check my site →',
+    external: false,
+  },
+  {
     href: 'https://chatgpt.com/g/g-6a25ce026df08191ad2ae0fedd361400-clearly-explain-this',
     icon: '🤖',
     title: 'Clearly: Explain This',

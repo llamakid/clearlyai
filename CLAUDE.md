@@ -301,7 +301,8 @@ See `.env.local.example` for the full list. Summary:
 - ✅ Deployed to Vercel, all env vars set
 - ✅ Vercel Analytics + Speed Insights installed
 - ✅ Smoke test completed — full signup → checkout → dashboard → course → module → feedback flow verified
-- ✅ AI Tools built and live — Write (`/tools/write`) and Explain (`/tools/explain`) wired to Claude Haiku with copy/refinement actions. Logged-out visitors get 2 free uses/tool/day (cookie + `anon_tool_usage` IP-hash table via `lib/anon-tool-usage.ts`); logged-in users get 5/tool/day (`tool_usage` table). Homepage hero primary CTA is "Try a Free AI Tool" → `/tools`.
+- ✅ AI Tools built and live — Write (`/tools/write`) and Explain (`/tools/explain`) wired to Claude Haiku with copy/refinement actions.
+- ✅ AEO audit tool (2026-07-03) — "AI Search Checkup" at `/tools/audit`, ported from the standalone Desktop/AEO repo. Engine lives in `lib/aeo/` (fetch+cheerio crawler — NOT Playwright, which can't run on Vercel; four analyzers: technical, structured data, content, semantic; scoring). API at `/api/tools/audit` (SSRF guard blocks private hosts, `maxDuration=60`, same rate-limit pattern as other tools with tool key `'audit'`: anon 2/day, logged-in 5/day). Anonymous finishers see a "Start the free course" CTA under the report. Logged-out visitors get 2 free uses/tool/day (cookie + `anon_tool_usage` IP-hash table via `lib/anon-tool-usage.ts`); logged-in users get 5/tool/day (`tool_usage` table). Homepage hero primary CTA is "Try a Free AI Tool" → `/tools`.
 - ✅ Starter kit PDF email-gated — `/starter-kit` landing page captures email → subscribes (`source: 'starter-kit'`) → triggers download + sends email with download link
 
 ### SEO / Discovery
