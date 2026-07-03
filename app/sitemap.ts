@@ -8,6 +8,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages: MetadataRoute.Sitemap = [
     { url: baseUrl, changeFrequency: 'weekly', priority: 1.0 },
     { url: `${baseUrl}/pricing`, changeFrequency: 'monthly', priority: 0.9 },
+    { url: `${baseUrl}/for/professionals`, changeFrequency: 'monthly', priority: 0.9 },
+    { url: `${baseUrl}/for/business-owners`, changeFrequency: 'monthly', priority: 0.9 },
+    { url: `${baseUrl}/for/curious-learners`, changeFrequency: 'monthly', priority: 0.9 },
+    { url: `${baseUrl}/curriculum`, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${baseUrl}/tools`, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${baseUrl}/course/0`, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${baseUrl}/faq`, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${baseUrl}/starter-kit`, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${baseUrl}/blog`, changeFrequency: 'weekly', priority: 0.8 },

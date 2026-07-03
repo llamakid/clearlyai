@@ -64,6 +64,8 @@ create policy "users can update own progress"
 create table if not exists subscribers (
   id            uuid primary key default gen_random_uuid(),
   email         text not null unique,
+  source        text,  -- 'starter-kit', 'free-course', 'newsletter', or null (legacy)
+  unsubscribed  boolean not null default false,
   subscribed_at timestamptz not null default now()
 );
 
@@ -113,6 +115,28 @@ create index if not exists purchases_subscription_id_idx on purchases(stripe_sub
 create index if not exists progress_user_module_idx on course_progress(user_id, module_id);
 create index if not exists feedback_module_id_idx on feedback(module_id);
 create index if not exists feedback_submitted_at_idx on feedback(submitted_at desc);
+
+-- ── email_sends: drip email delivery log ───────────────────
+-- One row per drip email delivered; the daily cron (/api/cron/drip)
+-- uses it to find each subscriber's position in the sequence. The
+-- unique constraint makes every step at-most-once per subscriber.
+create table if not exists email_sends (
+  id        uuid primary key default gen_random_uuid(),
+  email     text not null,
+  sequence  text not null,
+  step      integer not null,
+  sent_at   timestamptz not null default now(),
+  unique (email, sequence, step)
+);
+
+alter table email_sends enable row level security;
+
+-- Service role only — no client access
+create policy "no public access on email_sends"
+  on email_sends for all
+  using (false);
+
+create index if not exists email_sends_email_idx on email_sends(email);
 
 -- ── anon_tool_usage: daily AI tool usage for logged-out visitors ──
 -- Keyed by a SHA-256 hash of the visitor's IP (never the raw IP).

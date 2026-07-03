@@ -6,7 +6,7 @@ import { NextResponse } from 'next/server'
 
 const schema = z.object({
   email: z.string().email('Invalid email'),
-  source: z.enum(['starter-kit']).optional(),
+  source: z.enum(['starter-kit', 'free-course']).optional(),
 })
 
 export async function POST(request: Request) {
@@ -39,7 +39,10 @@ export async function POST(request: Request) {
     if (!existing) {
       const { error } = await supabase
         .from('subscribers')
-        .insert({ email: parsed.data.email })
+        .insert({
+          email: parsed.data.email,
+          source: parsed.data.source ?? 'newsletter',
+        })
 
       if (error) {
         console.error('Subscribe error:', error)
@@ -93,7 +96,40 @@ export async function POST(request: Request) {
         </div>
       `,
     }
-    const emailContent = isStarterKit ? starterKitEmail : newsletterEmail
+    const freeCourseEmail = {
+      subject: 'You finished the free course — here\'s what\'s next',
+      html: `
+        <div style="font-family:Inter,sans-serif;max-width:560px;margin:0 auto;color:#1c2b35;">
+          <h1 style="font-family:'DM Serif Display',Georgia,serif;color:#3d7a8a;font-size:26px;margin-bottom:8px;">
+            Nice work finishing the free course.
+          </h1>
+          <p style="font-size:16px;line-height:1.6;">
+            You just learned 10 things most people don't know how to do with AI. All ten prompts
+            are yours to reuse any time — just revisit
+            <a href="${siteUrl}/course/0" style="color:#3d7a8a;font-weight:600;">the course</a>.
+          </p>
+          <p style="font-size:16px;line-height:1.6;">
+            When you're ready to go deeper, the full curriculum has eight courses — 240 plain-English
+            lessons on using AI at work, in your business, and in everyday life. One subscription
+            unlocks everything.
+          </p>
+          <p style="margin:24px 0;">
+            <a href="${siteUrl}/pricing"
+               style="background:#3d7a8a;color:#ffffff;text-decoration:none;padding:13px 28px;border-radius:10px;font-size:15px;font-weight:700;display:inline-block;">
+              See the plans
+            </a>
+          </p>
+          <p style="font-size:14px;color:#666;line-height:1.6;">
+            — Nate
+          </p>
+        </div>
+      `,
+    }
+    const emailContent = isStarterKit
+      ? starterKitEmail
+      : parsed.data.source === 'free-course'
+        ? freeCourseEmail
+        : newsletterEmail
 
     try {
       await getResend().emails.send({

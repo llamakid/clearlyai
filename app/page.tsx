@@ -489,6 +489,7 @@ export default function HomePage() {
                   title: 'You want to work smarter and stay relevant.',
                   desc: "You're good at your job. Younger colleagues are already using AI and you don't want to fall behind, but you also don't have a month to spend learning something new. We get you up to speed in a few hours.",
                   pain: '"I just need someone to show me the practical stuff, not the theory."',
+                  href: '/for/professionals',
                 },
                 {
                   emoji: '🏪',
@@ -496,6 +497,7 @@ export default function HomePage() {
                   title: 'You need AI to do the work of three people.',
                   desc: "You're doing everything yourself. Writing content, handling reviews, creating proposals, managing social. AI can take a real chunk of that off your plate. We'll show you exactly what to do.",
                   pain: '"I don\'t have time to figure this out on my own. Just show me what works."',
+                  href: '/for/business-owners',
                 },
                 {
                   emoji: '🌱',
@@ -503,8 +505,9 @@ export default function HomePage() {
                   title: "You want to understand what everyone's talking about.",
                   desc: "You keep hearing about AI and you're finally ready to understand it. We start at the very beginning, go slow, and nobody's going to make you feel silly for asking.",
                   pain: '"I just don\'t want to feel left out. Or break anything."',
+                  href: '/for/curious-learners',
                 },
-              ].map(({ emoji, tag, title, desc, pain }) => (
+              ].map(({ emoji, tag, title, desc, pain, href }) => (
                 <div key={tag} style={{
                   background: 'var(--white)',
                   borderRadius: 20,
@@ -539,6 +542,13 @@ export default function HomePage() {
                   }}>
                     {pain}
                   </p>
+                  <a href={href} style={{
+                    display: 'inline-block', marginTop: 14,
+                    fontSize: 14, fontWeight: 600, color: 'var(--accent)',
+                    textDecoration: 'none',
+                  }}>
+                    See your path →
+                  </a>
                 </div>
               ))}
             </div>

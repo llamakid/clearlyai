@@ -47,6 +47,10 @@ app/
   icon.tsx / apple-icon.tsx             Favicon + Apple touch icon (generated)
   opengraph-image.tsx                   OG image (generated)
   curriculum/page.tsx                   Public curriculum overview page (all courses)
+  for/[persona]/page.tsx                Persona landing pages (SSG): /for/professionals,
+                                        /for/business-owners, /for/curious-learners — targeted
+                                        front doors for outreach/social/SEO. Course paths pull
+                                        from COURSES_META. Homepage "Who It's For" cards link here.
   faq/page.tsx                          Public FAQ page
   (auth)/login/page.tsx                 Login form
   (auth)/signup/page.tsx                Signup form
@@ -63,7 +67,15 @@ app/
   api/stripe/checkout/route.ts          Creates Stripe Checkout session
   api/stripe/portal/route.ts            Creates Stripe Customer Portal session (manage subscription)
   api/stripe/webhook/route.ts           Receives payment → writes to purchases table
-  api/subscribe/route.ts                Homepage email capture → subscribers table
+  api/subscribe/route.ts                Homepage email capture → subscribers table (stores `source`:
+                                        'newsletter' | 'starter-kit' | 'free-course')
+  api/cron/drip/route.ts                Daily email drip — audience is confirmed auth users ∪ subscribers,
+                                        deduped, minus unsubscribed + purchasers. Sends next due nurture
+                                        step per person. Invoked by Vercel Cron (vercel.json), auth via
+                                        CRON_SECRET bearer.
+  api/unsubscribe/route.ts              One-click unsubscribe (GET, HMAC token) → upserts subscribers row
+                                        with unsubscribed=true (subscribers doubles as the opt-out list
+                                        for auth users too)
   api/feedback/route.ts                 End-of-module feedback → feedback table + Resend notify
   api/download/starter-kit/route.ts     Serves the downloadable starter kit PDF/file
   blog/page.tsx                         Blog index
@@ -95,6 +107,7 @@ lib/
   resend.ts                             Resend client (lazy init) + fromAddress() helper
   blog.ts                               Reads MDX posts from content/blog/
   api-error.ts                          Standard API error helper
+  email-drip.ts                         Nurture drip sequence content (4 steps) + unsubscribe HMAC tokens
   schemas.ts                            Zod schemas
   course-data/courses.ts                Course-level metadata for all courses — SINGLE SOURCE OF
                                         TRUTH for the dashboard and course overview pages.
@@ -182,7 +195,8 @@ All tables have RLS enabled:
 |---|---|
 | `purchases` | Created by Stripe webhook on successful payment. Grants access to all courses. |
 | `course_progress` | Tracks `current_lesson`, `current_slide`, `completed` per user per module. `module_id >= 1`. |
-| `subscribers` | Email addresses from the homepage opt-in form + `/starter-kit` lead magnet. |
+| `subscribers` | Email addresses from the homepage opt-in form, `/starter-kit` lead magnet, and end-of-free-course capture. Columns `source` + `unsubscribed` drive the drip. |
+| `email_sends` | Drip delivery log — one row per (email, sequence, step), unique-constrained so each step sends at most once. Service-role only. |
 | `feedback` | End-of-module survey responses. Service-role insert only. |
 | `tool_usage` | Daily AI tool usage per logged-in user (rate limit: 5/tool/day). |
 | `anon_tool_usage` | Daily AI tool usage for logged-out visitors, keyed by IP hash (rate limit: 2/tool/day). Service-role only. |
@@ -246,6 +260,7 @@ See `.env.local.example` for the full list. Summary:
 | `RESEND_API_KEY` | resend.com → API Keys |
 | `RESEND_FROM_EMAIL` | `nate@learnaiclearly.com` |
 | `ANTHROPIC_API_KEY` | console.anthropic.com → API Keys (powers AI Tools) |
+| `CRON_SECRET` | Any long random string — Vercel sends it as Bearer auth to `/api/cron/drip` |
 
 ---
 
@@ -296,8 +311,12 @@ See `.env.local.example` for the full list. Summary:
 - ⏳ Perplexity — submit once GSC and Bing show solid indexing progress
 
 ### Growth
-- ⏳ First paid users not yet acquired
-- ⏳ Email list not yet actively marketed to
+- ⏳ First paid users not yet acquired (as of 2026-07-02: 17 free users, 38 starter-kit downloads, 1 free-course completion, 0 paid)
+- ✅ Email drip system built (2026-07-02) — 4-step nurture sequence in `lib/email-drip.ts`, daily Vercel Cron → `/api/cron/drip`, gap-based scheduling (works for old + new subscribers), one-click unsubscribe. **To activate:** run `supabase-migration-email-drip.sql` in Supabase SQL Editor, set `CRON_SECRET` in Vercel, redeploy.
+- ✅ End-of-free-course conversion screen rebuilt (2026-07-02) — value bullets + pricing CTA + email capture for anonymous finishers (`source: 'free-course'`)
+- ✅ Outreach drafts written — `marketing/first-outreach.md` (personal user emails, LinkedIn/Facebook posts, library workshop pitch, weekly rhythm)
+- ✅ Weekly marketing workflow (2026-07-02) — `/weekly-marketing` skill mines course lessons into a weekly content package saved as `marketing/week-NN.md` (week-01 done). Dogfood for a possible future subscriber-facing marketing tool — do not productize until the manual loop has run 4–6 weeks and produced signups.
+- ⏳ Nate to send the personal emails to the 17 existing users + start the weekly posting rhythm
 - ⏳ Course loading performance — module pages have noticeable load time; investigate the Supabase query waterfall (purchases check + progress fetch are sequential), bundle size from importing all 48 course data files, and whether React Suspense / streaming can help
 
 ---
