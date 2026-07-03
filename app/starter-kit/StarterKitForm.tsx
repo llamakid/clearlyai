@@ -3,6 +3,7 @@
 import { useState } from 'react'
 
 export default function StarterKitForm() {
+  const [firstName, setFirstName] = useState('')
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
 
@@ -13,7 +14,7 @@ export default function StarterKitForm() {
       const res = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, source: 'starter-kit' }),
+        body: JSON.stringify({ email, firstName: firstName.trim() || undefined, source: 'starter-kit' }),
       })
       if (res.ok) {
         setStatus('success')
@@ -46,6 +47,21 @@ export default function StarterKitForm() {
   return (
     <form onSubmit={handleSubmit}>
       <div style={{ display: 'flex', gap: 10, maxWidth: 440, margin: '0 auto', flexWrap: 'wrap', justifyContent: 'center' }}>
+        <input
+          type="text"
+          value={firstName}
+          onChange={e => setFirstName(e.target.value)}
+          placeholder="First name (optional)"
+          autoComplete="given-name"
+          style={{
+            flex: '1 1 100%',
+            padding: '13px 18px',
+            borderRadius: 10, border: '1px solid var(--border)',
+            fontSize: 15, fontFamily: 'inherit',
+            color: 'var(--ink)', outline: 'none',
+            background: 'white',
+          }}
+        />
         <input
           type="email"
           required

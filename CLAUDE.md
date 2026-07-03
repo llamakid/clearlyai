@@ -195,7 +195,7 @@ All tables have RLS enabled:
 |---|---|
 | `purchases` | Created by Stripe webhook on successful payment. Grants access to all courses. |
 | `course_progress` | Tracks `current_lesson`, `current_slide`, `completed` per user per module. `module_id >= 1`. |
-| `subscribers` | Email addresses from the homepage opt-in form, `/starter-kit` lead magnet, and end-of-free-course capture. Columns `source` + `unsubscribed` drive the drip. |
+| `subscribers` | Email addresses from the homepage opt-in form, `/starter-kit` lead magnet, and end-of-free-course capture. Columns `source` + `unsubscribed` drive the drip. `first_name` is optional (nullable) — capture forms + signup collect it but never require it; drip and confirmation emails greet by name when present, fall back gracefully when absent. Auth users' names live in `user_metadata.first_name`, not this table. |
 | `email_sends` | Drip delivery log — one row per (email, sequence, step), unique-constrained so each step sends at most once. Service-role only. |
 | `feedback` | End-of-module survey responses. Service-role insert only. |
 | `tool_usage` | Daily AI tool usage per logged-in user (rate limit: 5/tool/day). |

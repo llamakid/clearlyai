@@ -6,6 +6,7 @@ import { NextResponse } from 'next/server'
 
 const schema = z.object({
   email: z.string().email('Invalid email'),
+  firstName: z.string().trim().max(80).optional(),
   source: z.enum(['starter-kit', 'free-course']).optional(),
 })
 
@@ -24,12 +25,21 @@ export async function POST(request: Request) {
     )
 
     const isStarterKit = parsed.data.source === 'starter-kit'
+    const firstName = parsed.data.firstName || undefined
 
     const { data: existing } = await supabase
       .from('subscribers')
-      .select('email')
+      .select('email, first_name')
       .eq('email', parsed.data.email)
       .maybeSingle()
+
+    // A returning subscriber who gives a name this time gets it saved
+    if (existing && !existing.first_name && firstName) {
+      await supabase
+        .from('subscribers')
+        .update({ first_name: firstName })
+        .eq('email', parsed.data.email)
+    }
 
     // Existing newsletter subscribers requesting the starter kit still get the kit email
     if (existing && !isStarterKit) {
@@ -41,6 +51,7 @@ export async function POST(request: Request) {
         .from('subscribers')
         .insert({
           email: parsed.data.email,
+          first_name: firstName ?? null,
           source: parsed.data.source ?? 'newsletter',
         })
 
@@ -51,6 +62,9 @@ export async function POST(request: Request) {
     }
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://learnaiclearly.com'
+    const safeName = firstName
+      ? firstName.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      : undefined
     const starterKitEmail = {
       subject: 'Your AI Starter Kit — Clearly, AI',
       html: `
@@ -59,7 +73,7 @@ export async function POST(request: Request) {
             Here's your AI Starter Kit.
           </h1>
           <p style="font-size:16px;line-height:1.6;">
-            Thanks for grabbing the <strong>Clearly, AI Starter Kit</strong> — practical things
+            ${safeName ? `Hi ${safeName} — thanks` : 'Thanks'} for grabbing the <strong>Clearly, AI Starter Kit</strong> — practical things
             you can do with AI today, each with a prompt you can copy and use right away.
           </p>
           <p style="margin:24px 0;">
@@ -87,7 +101,7 @@ export async function POST(request: Request) {
             Got it — you're on the list.
           </h1>
           <p style="font-size:16px;line-height:1.6;">
-            Thanks for joining the <strong>Clearly, AI</strong> newsletter. We'll be sending practical AI tips
+            ${safeName ? `Hi ${safeName} — thanks` : 'Thanks'} for joining the <strong>Clearly, AI</strong> newsletter. We'll be sending practical AI tips
             straight to your inbox — no jargon, no fluff, just things you can actually use.
           </p>
           <p style="font-size:14px;color:#666;line-height:1.6;">
@@ -104,7 +118,7 @@ export async function POST(request: Request) {
             Nice work finishing the free course.
           </h1>
           <p style="font-size:16px;line-height:1.6;">
-            You just learned 10 things most people don't know how to do with AI. All ten prompts
+            ${safeName ? `${safeName}, you` : 'You'} just learned 10 things most people don't know how to do with AI. All ten prompts
             are yours to reuse any time — just revisit
             <a href="${siteUrl}/course/0" style="color:#3d7a8a;font-weight:600;">the course</a>.
           </p>

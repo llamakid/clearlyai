@@ -10,7 +10,14 @@ export interface DripStep {
   step: number
   daysAfterPrev: number // 0 for step 1 (sent on first eligible run)
   subject: string
-  html: (opts: { siteUrl: string; unsubUrl: string }) => string
+  html: (opts: { siteUrl: string; unsubUrl: string; firstName?: string }) => string
+}
+
+// Names come from user input — escape before interpolating into HTML
+export function safeName(name: string | undefined | null): string | undefined {
+  const trimmed = name?.trim()
+  if (!trimmed) return undefined
+  return trimmed.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 }
 
 function wrap(body: string, unsubUrl: string): string {
@@ -49,11 +56,11 @@ export const NURTURE_SEQUENCE: DripStep[] = [
     step: 1,
     daysAfterPrev: 0,
     subject: 'Your first 10 minutes with AI (free course inside)',
-    html: ({ siteUrl, unsubUrl }) =>
+    html: ({ siteUrl, unsubUrl, firstName }) =>
       wrap(
         `
         ${h1('Ten things you can do with AI today.')}
-        ${p(`Hi — Nate here, from Clearly, AI. You signed up on the site a while back — maybe for the starter kit, maybe an account — so I wanted to point you to the single most useful thing we have: the free course.`)}
+        ${p(`Hi${firstName ? ` ${firstName}` : ''} — Nate here, from Clearly, AI. You signed up on the site a while back — maybe for the starter kit, maybe an account — so I wanted to point you to the single most useful thing we have: the free course.`)}
         ${p(`It's called <strong>"10 Things You Can Do With AI Today."</strong> Two short lessons, ten practical tasks — each with a prompt you can copy and use immediately. No account needed, no credit card, about 10 minutes.`)}
         ${btn(`${siteUrl}/course/0`, 'Start the free course')}
         ${p(`Most people tell me one of the ten sticks with them the same day. I'd love to hear which one it is for you — just hit reply.`)}
@@ -65,10 +72,11 @@ export const NURTURE_SEQUENCE: DripStep[] = [
     step: 2,
     daysAfterPrev: 3,
     subject: 'Try this: paste any confusing document into AI',
-    html: ({ siteUrl, unsubUrl }) =>
+    html: ({ siteUrl, unsubUrl, firstName }) =>
       wrap(
         `
         ${h1('The trick everyone wishes they knew sooner.')}
+        ${firstName ? p(`Hi ${firstName},`) : ''}
         ${p(`Of everything I teach, this is the one people email me about: AI is remarkably good at translating confusing documents into plain English. Insurance letters, contract clauses, medical reports, HOA rules.`)}
         ${p(`Copy this prompt, paste in your confusing paragraph, and see for yourself:`)}
         ${promptBox(`Here's a paragraph from a document I received: [paste the text]. What does this actually mean in plain English? What should I know or watch out for?`)}
@@ -83,10 +91,11 @@ export const NURTURE_SEQUENCE: DripStep[] = [
     step: 3,
     daysAfterPrev: 4,
     subject: 'What the full Clearly, AI curriculum actually covers',
-    html: ({ siteUrl, unsubUrl }) =>
+    html: ({ siteUrl, unsubUrl, firstName }) =>
       wrap(
         `
         ${h1('Eight courses. Zero jargon.')}
+        ${firstName ? p(`Hi ${firstName},`) : ''}
         ${p(`A few people have asked what's beyond the free course, so here's the honest tour. Clearly, AI has eight full courses — 240 short lessons — all in plain English, all self-paced:`)}
         ${p(`
           🧠 <strong>AI Foundations</strong> — start from zero, build real confidence<br />
@@ -107,11 +116,11 @@ export const NURTURE_SEQUENCE: DripStep[] = [
     step: 4,
     daysAfterPrev: 5,
     subject: 'A quick note from me (and a question)',
-    html: ({ siteUrl, unsubUrl }) =>
+    html: ({ siteUrl, unsubUrl, firstName }) =>
       wrap(
         `
         ${h1('Can I ask you something?')}
-        ${p(`I built Clearly, AI for people who keep hearing about AI and want a straight answer — not hype, not jargon, just "here's what to do."`)}
+        ${p(`${firstName ? `${firstName} — I` : 'I'} built Clearly, AI for people who keep hearing about AI and want a straight answer — not hype, not jargon, just "here's what to do."`)}
         ${p(`So here's my question, and I read every reply: <strong>what's the one thing you wish AI could take off your plate?</strong> An email you dread writing, a task that eats your week, a document you can't decipher. Hit reply and tell me — I'll point you to the exact lesson or prompt that handles it, free, no strings.`)}
         ${p(`And if you're ready to go all in: the whole school is $15/month, $120/year, or $299 once for lifetime access. Cancel any time, no contracts.`)}
         ${btn(`${siteUrl}/pricing`, 'See the plans')}

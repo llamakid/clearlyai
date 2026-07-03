@@ -6,7 +6,7 @@ import { randomUUID } from 'crypto'
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
 
 export async function POST(request: Request) {
-  let body: { email?: string; password?: string }
+  let body: { email?: string; password?: string; firstName?: string }
   try {
     body = await request.json()
   } catch {
@@ -18,6 +18,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Invalid email or password.' }, { status: 400 })
   }
 
+  const firstName =
+    typeof body.firstName === 'string' ? body.firstName.trim().slice(0, 80) : ''
+
   const admin = createAdminClient()
   const verificationToken = randomUUID()
 
@@ -25,6 +28,7 @@ export async function POST(request: Request) {
     email,
     password,
     email_confirm: true, // mark as confirmed so signInWithPassword works immediately; app tracks verification separately
+    user_metadata: firstName ? { first_name: firstName } : undefined,
     app_metadata: {
       email_verified: false,
       email_verification_token: verificationToken,

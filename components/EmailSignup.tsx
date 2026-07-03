@@ -3,6 +3,7 @@
 import { useState } from 'react'
 
 export default function EmailSignup() {
+  const [firstName, setFirstName] = useState('')
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
 
@@ -13,7 +14,7 @@ export default function EmailSignup() {
       const res = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, firstName: firstName.trim() || undefined }),
       })
       setStatus(res.ok ? 'success' : 'error')
     } catch {
@@ -34,6 +35,21 @@ export default function EmailSignup() {
   return (
     <form onSubmit={handleSubmit}>
       <div style={{ display: 'flex', gap: 10, maxWidth: 440, margin: '0 auto', flexWrap: 'wrap', justifyContent: 'center' }}>
+        <input
+          type="text"
+          value={firstName}
+          onChange={e => setFirstName(e.target.value)}
+          placeholder="First name (optional)"
+          autoComplete="given-name"
+          style={{
+            flex: '1 1 100%',
+            padding: '13px 18px',
+            borderRadius: 10, border: 'none',
+            fontSize: 15, fontFamily: 'inherit',
+            color: 'var(--ink)', outline: 'none',
+            background: 'white',
+          }}
+        />
         <input
           type="email"
           required

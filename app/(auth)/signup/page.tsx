@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
 export default function SignupPage() {
+  const [firstName, setFirstName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -29,7 +30,7 @@ export default function SignupPage() {
     const res = await fetch('/api/auth/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, firstName: firstName.trim() || undefined }),
     })
 
     const json = await res.json()
@@ -110,6 +111,18 @@ export default function SignupPage() {
 
         <div className="card" style={{ padding: 36 }}>
           <form onSubmit={handleSignup} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+            <div className="form-group">
+              <label htmlFor="firstName">First name <span style={{ fontWeight: 400, color: 'var(--ink-lt)' }}>(optional)</span></label>
+              <input
+                id="firstName"
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="What should we call you?"
+                autoComplete="given-name"
+              />
+            </div>
+
             <div className="form-group">
               <label htmlFor="email">Email address</label>
               <input

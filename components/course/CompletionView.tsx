@@ -14,6 +14,7 @@ interface CompletionViewProps {
 // Inline email capture shown to anonymous finishers of the free course —
 // light-background variant (EmailSignup is styled for the dark teal band).
 function FreeCourseEmailCapture() {
+  const [firstName, setFirstName] = useState('')
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
 
@@ -24,7 +25,7 @@ function FreeCourseEmailCapture() {
       const res = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, source: 'free-course' }),
+        body: JSON.stringify({ email, firstName: firstName.trim() || undefined, source: 'free-course' }),
       })
       setStatus(res.ok ? 'success' : 'error')
     } catch {
@@ -55,6 +56,19 @@ function FreeCourseEmailCapture() {
         Drop your email and we&apos;ll send you a link back to the course, plus one practical AI tip a week. No spam, unsubscribe any time.
       </p>
       <form onSubmit={handleSubmit} style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+        <input
+          type="text"
+          value={firstName}
+          onChange={e => setFirstName(e.target.value)}
+          placeholder="First name (optional)"
+          autoComplete="given-name"
+          style={{
+            flex: '1 1 100%', padding: '11px 16px',
+            borderRadius: 10, border: '1.5px solid var(--border-md)',
+            fontSize: 14, fontFamily: 'inherit', color: 'var(--ink)',
+            outline: 'none', background: 'var(--bg)',
+          }}
+        />
         <input
           type="email"
           required

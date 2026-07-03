@@ -64,6 +64,7 @@ create policy "users can update own progress"
 create table if not exists subscribers (
   id            uuid primary key default gen_random_uuid(),
   email         text not null unique,
+  first_name    text,  -- optional; forms never require it
   source        text,  -- 'starter-kit', 'free-course', 'newsletter', or null (legacy)
   unsubscribed  boolean not null default false,
   subscribed_at timestamptz not null default now()

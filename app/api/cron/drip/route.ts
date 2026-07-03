@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { getResend, fromAddress } from '@/lib/resend'
-import { NURTURE_SEQUENCE, unsubscribeUrl } from '@/lib/email-drip'
+import { NURTURE_SEQUENCE, unsubscribeUrl, safeName } from '@/lib/email-drip'
 
 // Runs daily via Vercel Cron (see vercel.json). The audience is the union of
 // confirmed auth users and the subscribers table, deduped by email, minus
@@ -29,6 +29,7 @@ export async function GET(request: Request) {
   // ── Build the audience: auth users ∪ subscribers ──────────
   // audience: lowercased email → earliest known join date
   const audience = new Map<string, string>()
+  const firstNames = new Map<string, string>() // lowercased email → first name
 
   const userIdEmail = new Map<string, string>()
   let page = 1
@@ -43,6 +44,8 @@ export async function GET(request: Request) {
       const email = u.email.toLowerCase()
       userIdEmail.set(u.id, email)
       if (!audience.has(email)) audience.set(email, u.created_at)
+      const name = safeName(u.user_metadata?.first_name)
+      if (name && !firstNames.has(email)) firstNames.set(email, name)
     }
     if (data.users.length < 1000) break
     page++
@@ -50,7 +53,7 @@ export async function GET(request: Request) {
 
   const { data: subscribers, error: subErr } = await supabase
     .from('subscribers')
-    .select('email, subscribed_at, unsubscribed')
+    .select('email, first_name, subscribed_at, unsubscribed')
 
   if (subErr) {
     console.error('Drip: could not load subscribers:', subErr)
@@ -66,6 +69,8 @@ export async function GET(request: Request) {
     }
     const existing = audience.get(email)
     if (!existing || s.subscribed_at < existing) audience.set(email, s.subscribed_at)
+    const name = safeName(s.first_name)
+    if (name && !firstNames.has(email)) firstNames.set(email, name)
   }
   for (const email of unsubscribed) audience.delete(email)
 
@@ -128,7 +133,7 @@ export async function GET(request: Request) {
         from: fromAddress(),
         to: email,
         subject: stepDef.subject,
-        html: stepDef.html({ siteUrl, unsubUrl: unsubscribeUrl(email) }),
+        html: stepDef.html({ siteUrl, unsubUrl: unsubscribeUrl(email), firstName: firstNames.get(email) }),
       })
       sent++
     } catch (err) {
