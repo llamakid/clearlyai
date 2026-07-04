@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Suspense } from 'react'
+import GoogleSignInButton from '@/components/GoogleSignInButton'
 
 function LoginForm() {
   const [email, setEmail] = useState('')
@@ -44,6 +45,15 @@ function LoginForm() {
   }
 
   return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+      <GoogleSignInButton next={redirectTo} />
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <span style={{ flex: 1, height: 1, background: '#d5d2c9' }} />
+        <span style={{ fontSize: 13, color: 'var(--ink-mid)' }}>or</span>
+        <span style={{ flex: 1, height: 1, background: '#d5d2c9' }} />
+      </div>
+
     <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
       <div className="form-group">
         <label htmlFor="email">Email address</label>
@@ -89,6 +99,7 @@ function LoginForm() {
         </Link>
       </div>
     </form>
+    </div>
   )
 }
 

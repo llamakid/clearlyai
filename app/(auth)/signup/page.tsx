@@ -6,6 +6,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import GoogleSignInButton from '@/components/GoogleSignInButton'
 
 export default function SignupPage() {
   const [firstName, setFirstName] = useState('')
@@ -110,6 +111,14 @@ export default function SignupPage() {
         </div>
 
         <div className="card" style={{ padding: 36 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 20, marginBottom: 20 }}>
+            <GoogleSignInButton />
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <span style={{ flex: 1, height: 1, background: '#d5d2c9' }} />
+              <span style={{ fontSize: 13, color: 'var(--ink-mid)' }}>or sign up with email</span>
+              <span style={{ flex: 1, height: 1, background: '#d5d2c9' }} />
+            </div>
+          </div>
           <form onSubmit={handleSignup} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
             <div className="form-group">
               <label htmlFor="firstName">First name <span style={{ fontWeight: 400, color: 'var(--ink-lt)' }}>(optional)</span></label>
