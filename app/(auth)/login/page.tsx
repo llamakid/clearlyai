@@ -18,6 +18,7 @@ function LoginForm() {
   const searchParams = useSearchParams()
   const raw = searchParams.get('redirectTo') || '/dashboard'
   const redirectTo = raw.startsWith('/') && !raw.startsWith('//') ? raw : '/dashboard'
+  const oauthError = searchParams.get('error')
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -46,6 +47,7 @@ function LoginForm() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+      {oauthError && <p className="error-text">{oauthError}</p>}
       <GoogleSignInButton next={redirectTo} />
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>

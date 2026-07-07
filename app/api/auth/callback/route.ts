@@ -10,7 +10,14 @@ export async function GET(request: Request) {
 
   if (code) {
     const supabase = await createClient()
-    const { data } = await supabase.auth.exchangeCodeForSession(code)
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code)
+
+    if (error) {
+      console.error('OAuth code exchange failed:', error.message)
+      return NextResponse.redirect(
+        new URL(`/login?error=${encodeURIComponent('Sign-in failed. Please try again.')}`, request.url)
+      )
+    }
 
     // OAuth providers put the name in given_name/full_name — copy it to
     // first_name, which the drip + greeting logic reads. Password signups
