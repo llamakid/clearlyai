@@ -1,10 +1,21 @@
 import { createServerClient } from '@supabase/ssr'
-import { NextResponse, type NextRequest } from 'next/server'
+import { NextResponse, type NextRequest, type NextFetchEvent } from 'next/server'
+import { detectBot } from '@/lib/bot-detect'
+import { logBotVisit } from '@/lib/log-bot-visit'
 
-export async function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest, event: NextFetchEvent) {
   // Dev-only bypass — never runs in production
   if (process.env.NODE_ENV !== 'production' && process.env.SKIP_AUTH === 'true') {
     return NextResponse.next({ request })
+  }
+
+  // Bot/agent tracking — regular analytics (Vercel Analytics) undercounts
+  // this traffic because most crawlers never execute client-side JS. Logging
+  // happens after the response via waitUntil so it never adds request latency.
+  const userAgent = request.headers.get('user-agent')
+  const bot = detectBot(userAgent)
+  if (bot) {
+    event.waitUntil(logBotVisit(bot, request.nextUrl.pathname, userAgent!))
   }
 
   let supabaseResponse = NextResponse.next({ request })

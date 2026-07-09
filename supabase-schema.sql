@@ -156,3 +156,26 @@ alter table anon_tool_usage enable row level security;
 create policy "no public access on anon_tool_usage"
   on anon_tool_usage for all
   using (false);
+
+-- ── bot_visits: log of AI crawlers / agents and other bots hitting the site ──
+-- One row per detected bot request. Written from proxy.ts (edge middleware)
+-- via the service role, based on User-Agent matching (see lib/bot-detect.ts).
+-- Regular human traffic never touches this table.
+create table if not exists bot_visits (
+  id          uuid primary key default gen_random_uuid(),
+  bot_name    text not null,           -- e.g. 'OpenAI GPTBot', 'Anthropic ClaudeBot'
+  bot_type    text not null check (bot_type in ('ai_crawler', 'search_engine', 'other_bot')),
+  path        text not null,
+  user_agent  text not null,
+  visited_at  timestamptz not null default now()
+);
+
+alter table bot_visits enable row level security;
+
+-- No client access at all — service role bypasses RLS
+create policy "no public access on bot_visits"
+  on bot_visits for all
+  using (false);
+
+create index if not exists bot_visits_visited_at_idx on bot_visits(visited_at desc);
+create index if not exists bot_visits_bot_name_idx on bot_visits(bot_name);

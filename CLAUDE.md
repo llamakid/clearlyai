@@ -319,6 +319,8 @@ See `.env.local.example` for the full list. Summary:
 - ✅ Outreach drafts written — `marketing/first-outreach.md` (personal user emails, LinkedIn/Facebook posts, library workshop pitch, weekly rhythm)
 - ✅ Weekly marketing workflow (2026-07-02) — `/weekly-marketing` skill mines course lessons into a weekly content package saved as `marketing/week-NN.md` (week-01 done). Dogfood for a possible future subscriber-facing marketing tool — do not productize until the manual loop has run 4–6 weeks and produced signups.
 - ⏳ Nate to send the personal emails to the 17 existing users + start the weekly posting rhythm
+- ✅ Forever/lifetime plan copy updated (2026-07-06) — dropped "Founding Member" badge/language and the "founding rate, price goes up" subnote on `/pricing`; site's been open a while with no signups, so that urgency framing no longer fit. Price stays $299, badge is now "Lifetime".
+- ✅ nate@learnaiclearly.com inbox set up (2026-07-06) via iCloud+'s custom domain email feature — free, real inbox, works for replies to outreach emails (Zoho's free plan is no longer available; Cloudflare Email Routing was the fallback considered). `RESEND_FROM_EMAIL` still unchanged — consider switching so drip/notification emails match the new reply-able address.
 - ⏳ Course loading performance — module pages have noticeable load time; investigate the Supabase query waterfall (purchases check + progress fetch are sequential), bundle size from importing all 48 course data files, and whether React Suspense / streaming can help
 
 ---
