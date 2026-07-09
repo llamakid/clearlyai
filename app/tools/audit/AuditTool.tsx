@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import type { AuditReport, CategoryResult, FindingStatus } from '@/lib/aeo/types'
+import type { AuditReport } from '@/lib/aeo/types'
+import ReportCard from '@/components/tools/ReportCard'
 
 const card: React.CSSProperties = {
   background: 'white',
@@ -12,27 +13,39 @@ const card: React.CSSProperties = {
   padding: '40px',
 }
 
-const statusColors: Record<FindingStatus, { bg: string; border: string; text: string }> = {
-  good: { bg: '#eef6ef', border: '#cde3d0', text: '#2e6136' },
-  warn: { bg: '#fdf6e8', border: '#f0e0bb', text: '#8a6420' },
-  bad: { bg: '#fbeeec', border: '#efd0cb', text: '#963f33' },
-}
-
-const statusIcon: Record<FindingStatus, string> = { good: '✓', warn: '!', bad: '✕' }
-
-function scoreColor(pct: number): string {
-  if (pct >= 80) return '#2e6136'
-  if (pct >= 60) return '#8a6420'
-  return '#963f33'
-}
-
-export default function AuditTool({ isLoggedIn }: { isLoggedIn: boolean }) {
+export default function AuditTool({ isLoggedIn, hasPurchase }: { isLoggedIn: boolean; hasPurchase: boolean }) {
   const [url, setUrl] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [authRequired, setAuthRequired] = useState(false)
   const [authMessage, setAuthMessage] = useState('')
   const [report, setReport] = useState<AuditReport | null>(null)
+  const [tracking, setTracking] = useState(false)
+  const [trackError, setTrackError] = useState('')
+  const [tracked, setTracked] = useState(false)
+
+  async function handleTrack() {
+    if (!report || tracking) return
+    setTracking(true)
+    setTrackError('')
+    try {
+      const res = await fetch('/api/tracker/sites', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: report.url }),
+      })
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        setTrackError(data.error || 'Could not start tracking. Please try again.')
+        return
+      }
+      setTracked(true)
+    } catch {
+      setTrackError('Could not start tracking. Please try again.')
+    } finally {
+      setTracking(false)
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -129,110 +142,69 @@ export default function AuditTool({ isLoggedIn }: { isLoggedIn: boolean }) {
       </div>
 
       {report && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 20, marginTop: 20 }}>
-          <div style={{
-            ...card,
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            gap: 24, flexWrap: 'wrap',
-          }}>
-            <div style={{ minWidth: 200, flex: 1 }}>
-              <p style={{
-                fontSize: 12, fontWeight: 700, color: 'var(--accent-dk)',
-                letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 6,
-              }}>
-                Your AI Search Report
-              </p>
-              <p style={{ fontSize: 17, fontWeight: 600, color: 'var(--ink)', wordBreak: 'break-all', marginBottom: 4 }}>
-                {report.url}
-              </p>
-              <p style={{ fontSize: 13, color: 'var(--ink-mid)' }}>
-                Checked {new Date(report.crawledAt).toLocaleString()}
-              </p>
-            </div>
-            <div style={{ textAlign: 'center' }}>
+        <div style={{ marginTop: 20 }}>
+          <ReportCard report={report} />
+
+          <div style={{ marginTop: 20 }}>
+            {hasPurchase ? (
               <div style={{
-                fontFamily: 'var(--font-h)', fontSize: 56, lineHeight: 1,
-                color: scoreColor(report.score),
+                ...card,
+                background: 'var(--accent-lt)',
+                border: '1.5px solid var(--accent)',
+                padding: '28px 32px',
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                gap: 20, flexWrap: 'wrap',
               }}>
-                {report.score}
-              </div>
-              <div style={{ fontSize: 13, color: 'var(--ink-mid)', marginTop: 4 }}>out of 100</div>
-              <div style={{
-                display: 'inline-block', marginTop: 10,
-                border: `1.5px solid ${scoreColor(report.score)}`,
-                color: scoreColor(report.score),
-                borderRadius: 999, padding: '4px 14px',
-                fontSize: 13, fontWeight: 700,
-              }}>
-                Grade {report.grade}
-              </div>
-            </div>
-          </div>
-
-          {report.categories.map(category => (
-            <CategoryCard key={category.key} category={category} />
-          ))}
-
-          {!isLoggedIn && (
-            <div style={{
-              ...card,
-              background: 'var(--accent-lt)',
-              border: '1.5px solid var(--accent)',
-              padding: '28px 32px',
-            }}>
-              <h2 style={{ fontFamily: 'var(--font-h)', fontSize: 22, marginBottom: 8, color: 'var(--ink)' }}>
-                Want to fix these yourself?
-              </h2>
-              <p style={{ fontSize: 15, color: 'var(--ink-mid)', lineHeight: 1.65, marginBottom: 16 }}>
-                Our courses teach you how AI search works and how to make it work for your
-                business — in plain English, no tech background needed.
-              </p>
-              <a href="/course/0" className="btn btn-primary" style={{ textDecoration: 'none' }}>
-                Start the free course →
-              </a>
-            </div>
-          )}
-        </div>
-      )}
-    </div>
-  )
-}
-
-function CategoryCard({ category }: { category: CategoryResult }) {
-  const pct = Math.round((category.score / category.maxScore) * 100)
-  return (
-    <div style={{ ...card, padding: '28px 32px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 12 }}>
-        <h3 style={{ fontFamily: 'var(--font-h)', fontSize: 20, color: 'var(--ink)' }}>{category.label}</h3>
-        <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--ink-mid)', whiteSpace: 'nowrap' }}>
-          {category.score}/{category.maxScore}
-        </span>
-      </div>
-      <div style={{ height: 8, borderRadius: 999, background: 'var(--bg)', overflow: 'hidden', marginBottom: 18 }}>
-        <div style={{ height: '100%', width: `${pct}%`, background: scoreColor(pct), borderRadius: 999 }} />
-      </div>
-      <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 8, padding: 0, margin: 0 }}>
-        {category.findings.map(finding => {
-          const c = statusColors[finding.status]
-          return (
-            <li key={finding.id} style={{
-              background: c.bg, border: `1px solid ${c.border}`,
-              borderRadius: 12, padding: '12px 16px', fontSize: 14, color: c.text,
-              display: 'flex', gap: 10, alignItems: 'flex-start', lineHeight: 1.55,
-            }}>
-              <span style={{ fontWeight: 700, flexShrink: 0 }}>{statusIcon[finding.status]}</span>
-              <div>
-                <p style={{ margin: 0 }}>{finding.message}</p>
-                {finding.recommendation && (
-                  <p style={{ margin: '4px 0 0', fontSize: 13, opacity: 0.85 }}>
-                    How to fix it: {finding.recommendation}
+                <div>
+                  <h2 style={{ fontFamily: 'var(--font-h)', fontSize: 20, marginBottom: 6, color: 'var(--ink)' }}>
+                    {tracked ? "You're tracking this site" : 'Want us to watch this weekly?'}
+                  </h2>
+                  <p style={{ fontSize: 14, color: 'var(--ink-mid)', lineHeight: 1.6 }}>
+                    {tracked
+                      ? "We'll re-check it every week and email you if your score drops."
+                      : "As a subscriber, we'll re-run this check every week and email you if your score drops."}
                   </p>
+                  {trackError && <p className="error-text" style={{ marginTop: 8 }}>{trackError}</p>}
+                </div>
+                {tracked ? (
+                  <Link href="/tools/tracker" className="btn btn-primary" style={{ textDecoration: 'none', whiteSpace: 'nowrap' }}>
+                    View tracker →
+                  </Link>
+                ) : (
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={handleTrack}
+                    disabled={tracking}
+                    style={{ whiteSpace: 'nowrap', opacity: tracking ? 0.6 : 1 }}
+                  >
+                    {tracking ? 'Starting…' : 'Track this site weekly →'}
+                  </button>
                 )}
               </div>
-            </li>
-          )
-        })}
-      </ul>
+            ) : (
+              <div style={{
+                ...card,
+                background: 'var(--accent-lt)',
+                border: '1.5px solid var(--accent)',
+                padding: '28px 32px',
+              }}>
+                <h2 style={{ fontFamily: 'var(--font-h)', fontSize: 22, marginBottom: 8, color: 'var(--ink)' }}>
+                  {isLoggedIn ? 'Want us to check this every week?' : 'Want to fix these yourself?'}
+                </h2>
+                <p style={{ fontSize: 15, color: 'var(--ink-mid)', lineHeight: 1.65, marginBottom: 16 }}>
+                  {isLoggedIn
+                    ? 'Subscribers get weekly re-checks with an email alert if their score drops, plus every course in the library.'
+                    : 'Our courses teach you how AI search works and how to make it work for your business — in plain English, no tech background needed.'}
+                </p>
+                <a href={isLoggedIn ? '/pricing' : '/course/0'} className="btn btn-primary" style={{ textDecoration: 'none' }}>
+                  {isLoggedIn ? 'See plans →' : 'Start the free course →'}
+                </a>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

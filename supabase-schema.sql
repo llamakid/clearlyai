@@ -179,3 +179,47 @@ create policy "no public access on bot_visits"
 
 create index if not exists bot_visits_visited_at_idx on bot_visits(visited_at desc);
 create index if not exists bot_visits_bot_name_idx on bot_visits(bot_name);
+
+-- ── AI Visibility Tracker: recurring AEO audit, a perk of any paid plan ──
+-- tracked_sites: which URL each subscriber wants monitored (MVP: one per user)
+create table if not exists tracked_sites (
+  id          uuid primary key default gen_random_uuid(),
+  user_id     uuid not null references auth.users(id) on delete cascade,
+  url         text not null,
+  created_at  timestamptz not null default now(),
+  unique (user_id, url)
+);
+
+alter table tracked_sites enable row level security;
+
+create policy "users can read own tracked sites"
+  on tracked_sites for select
+  using (auth.uid() = user_id);
+
+create policy "users can insert own tracked sites"
+  on tracked_sites for insert
+  with check (auth.uid() = user_id);
+
+create policy "users can delete own tracked sites"
+  on tracked_sites for delete
+  using (auth.uid() = user_id);
+
+-- visibility_snapshots: one row per crawl (initial + weekly cron), keeps score
+-- history for the trend view. Service-role only — read via the tracker page
+-- after confirming the requesting user owns the parent tracked_site.
+create table if not exists visibility_snapshots (
+  id               uuid primary key default gen_random_uuid(),
+  tracked_site_id  uuid not null references tracked_sites(id) on delete cascade,
+  score            integer not null,
+  max_score        integer not null default 100,
+  report           jsonb not null,
+  crawled_at       timestamptz not null default now()
+);
+
+alter table visibility_snapshots enable row level security;
+
+create policy "no public access on visibility_snapshots"
+  on visibility_snapshots for all
+  using (false);
+
+create index if not exists visibility_snapshots_site_idx on visibility_snapshots(tracked_site_id, crawled_at desc);

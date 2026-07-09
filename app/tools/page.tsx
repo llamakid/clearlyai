@@ -33,6 +33,15 @@ const TOOLS = [
     external: false,
   },
   {
+    href: '/tools/tracker',
+    icon: '📈',
+    title: 'AI Visibility Tracker',
+    desc: 'Keep an eye on your AI Search Checkup score over time. We re-check your site weekly and email you if it drops — free for subscribers.',
+    tags: ['Subscriber perk', 'Weekly checks', 'Email alerts'],
+    cta: 'View tracker →',
+    external: false,
+  },
+  {
     href: 'https://chatgpt.com/g/g-6a25ce026df08191ad2ae0fedd361400-clearly-explain-this',
     icon: '🤖',
     title: 'Clearly: Explain This',

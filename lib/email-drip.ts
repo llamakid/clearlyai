@@ -20,7 +20,7 @@ export function safeName(name: string | undefined | null): string | undefined {
   return trimmed.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 }
 
-function wrap(body: string, unsubUrl: string): string {
+export function wrap(body: string, unsubUrl: string): string {
   return `
     <div style="font-family:Inter,Helvetica,Arial,sans-serif;max-width:560px;margin:0 auto;color:#1c2b35;">
       ${body}
@@ -37,13 +37,13 @@ function wrap(body: string, unsubUrl: string): string {
   `
 }
 
-const h1 = (text: string) =>
+export const h1 = (text: string) =>
   `<h1 style="font-family:'DM Serif Display',Georgia,serif;color:#3d7a8a;font-size:26px;margin-bottom:8px;">${text}</h1>`
 
-const p = (text: string) =>
+export const p = (text: string) =>
   `<p style="font-size:16px;line-height:1.65;">${text}</p>`
 
-const btn = (href: string, label: string) =>
+export const btn = (href: string, label: string) =>
   `<p style="margin:24px 0;">
     <a href="${href}" style="background:#3d7a8a;color:#ffffff;text-decoration:none;padding:13px 28px;border-radius:10px;font-size:15px;font-weight:700;display:inline-block;">${label}</a>
   </p>`
@@ -158,4 +158,31 @@ export function verifyUnsubscribeToken(email: string, token: string): boolean {
 export function unsubscribeUrl(email: string): string {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://learnaiclearly.com'
   return `${siteUrl}/api/unsubscribe?email=${encodeURIComponent(email)}&token=${unsubscribeToken(email)}`
+}
+
+// ── AI Visibility Tracker: score-drop alert ────────────────
+// Sent by the weekly cron (app/api/cron/visibility-tracker) when a tracked
+// site's score drops by more than the alert threshold since the last crawl.
+export function visibilityAlertEmail({
+  siteUrl,
+  trackedUrl,
+  oldScore,
+  newScore,
+}: {
+  siteUrl: string
+  trackedUrl: string
+  oldScore: number
+  newScore: number
+}): { subject: string; html: string } {
+  return {
+    subject: `Your AI visibility score dropped: ${trackedUrl}`,
+    html: `
+      <div style="font-family:Inter,Helvetica,Arial,sans-serif;max-width:560px;margin:0 auto;color:#1c2b35;">
+        ${h1('Your AI visibility score dropped.')}
+        ${p(`We re-checked <strong>${trackedUrl}</strong> this week and your AI Search score went from <strong>${oldScore}</strong> to <strong>${newScore}</strong> out of 100.`)}
+        ${p(`Something on the page likely changed — a missing tag, a blocked crawler, a broken link. The full breakdown is in your tracker.`)}
+        ${btn(`${siteUrl}/tools/tracker`, 'See what changed')}
+      </div>
+    `,
+  }
 }
