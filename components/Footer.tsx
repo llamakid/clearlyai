@@ -22,7 +22,7 @@ export default function Footer() {
 
         <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
           <Link href="/blog" style={footerLink}>Blog</Link>
-          <Link href="/pricing" style={footerLink}>Pricing</Link>
+          <Link href="/pricing" style={footerLink}>Why It&apos;s Free</Link>
           <Link href="/faq" style={footerLink}>FAQ</Link>
           <Link href="/login" style={footerLink}>Log In</Link>
           <Link href="/privacy" style={footerLink}>Privacy</Link>

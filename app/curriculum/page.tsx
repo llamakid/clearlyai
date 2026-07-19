@@ -5,7 +5,7 @@ import { COURSES_META } from '@/lib/course-data/courses'
 
 export const metadata: Metadata = {
   title: 'Full Curriculum — Clearly, AI',
-  description: 'Plain-English AI courses for working professionals, small business owners, and curious learners. One subscription unlocks everything.',
+  description: 'Plain-English AI courses for working professionals, small business owners, and curious learners. All free with a free account.',
   alternates: { canonical: 'https://learnaiclearly.com/curriculum' },
 }
 
@@ -29,23 +29,23 @@ export default function CurriculumPage() {
             letterSpacing: '-0.02em', lineHeight: 1.15,
             color: 'white', marginBottom: 20,
           }}>
-            All courses. <em style={{ color: 'var(--accent-lt)', fontStyle: 'italic' }}>One subscription.</em>
+            All courses. <em style={{ color: 'var(--accent-lt)', fontStyle: 'italic' }}>All free.</em>
           </h1>
           <p style={{ fontSize: 18, color: 'rgba(255,255,255,0.65)', lineHeight: 1.7, maxWidth: 560, margin: '0 auto 36px' }}>
             Every course is built for people without a tech background. Plain English, real skills, no jargon.
-            One subscription unlocks all of it.
+            A free account unlocks all of it.
           </p>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
             <a href="/course/0" className="btn btn-primary" style={{ fontSize: 15, padding: '14px 32px' }}>
               Start the Free Course
             </a>
-            <a href="/pricing" style={{
+            <a href="/signup" style={{
               fontSize: 15, padding: '14px 32px',
               border: '1px solid rgba(255,255,255,0.2)',
               borderRadius: 12, color: 'rgba(255,255,255,0.8)',
               textDecoration: 'none', fontWeight: 600,
             }}>
-              See Pricing
+              Create a Free Account
             </a>
           </div>
         </div>
@@ -182,22 +182,22 @@ export default function CurriculumPage() {
             fontSize: 'clamp(28px, 3.5vw, 40px)',
             color: 'white', marginBottom: 16, lineHeight: 1.2,
           }}>
-            One subscription. <em style={{ color: 'var(--accent-lt)', fontStyle: 'italic' }}>All courses.</em>
+            One free account. <em style={{ color: 'var(--accent-lt)', fontStyle: 'italic' }}>All courses.</em>
           </h2>
           <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.65)', lineHeight: 1.65, marginBottom: 36 }}>
-            Start the free course today. No credit card, no commitment. Upgrade when you're ready.
+            Start the free course today. No credit card, no commitment — everything here is free.
           </p>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
             <a href="/course/0" className="btn btn-primary" style={{ fontSize: 15, padding: '14px 32px' }}>
               Start the Free Course
             </a>
-            <a href="/pricing" style={{
+            <a href="/signup" style={{
               fontSize: 15, padding: '14px 32px',
               border: '1px solid rgba(255,255,255,0.2)',
               borderRadius: 12, color: 'rgba(255,255,255,0.8)',
               textDecoration: 'none', fontWeight: 600,
             }}>
-              See Pricing
+              Create a Free Account
             </a>
           </div>
         </div>

@@ -13,7 +13,7 @@ const card: React.CSSProperties = {
   padding: '40px',
 }
 
-export default function AuditTool({ isLoggedIn, hasPurchase }: { isLoggedIn: boolean; hasPurchase: boolean }) {
+export default function AuditTool({ isLoggedIn }: { isLoggedIn: boolean }) {
   const [url, setUrl] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -146,7 +146,7 @@ export default function AuditTool({ isLoggedIn, hasPurchase }: { isLoggedIn: boo
           <ReportCard report={report} />
 
           <div style={{ marginTop: 20 }}>
-            {hasPurchase ? (
+            {isLoggedIn ? (
               <div style={{
                 ...card,
                 background: 'var(--accent-lt)',
@@ -162,7 +162,7 @@ export default function AuditTool({ isLoggedIn, hasPurchase }: { isLoggedIn: boo
                   <p style={{ fontSize: 14, color: 'var(--ink-mid)', lineHeight: 1.6 }}>
                     {tracked
                       ? "We'll re-check it every week and email you if your score drops."
-                      : "As a subscriber, we'll re-run this check every week and email you if your score drops."}
+                      : "We'll re-run this check every week and email you if your score drops — free with your account."}
                   </p>
                   {trackError && <p className="error-text" style={{ marginTop: 8 }}>{trackError}</p>}
                 </div>
@@ -190,15 +190,13 @@ export default function AuditTool({ isLoggedIn, hasPurchase }: { isLoggedIn: boo
                 padding: '28px 32px',
               }}>
                 <h2 style={{ fontFamily: 'var(--font-h)', fontSize: 22, marginBottom: 8, color: 'var(--ink)' }}>
-                  {isLoggedIn ? 'Want us to check this every week?' : 'Want to fix these yourself?'}
+                  Want to fix these yourself?
                 </h2>
                 <p style={{ fontSize: 15, color: 'var(--ink-mid)', lineHeight: 1.65, marginBottom: 16 }}>
-                  {isLoggedIn
-                    ? 'Subscribers get weekly re-checks with an email alert if their score drops, plus every course in the library.'
-                    : 'Our courses teach you how AI search works and how to make it work for your business — in plain English, no tech background needed.'}
+                  Our courses teach you how AI search works and how to make it work for your business — in plain English, no tech background needed. They&apos;re all free.
                 </p>
-                <a href={isLoggedIn ? '/pricing' : '/course/0'} className="btn btn-primary" style={{ textDecoration: 'none' }}>
-                  {isLoggedIn ? 'See plans →' : 'Start the free course →'}
+                <a href="/course/0" className="btn btn-primary" style={{ textDecoration: 'none' }}>
+                  Start the free course →
                 </a>
               </div>
             )}

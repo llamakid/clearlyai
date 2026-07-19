@@ -99,7 +99,7 @@ const PERSONAS: PersonaPage[] = [
       },
       {
         q: 'Is this going to require expensive software?',
-        a: 'No. Everything in the courses works with free AI accounts. The only subscription is ours — $15/month for every course, and you can cancel any time.',
+        a: 'No. Everything in the courses works with free AI accounts. And the courses themselves are free too — all you need is a free Clearly, AI account.',
       },
     ],
     quote: '"I don\'t have time to figure this out on my own. Just show me what works."',
@@ -339,7 +339,7 @@ export default async function PersonaPage({ params }: { params: Promise<{ person
             </div>
 
             <p style={{ marginTop: 20, fontSize: 14, color: 'var(--ink-mid)' }}>
-              One subscription unlocks all eight courses — this path and every other.{' '}
+              One free account unlocks all eight courses — this path and every other.{' '}
               <Link href="/curriculum" style={{ color: 'var(--accent)', fontWeight: 600 }}>See the full curriculum →</Link>
             </p>
           </div>
@@ -432,16 +432,16 @@ export default async function PersonaPage({ params }: { params: Promise<{ person
               Start free. <em style={{ color: 'var(--accent-lt)', fontStyle: 'italic' }}>Ten minutes from now, you&apos;ll get it.</em>
             </h2>
             <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.65)', lineHeight: 1.65, marginBottom: 32 }}>
-              The free course covers ten things you can do with AI today — no account, no credit card. When you want the full path above, plans start at $15/month.
+              The free course covers ten things you can do with AI today — no account, no credit card. And the full path above? Also free — just create an account.
             </p>
             <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap', alignItems: 'center' }}>
               <a href="/course/0" className="btn btn-primary" style={{ fontSize: 16, padding: '16px 40px' }}>
                 Start the Free Course
               </a>
-              <a href="/pricing" style={{
+              <a href="/signup" style={{
                 fontSize: 15, fontWeight: 600, color: 'rgba(255,255,255,0.7)', textDecoration: 'none',
               }}>
-                See plans →
+                Create a free account →
               </a>
             </div>
           </div>

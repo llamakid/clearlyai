@@ -130,16 +130,14 @@ function ProviderLevelCard({
   level,
   index,
   total,
-  hasPurchase,
 }: {
   level: (typeof PROVIDER_SERIES.levels)[number]
   index: number
   total: number
-  hasPurchase: boolean
 }) {
   const comingSoon = 'comingSoon' in level && level.comingSoon
-  const locked = !comingSoon && !hasPurchase
-  const interactive = !comingSoon && hasPurchase
+  const locked = false
+  const interactive = !comingSoon
 
   return (
     <div
@@ -209,17 +207,12 @@ export default async function DashboardPage({
   const verifyError = params.verify_error === '1'
   const needsVerification = user!.app_metadata?.email_verified === false
 
+  // All courses are free for logged-in users. The purchases query remains only
+  // to show the manage-subscription button to legacy subscribers, if any.
   const { data: purchases } = await supabase
     .from('purchases')
     .select('plan_type, subscription_status')
     .eq('user_id', user!.id)
-
-  const hasPurchase = purchases?.some(
-    (p) =>
-      p.plan_type === 'forever' ||
-      p.subscription_status === 'active' ||
-      p.subscription_status === 'past_due'
-  ) ?? false
 
   const hasActiveSubscription = purchases?.some(
     (p) =>
@@ -380,21 +373,15 @@ export default async function DashboardPage({
                     gap: 16,
                     alignItems: 'stretch',
                   }}>
-                    {trackCourses.map((course) =>
-                      !hasPurchase ? (
-                        <div key={course.slug} style={{ display: 'flex', flexDirection: 'column' }}>
-                          <CourseCard course={course} isLocked={true} />
-                        </div>
-                      ) : (
-                        <Link
-                          key={course.slug}
-                          href={`/courses/${course.slug}`}
-                          style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column' }}
-                        >
-                          <CourseCard course={course} isLocked={false} />
-                        </Link>
-                      )
-                    )}
+                    {trackCourses.map((course) => (
+                      <Link
+                        key={course.slug}
+                        href={`/courses/${course.slug}`}
+                        style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column' }}
+                      >
+                        <CourseCard course={course} isLocked={false} />
+                      </Link>
+                    ))}
                   </div>
                 </section>
               )
@@ -447,10 +434,9 @@ export default async function DashboardPage({
                       level={level}
                       index={i}
                       total={PROVIDER_SERIES.levels.length}
-                      hasPurchase={hasPurchase}
                     />
                   )
-                  const isLink = !('comingSoon' in level && level.comingSoon) && hasPurchase && 'slug' in level
+                  const isLink = !('comingSoon' in level && level.comingSoon) && 'slug' in level
                   return isLink ? (
                     <Link
                       key={level.title}
@@ -467,8 +453,7 @@ export default async function DashboardPage({
                 })}
               </div>
             </section>
-            {hasPurchase && (
-              <section>
+            <section>
                 <div style={{
                   marginBottom: 20,
                   paddingBottom: 14,
@@ -480,9 +465,9 @@ export default async function DashboardPage({
                     marginBottom: 4,
                     color: 'var(--ink)',
                   }}>
-                    Your subscriber perks
+                    Your member tools
                   </h2>
-                  <p style={{ fontSize: 14, color: 'var(--ink-mid)' }}>Included free with your plan.</p>
+                  <p style={{ fontSize: 14, color: 'var(--ink-mid)' }}>Included free with your account.</p>
                 </div>
                 <Link href="/tools/tracker" style={{ textDecoration: 'none', display: 'block' }}>
                   <div className="card card-hover" style={{
@@ -514,42 +499,7 @@ export default async function DashboardPage({
                   </div>
                 </Link>
               </section>
-            )}
           </div>
-
-          {!hasPurchase && (
-            <div style={{
-              marginTop: 56,
-              background: 'var(--accent)',
-              borderRadius: 20,
-              padding: '32px 36px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: 24,
-              flexWrap: 'wrap',
-            }}>
-              <div>
-                <p style={{
-                  fontFamily: 'var(--font-h)',
-                  fontSize: 22, color: '#fff', marginBottom: 6,
-                }}>
-                  Ready to unlock everything?
-                </p>
-                <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.8)', maxWidth: 420 }}>
-                  Get full access to all courses, plus every new course as it launches.
-                </p>
-              </div>
-              <Link href="/pricing" style={{
-                background: '#fff', color: 'var(--accent)',
-                fontWeight: 700, fontSize: 15,
-                padding: '14px 28px', borderRadius: 12,
-                textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0,
-              }}>
-                See plans →
-              </Link>
-            </div>
-          )}
 
         </div>
       </main>

@@ -39,7 +39,7 @@ export default function FeedbackView({ moduleId, nextModuleId, onBack }: { modul
 
   if (submitted) {
     const isStarter = moduleId === 0
-    const backHref = nextModuleId ? `/course/${nextModuleId}` : isStarter ? '/pricing' : '/dashboard'
+    const backHref = nextModuleId ? `/course/${nextModuleId}` : isStarter ? '/curriculum' : '/dashboard'
     const backLabel = nextModuleId ? `Continue to Module ${nextModuleId} →` : isStarter ? 'See the full curriculum →' : '← Back to Course Home'
     return (
       <div style={{ flex: 1, overflowY: 'auto', padding: '40px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>

@@ -13,19 +13,6 @@ function serviceClient() {
   )
 }
 
-async function hasActivePurchase(supabase: Awaited<ReturnType<typeof createServerClient>>, userId: string) {
-  const { data: purchases } = await supabase
-    .from('purchases')
-    .select('plan_type, subscription_status')
-    .eq('user_id', userId)
-  return purchases?.some(
-    (p) =>
-      p.plan_type === 'forever' ||
-      p.subscription_status === 'active' ||
-      p.subscription_status === 'past_due'
-  ) ?? false
-}
-
 export async function GET() {
   const supabase = await createServerClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -53,13 +40,6 @@ export async function POST(req: NextRequest) {
   const supabase = await createServerClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Please sign in.' }, { status: 401 })
-
-  if (!(await hasActivePurchase(supabase, user.id))) {
-    return NextResponse.json(
-      { error: 'The AI Visibility Tracker is a subscriber perk — see plans to unlock it.' },
-      { status: 403 }
-    )
-  }
 
   const { count: existingCount } = await supabase
     .from('tracked_sites')

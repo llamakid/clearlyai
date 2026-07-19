@@ -457,9 +457,9 @@ const c7module6: CourseData = {
           title: "There's a whole library of Clearly, AI courses waiting for you.",
           body: [
             "While you wait for the next Claude course, the rest of the Clearly, AI school is open to you — courses on using AI at work, in a small business, in retirement, and on writing better prompts. They all build on the same plain-English approach you've come to trust here.",
-            "Your single subscription unlocks all of them. Browse the dashboard, pick whatever fits your life right now, and keep the momentum going.",
+            "Your free account unlocks all of them. Browse the dashboard, pick whatever fits your life right now, and keep the momentum going.",
           ],
-          highlight: "Your subscription unlocks every Clearly, AI course — explore whatever fits your life.",
+          highlight: "Your account unlocks every Clearly, AI course — explore whatever fits your life.",
         },
         {
           type: 'compare',
@@ -497,7 +497,7 @@ const c7module6: CourseData = {
           summaryList: [
             "You've gone from curious beginner to confident everyday user",
             'The path continues with intermediate (Claude Cowork) and advanced (Claude Code) courses — coming soon',
-            'Your subscription unlocks every other Clearly, AI course right now',
+            'Your account unlocks every other Clearly, AI course right now',
             'Take the 7-day challenge: use Claude once a day for a week',
             'Learn it. Use it. Own it. — you did all three',
           ],

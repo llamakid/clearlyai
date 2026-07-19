@@ -50,7 +50,7 @@ export default function Navbar({ initialUser }: NavbarProps = {}) {
 
         <div className="nav-desktop">
           <Link href="/tools" style={navLink}>AI Tools</Link>
-          <Link href="/pricing" style={navLink}>Pricing</Link>
+          <Link href="/curriculum" style={navLink}>Courses</Link>
           <Link href="/blog" style={navLink}>Blog</Link>
           {user ? (
             <>
@@ -60,7 +60,7 @@ export default function Navbar({ initialUser }: NavbarProps = {}) {
           ) : (
             <>
               <Link href="/login" style={navLink}>Log In</Link>
-              <Link href="/pricing" style={accentBtn}>Get Started</Link>
+              <Link href="/signup" style={accentBtn}>Get Started</Link>
             </>
           )}
         </div>
@@ -86,7 +86,7 @@ export default function Navbar({ initialUser }: NavbarProps = {}) {
       {menuOpen && (
         <div className="nav-mobile-menu">
           <Link href="/tools" className="nav-mobile-link" onClick={close}>AI Tools</Link>
-          <Link href="/pricing" className="nav-mobile-link" onClick={close}>Pricing</Link>
+          <Link href="/curriculum" className="nav-mobile-link" onClick={close}>Courses</Link>
           <Link href="/blog" className="nav-mobile-link" onClick={close}>Blog</Link>
           {user ? (
             <>
@@ -96,7 +96,7 @@ export default function Navbar({ initialUser }: NavbarProps = {}) {
           ) : (
             <>
               <Link href="/login" className="nav-mobile-link" onClick={close}>Log In</Link>
-              <Link href="/pricing" className="nav-mobile-cta" onClick={close}>Get Started →</Link>
+              <Link href="/signup" className="nav-mobile-cta" onClick={close}>Get Started →</Link>
             </>
           )}
         </div>

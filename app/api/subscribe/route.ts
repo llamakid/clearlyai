@@ -124,13 +124,13 @@ export async function POST(request: Request) {
           </p>
           <p style="font-size:16px;line-height:1.6;">
             When you're ready to go deeper, the full curriculum has eight courses — 240 plain-English
-            lessons on using AI at work, in your business, and in everyday life. One subscription
-            unlocks everything.
+            lessons on using AI at work, in your business, and in everyday life. And it's all free:
+            a free account unlocks everything.
           </p>
           <p style="margin:24px 0;">
-            <a href="${siteUrl}/pricing"
+            <a href="${siteUrl}/signup"
                style="background:#3d7a8a;color:#ffffff;text-decoration:none;padding:13px 28px;border-radius:10px;font-size:15px;font-weight:700;display:inline-block;">
-              See the plans
+              Create your free account
             </a>
           </p>
           <p style="font-size:14px;color:#666;line-height:1.6;">

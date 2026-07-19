@@ -13,25 +13,11 @@ export default async function AuditToolPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  let hasPurchase = false
-  if (user) {
-    const { data: purchases } = await supabase
-      .from('purchases')
-      .select('plan_type, subscription_status')
-      .eq('user_id', user.id)
-    hasPurchase = purchases?.some(
-      (p) =>
-        p.plan_type === 'forever' ||
-        p.subscription_status === 'active' ||
-        p.subscription_status === 'past_due'
-    ) ?? false
-  }
-
   return (
     <>
       <Navbar initialUser={user} />
       <main style={{ minHeight: '80vh', padding: '40px 32px' }}>
-        <AuditTool isLoggedIn={!!user} hasPurchase={hasPurchase} />
+        <AuditTool isLoggedIn={!!user} />
       </main>
       <Footer />
     </>

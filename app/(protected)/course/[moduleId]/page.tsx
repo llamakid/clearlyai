@@ -1,4 +1,4 @@
-import { notFound, redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import CoursePlayer from '@/components/CoursePlayer'
 import module1 from '@/lib/course-data/module-1'
@@ -118,22 +118,8 @@ export default async function CoursePage({
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  const { data: purchases } = await supabase
-    .from('purchases')
-    .select('plan_type, subscription_status')
-    .eq('user_id', user!.id)
-
-  const hasPurchase = purchases?.some(
-    (p) =>
-      p.plan_type === 'forever' ||
-      p.subscription_status === 'active' ||
-      p.subscription_status === 'past_due'
-  )
-
-  if (!hasPurchase) {
-    redirect('/pricing')
-  }
-
+  // All courses are free — a logged-in session (enforced by middleware +
+  // the (protected) layout) is the only requirement.
   const moduleNum = parseInt(moduleId)
   const { data: initialProgress } = await supabase
     .from('course_progress')

@@ -5,10 +5,9 @@ import { buildReport } from '@/lib/aeo/scoring'
 import { getResend, fromAddress } from '@/lib/resend'
 import { visibilityAlertEmail } from '@/lib/email-drip'
 
-// Runs weekly via Vercel Cron (see vercel.json). Re-crawls every tracked site
-// belonging to a still-active subscriber, saves a new snapshot, and emails an
-// alert if the score dropped meaningfully. Lapsed subscribers' sites are
-// skipped (not deleted) so history is intact if they resubscribe.
+// Runs weekly via Vercel Cron (see vercel.json). Re-crawls every tracked site,
+// saves a new snapshot, and emails an alert if the score dropped meaningfully.
+// The tracker is free with an account, so every tracked site is crawled.
 
 export const maxDuration = 60
 
@@ -36,21 +35,6 @@ export async function GET(request: Request) {
     return NextResponse.json({ ok: true, crawled: 0, skipped: 0 })
   }
 
-  const { data: purchases } = await supabase
-    .from('purchases')
-    .select('user_id, plan_type, subscription_status')
-
-  const activeUserIds = new Set(
-    (purchases ?? [])
-      .filter(
-        (p) =>
-          p.plan_type === 'forever' ||
-          p.subscription_status === 'active' ||
-          p.subscription_status === 'past_due'
-      )
-      .map((p) => p.user_id)
-  )
-
   const { data: authUsers, error: usersErr } = await supabase.auth.admin.listUsers({ page: 1, perPage: 1000 })
   const emailByUserId = new Map<string, string>()
   if (!usersErr) {
@@ -67,11 +51,6 @@ export async function GET(request: Request) {
   let alerted = 0
 
   for (const site of sites) {
-    if (!activeUserIds.has(site.user_id)) {
-      skipped++
-      continue
-    }
-
     const { data: prior } = await supabase
       .from('visibility_snapshots')
       .select('score')

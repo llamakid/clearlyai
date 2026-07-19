@@ -17,18 +17,6 @@ export default async function CoursePage({
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  const { data: purchases } = await supabase
-    .from('purchases')
-    .select('plan_type, subscription_status')
-    .eq('user_id', user!.id)
-
-  const hasPurchase = purchases?.some(
-    (p) =>
-      p.plan_type === 'forever' ||
-      p.subscription_status === 'active' ||
-      p.subscription_status === 'past_due'
-  ) ?? false
-
   const availableCount = course.modules.filter((m) => m.available).length
 
   return (
@@ -168,8 +156,8 @@ export default async function CoursePage({
           }}>
             {course.modules.map((mod) => {
               const isComingSoon = !mod.available
-              const isLocked = mod.available && !hasPurchase
-              const isOpen = mod.available && hasPurchase
+              const isLocked = false
+              const isOpen = mod.available
               const numStr = mod.num < 10 ? `0${mod.num}` : `${mod.num}`
 
               const card = (
@@ -239,40 +227,6 @@ export default async function CoursePage({
               )
             })}
           </div>
-
-          {!hasPurchase && (
-            <div style={{
-              marginTop: 48,
-              background: 'var(--accent)',
-              borderRadius: 20,
-              padding: '32px 36px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: 24,
-              flexWrap: 'wrap',
-            }}>
-              <div>
-                <p style={{
-                  fontFamily: 'var(--font-dm-serif), Georgia, serif',
-                  fontSize: 22, color: '#fff', marginBottom: 6,
-                }}>
-                  Unlock all modules
-                </p>
-                <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.8)', maxWidth: 420 }}>
-                  Get full access to this course, plus every other course on Clearly, AI.
-                </p>
-              </div>
-              <Link href="/pricing" style={{
-                background: '#fff', color: 'var(--accent)',
-                fontWeight: 700, fontSize: 15,
-                padding: '14px 28px', borderRadius: 12,
-                textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0,
-              }}>
-                See plans →
-              </Link>
-            </div>
-          )}
 
         </div>
       </main>

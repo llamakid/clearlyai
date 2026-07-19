@@ -90,13 +90,13 @@ export const NURTURE_SEQUENCE: DripStep[] = [
   {
     step: 3,
     daysAfterPrev: 4,
-    subject: 'What the full Clearly, AI curriculum actually covers',
+    subject: 'Every Clearly, AI course is free now (really)',
     html: ({ siteUrl, unsubUrl, firstName }) =>
       wrap(
         `
-        ${h1('Eight courses. Zero jargon.')}
+        ${h1('Eight courses. Zero jargon. Zero dollars.')}
         ${firstName ? p(`Hi ${firstName},`) : ''}
-        ${p(`A few people have asked what's beyond the free course, so here's the honest tour. Clearly, AI has eight full courses — 240 short lessons — all in plain English, all self-paced:`)}
+        ${p(`Big news from my little corner of the internet: <strong>every Clearly, AI course is now completely free.</strong> All eight of them — 240 short lessons, all in plain English, all self-paced:`)}
         ${p(`
           🧠 <strong>AI Foundations</strong> — start from zero, build real confidence<br />
           ⚡ <strong>AI at Work</strong> — emails, reports, meetings, in half the time<br />
@@ -106,8 +106,8 @@ export const NURTURE_SEQUENCE: DripStep[] = [
           🚀 <strong>AI for Career Growth</strong> — resumes, interviews, staying relevant<br />
           💬 <strong>Two Claude courses</strong> — master one tool, beginner to advanced
         `)}
-        ${p(`One subscription unlocks everything, including every course we add later. Lessons run 8–12 minutes, and every one ends with something you can use the same day.`)}
-        ${btn(`${siteUrl}/curriculum`, 'Browse the full curriculum')}
+        ${p(`No subscription, no trial, no credit card. Create a free account and everything unlocks — including every course I add later. Lessons run 8–12 minutes, and every one ends with something you can use the same day.`)}
+        ${btn(`${siteUrl}/signup`, 'Unlock everything free')}
       `,
         unsubUrl
       ),
@@ -116,14 +116,13 @@ export const NURTURE_SEQUENCE: DripStep[] = [
     step: 4,
     daysAfterPrev: 5,
     subject: 'A quick note from me (and a question)',
-    html: ({ siteUrl, unsubUrl, firstName }) =>
+    html: ({ unsubUrl, firstName }) =>
       wrap(
         `
         ${h1('Can I ask you something?')}
         ${p(`${firstName ? `${firstName} — I` : 'I'} built Clearly, AI for people who keep hearing about AI and want a straight answer — not hype, not jargon, just "here's what to do."`)}
-        ${p(`So here's my question, and I read every reply: <strong>what's the one thing you wish AI could take off your plate?</strong> An email you dread writing, a task that eats your week, a document you can't decipher. Hit reply and tell me — I'll point you to the exact lesson or prompt that handles it, free, no strings.`)}
-        ${p(`And if you're ready to go all in: the whole school is $15/month, $120/year, or $299 once for lifetime access. Cancel any time, no contracts.`)}
-        ${btn(`${siteUrl}/pricing`, 'See the plans')}
+        ${p(`So here's my question, and I read every reply: <strong>what's the one thing you wish AI could take off your plate?</strong> An email you dread writing, a task that eats your week, a document you can't decipher. Hit reply and tell me — I'll point you to the exact lesson or prompt that handles it. It's all free, no strings.`)}
+        ${p(`(And if you run a business and want hands-on help putting AI to work — not just lessons — reply and say so. That's the other thing I do.)`)}
         ${p(`Either way — thanks for being here. It genuinely means a lot.`)}
       `,
         unsubUrl

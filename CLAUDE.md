@@ -140,8 +140,8 @@ SETUP.md                                Step-by-step setup guide (Supabase, Stri
 
 ## Course Architecture
 
-### Five courses, one subscription
-Access is gated by the `purchases` table — a single purchase unlocks **all** courses. Do not build per-course gating.
+### All courses are free (pivot 2026-07-14)
+**Access is gated by login only** — any authenticated user gets every course. The `purchases` table and all Stripe code remain in the repo, dormant, for future paid offers. Do not build per-course gating, and do not re-add purchase checks to course/tool pages. The strategy: Clearly, AI is a free, top-of-funnel trust builder; future monetization is paid tools and consulting/implementation work, not course paywalls.
 
 ### Course numbering
 | Course | Name | Module IDs | Slug |
@@ -213,21 +213,17 @@ User visits /dashboard, /courses/*, or /course/*
   → session OK → page renders
 
 Individual module pages (/course/[moduleId]):
-  → server checks purchases table
-  → no purchase → redirect /pricing
-  → purchase found → module loads
+  → login is the only gate — no purchase check (free pivot 2026-07-14)
   (Module 0 is fully public — served by app/course/0/page.tsx, exempted in
   proxy.ts, viewable without an account; anonymous progress lives in localStorage)
 ```
 
-Payment flow:
+Payment flow (DORMANT since the free pivot — code kept for future paid offers):
 ```
-/pricing → click "Get Access"
-  → if not logged in → /signup → back to /pricing
-  → POST /api/stripe/checkout → Stripe hosted checkout
-  → payment succeeds → Stripe webhook → POST /api/stripe/webhook
-  → webhook writes row to purchases table
-  → user redirected to /dashboard?welcome=1
+/pricing is now an "It's free — here's why" page (no checkout). It shows an
+optional "buy me a coffee" support button when NEXT_PUBLIC_SUPPORT_URL is set.
+The Stripe checkout/webhook/portal routes and pricing/CheckoutButton.tsx remain
+in the repo but nothing links to them.
 ```
 
 Feedback flow:
@@ -257,6 +253,7 @@ See `.env.local.example` for the full list. Summary:
 | `STRIPE_PRICE_ID_YEARLY` | Stripe → Products → Yearly price ID ($120/yr) |
 | `STRIPE_PRICE_ID_FOREVER` | Stripe → Products → Founder/lifetime price ID ($299 one-time) |
 | `NEXT_PUBLIC_SITE_URL` | `https://learnaiclearly.com` in production |
+| `NEXT_PUBLIC_SUPPORT_URL` | Optional — "buy me a coffee" link on /pricing (Stripe Payment Link or BMC); section hidden if unset |
 | `RESEND_API_KEY` | resend.com → API Keys |
 | `RESEND_FROM_EMAIL` | `nate@learnaiclearly.com` |
 | `ANTHROPIC_API_KEY` | console.anthropic.com → API Keys (powers AI Tools) |
@@ -313,7 +310,8 @@ See `.env.local.example` for the full list. Summary:
 - ⏳ Perplexity — submit once GSC and Bing show solid indexing progress
 
 ### Growth
-- ⏳ First paid users not yet acquired (as of 2026-07-02: 17 free users, 38 starter-kit downloads, 1 free-course completion, 0 paid)
+- ✅ **FREE PIVOT (2026-07-14)** — all courses + tools now free with a free account. Purchase checks removed from module pages, course overview, dashboard, tracker, and audit tool. `/pricing` rewritten as "It's free — here's why" + optional coffee link. All CTAs sweep to `/signup` or `/course/0`. Drip steps 3–4 rewritten (step 3 announces free, step 4 asks for replies + plants the consulting seed). Rationale: build trust/credibility at top of funnel; monetize later via paid tools + consulting. Nate chose a quiet flip (no announcement yet). **Still to do: set NEXT_PUBLIC_SUPPORT_URL in Vercel (create Stripe Payment Link), consider emailing the 17 existing users that everything is unlocked.**
+- ⏳ Before the pivot (as of 2026-07-02): 17 free users, 38 starter-kit downloads, 1 free-course completion, 0 paid
 - ✅ Email drip system built (2026-07-02) — 4-step nurture sequence in `lib/email-drip.ts`, daily Vercel Cron → `/api/cron/drip`, gap-based scheduling (works for old + new subscribers), one-click unsubscribe. **To activate:** run `supabase-migration-email-drip.sql` in Supabase SQL Editor, set `CRON_SECRET` in Vercel, redeploy.
 - ✅ End-of-free-course conversion screen rebuilt (2026-07-02) — value bullets + pricing CTA + email capture for anonymous finishers (`source: 'free-course'`)
 - ✅ Outreach drafts written — `marketing/first-outreach.md` (personal user emails, LinkedIn/Facebook posts, library workshop pitch, weekly rhythm)
@@ -352,7 +350,7 @@ See `.env.local.example` for the full list. Summary:
 - Do not use Netlify — this app runs on Vercel with its own API routes
 - Blog posts are MDX files in `content/blog/` — adding a new file is all it takes to publish
 - Stripe has separate test and live mode price IDs — not interchangeable. Always confirm the mode before debugging Stripe errors.
-- Pricing is 3 tiers: Monthly ($15/mo), Yearly ($120/yr), Forever ($299 one-time). Plan IDs: `monthly`, `yearly`, `forever`.
+- **Everything is free (2026-07-14 pivot).** Courses and tools are gated by login only. The old 3-tier pricing (monthly/yearly/forever) is retired; Stripe code is dormant. `/pricing` explains why it's free + optional coffee link (`NEXT_PUBLIC_SUPPORT_URL`). Never reintroduce paid-access copy ("plans", "$15/mo", "subscription") without asking Nate.
 - The server Supabase client (`lib/supabase/server.ts`) exports `createClient` — import it as `createClient`. Do not import `createServerClient` from that path.
 - API routes that need the logged-in user's ID should use the server client + `auth.getUser()`, then fall back gracefully if unauthenticated.
 - Resend notification emails to Nate should always be fire-and-forget — never let a failed notification block a user response.

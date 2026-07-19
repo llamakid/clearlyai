@@ -1,4 +1,3 @@
-import { redirect } from 'next/navigation'
 import { createClient as createServiceClient } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/server'
 import Navbar from '@/components/Navbar'
@@ -13,22 +12,6 @@ export const metadata = {
 export default async function TrackerPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
-
-  const { data: purchases } = await supabase
-    .from('purchases')
-    .select('plan_type, subscription_status')
-    .eq('user_id', user!.id)
-
-  const hasPurchase = purchases?.some(
-    (p) =>
-      p.plan_type === 'forever' ||
-      p.subscription_status === 'active' ||
-      p.subscription_status === 'past_due'
-  ) ?? false
-
-  if (!hasPurchase) {
-    redirect('/pricing')
-  }
 
   const { data: site } = await supabase
     .from('tracked_sites')

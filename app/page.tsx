@@ -408,7 +408,7 @@ export default function HomePage() {
                 letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: 16,
                 color: 'white',
               }}>
-                All courses. <em style={{ color: 'var(--accent-lt)', fontStyle: 'italic' }}>One subscription.</em>
+                All courses. <em style={{ color: 'var(--accent-lt)', fontStyle: 'italic' }}>All free.</em>
               </h2>
               <p style={{ fontSize: 17, color: 'rgba(255,255,255,0.65)', lineHeight: 1.65, maxWidth: 540 }}>
                 Every course is built for people without a tech background. Plain English, real skills. Start anywhere or take them all.
@@ -555,7 +555,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── Pricing CTA ── */}
+        {/* ── Free access CTA ── */}
         <section className="section-pad" style={{
           background: 'var(--ink)',
           textAlign: 'center',
@@ -565,61 +565,31 @@ export default function HomePage() {
               fontSize: 11, fontWeight: 700, letterSpacing: '0.1em',
               textTransform: 'uppercase', color: 'var(--accent-lt)', marginBottom: 12,
             }}>
-              Simple Pricing
+              100% Free
             </div>
             <h2 style={{
               fontFamily: 'var(--font-dm-serif), Georgia, serif',
               fontSize: 'clamp(28px, 4vw, 44px)',
               color: 'white',
               lineHeight: 1.15,
-              marginBottom: 32,
+              marginBottom: 20,
               letterSpacing: '-0.02em',
             }}>
-              Everything included.<br />
-              <em style={{ color: 'var(--accent-lt)', fontStyle: 'italic' }}>Pick the plan that fits.</em>
+              Every course.<br />
+              <em style={{ color: 'var(--accent-lt)', fontStyle: 'italic' }}>Completely free.</em>
             </h2>
-
-            <div className="grid-3" style={{
-              gap: 16,
-              maxWidth: 560,
-              margin: '0 auto 36px',
-            }}>
-              {[
-                { label: 'Monthly', price: '$15', period: '/mo', note: null, highlight: false },
-                { label: 'Yearly', price: '$120', period: '/yr', note: 'Best Value', highlight: true },
-                { label: 'Forever', price: '$299', period: ' one-time', note: null, highlight: false },
-              ].map(({ label, price, period, note, highlight }) => (
-                <div key={label} style={{
-                  background: highlight ? 'rgba(61,122,138,0.3)' : 'rgba(255,255,255,0.05)',
-                  border: `1px solid ${highlight ? 'rgba(61,122,138,0.8)' : 'rgba(255,255,255,0.08)'}`,
-                  borderRadius: 16,
-                  padding: '20px 16px',
-                }}>
-                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: highlight ? 'var(--accent-lt)' : 'rgba(255,255,255,0.4)', marginBottom: 8 }}>
-                    {note ?? label}
-                  </div>
-                  <div>
-                    <span style={{
-                      fontFamily: 'var(--font-dm-serif), Georgia, serif',
-                      fontSize: 32, color: 'white', lineHeight: 1,
-                    }}>{price}</span>
-                    <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)', marginLeft: 3 }}>{period}</span>
-                  </div>
-                  {note && (
-                    <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', marginTop: 4 }}>{label}</div>
-                  )}
-                </div>
-              ))}
-            </div>
+            <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.65)', lineHeight: 1.65, maxWidth: 480, margin: '0 auto 32px' }}>
+              No subscription, no trial, no credit card. Create a free account and everything unlocks.
+            </p>
 
             <ul style={{
               listStyle: 'none', padding: 0, marginBottom: 36,
               display: 'inline-flex', flexDirection: 'column', gap: 10, textAlign: 'left',
             }}>
               {[
-                'All courses, every module included',
+                'All 8 courses — 240 short, plain-English lessons',
                 'New courses as they launch',
-                'Go at your own pace, on any device',
+                'Free AI tools, progress saved on any device',
               ].map((item) => (
                 <li key={item} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 15, color: 'rgba(255,255,255,0.8)' }}>
                   <span style={{ color: 'var(--accent-lt)', fontWeight: 700, flexShrink: 0 }}>✓</span>
@@ -629,12 +599,12 @@ export default function HomePage() {
             </ul>
 
             <div>
-              <a href="/pricing" className="btn btn-primary" style={{ fontSize: 16, padding: '16px 44px', boxShadow: '0 4px 20px rgba(61,122,138,0.4)' }}>
-                See All Plans →
+              <a href="/signup" className="btn btn-primary" style={{ fontSize: 16, padding: '16px 44px', boxShadow: '0 4px 20px rgba(61,122,138,0.4)' }}>
+                Create Your Free Account →
               </a>
             </div>
             <p style={{ marginTop: 16, fontSize: 13, color: 'rgba(255,255,255,0.4)' }}>
-              Secure checkout via Stripe.
+              Free means free. No card, no catch.
             </p>
           </div>
         </section>
@@ -676,8 +646,8 @@ export default function HomePage() {
                   a: "There is no falling behind. Everything is self-paced and available on-demand whenever you're ready. You'll never lose access to lessons you've already unlocked.",
                 },
                 {
-                  q: 'Can I cancel any time?',
-                  a: "Yes. No contracts, no cancellation fees, no runaround. Cancel any time from your account. We'd rather earn your trust than trap you in something.",
+                  q: 'Is it really free? What\'s the catch?',
+                  a: "Really free. Every course, every lesson, every tool — all you need is a free account so your progress is saved. No credit card, no trial that expires. We'd rather earn your trust than charge for it.",
                 },
                 {
                   q: "I'm 60+. Is this really for me?",

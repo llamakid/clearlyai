@@ -5,17 +5,17 @@ import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'FAQ — Clearly, AI',
-  description: 'Common questions about Clearly, AI: courses, pricing, refunds, and what to expect. No tech background needed to get started.',
+  description: 'Common questions about Clearly, AI: free courses, accounts, and what to expect. No tech background needed to get started.',
   openGraph: {
     title: 'FAQ — Clearly, AI',
-    description: 'Common questions about Clearly, AI: courses, pricing, refunds, and what to expect.',
+    description: 'Common questions about Clearly, AI: free courses, accounts, and what to expect.',
     url: 'https://learnaiclearly.com/faq',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'FAQ — Clearly, AI',
-    description: 'Common questions about Clearly, AI: courses, pricing, refunds, and what to expect.',
+    description: 'Common questions about Clearly, AI: free courses, accounts, and what to expect.',
   },
   alternates: {
     canonical: 'https://learnaiclearly.com/faq',
@@ -65,32 +65,28 @@ const sections = [
       },
       {
         q: 'Will the content get outdated?',
-        a: 'AI does move fast, and we update the course regularly to keep up. All plans include every update and every new course we add. You won\'t pay again to access new material.',
+        a: 'AI does move fast, and we update the course regularly to keep up. Every update and every new course we add is included, free — you\'ll never pay to access new material.',
       },
     ],
   },
   {
-    heading: 'Pricing & billing',
+    heading: 'Pricing & access',
     items: [
       {
-        q: 'What\'s the difference between the plans?',
-        a: 'All three plans give you the same access to every current module and every new course we add. Monthly ($15/mo) and Yearly ($120/yr) renew automatically. Forever ($299 one-time) is a single payment with no renewals, ever.',
+        q: 'How much does it cost?',
+        a: 'Nothing. Every course, every lesson, and every tool on Clearly, AI is free. All you need is a free account so your progress is saved.',
       },
       {
-        q: 'Can I cancel anytime?',
-        a: 'Yes. Monthly and Yearly subscriptions can be cancelled anytime. No questions asked, no hoops to jump through. You keep access through the end of your paid period.',
+        q: 'Seriously — what\'s the catch?',
+        a: 'There isn\'t one. Clearly, AI is a one-person project, and the goal right now is simple: help as many people as possible get genuinely comfortable with AI. You create a free account, and you\'ll occasionally get a practical AI tip by email (one-click unsubscribe, any time).',
       },
       {
-        q: 'Is there a refund policy?',
-        a: 'If you\'re not satisfied within your first 7 days, email nate@learnaiclearly.com and we\'ll refund you in full. No fine print.',
+        q: 'Will it stay free?',
+        a: 'The courses, yes — that\'s the plan. If paid extras ever get added (advanced tools, hands-on help for businesses), they\'ll be additions, not a paywall on lessons you already have.',
       },
       {
-        q: 'Is my payment information safe?',
-        a: 'Yes. We use Stripe for all payments, the same system used by Amazon, Apple, and millions of other businesses. We never see or store your card number.',
-      },
-      {
-        q: 'Can I switch plans?',
-        a: 'Yes. You can upgrade, downgrade, or cancel anytime. If you upgrade to Forever from a subscription, your remaining time is credited toward the purchase.',
+        q: 'Do I need a credit card to sign up?',
+        a: 'No. Signing up takes an email address (or one click with Google) and nothing else.',
       },
     ],
   },
@@ -197,7 +193,7 @@ export default function FAQPage() {
 
           <div style={{ textAlign: 'center', marginTop: 40 }}>
             <Link
-              href="/pricing"
+              href="/signup"
               style={{
                 color: 'var(--accent)',
                 fontWeight: 600,
@@ -205,7 +201,7 @@ export default function FAQPage() {
                 textDecoration: 'none',
               }}
             >
-              Ready to get started? See pricing →
+              Ready to get started? Create your free account →
             </Link>
           </div>
 

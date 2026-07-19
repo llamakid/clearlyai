@@ -117,7 +117,7 @@ export default function CompletionView({ moduleId, nextModuleId, courseSlug, use
           </h2>
           <p style={{ fontSize: 16, color: 'var(--ink-mid)', lineHeight: 1.65, marginBottom: 28 }}>
             Every one of those 10 things works today, with a free AI account. And this was the shortest course
-            we have — the full curriculum is where it really pays off:
+            we have — the full curriculum is where it really pays off, and it&apos;s all free:
           </p>
 
           <ul style={{
@@ -127,7 +127,7 @@ export default function CompletionView({ moduleId, nextModuleId, courseSlug, use
             {[
               'Eight full courses — work, business, everyday life',
               '240 short lessons, each one immediately usable',
-              'One subscription unlocks everything, cancel any time',
+              'One free account unlocks everything — no credit card',
             ].map(item => (
               <li key={item} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 15, color: 'var(--ink)' }}>
                 <span style={{ color: 'var(--accent)', fontWeight: 700, flexShrink: 0 }}>✓</span>
@@ -137,13 +137,13 @@ export default function CompletionView({ moduleId, nextModuleId, courseSlug, use
           </ul>
 
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, marginBottom: 32 }}>
-            <Link href="/pricing" style={{
+            <Link href={userId ? '/dashboard' : '/signup'} style={{
               display: 'inline-block', padding: '16px 40px',
               background: 'var(--accent)', color: 'white', borderRadius: 12,
               fontSize: 16, fontWeight: 700, textDecoration: 'none',
               boxShadow: '0 4px 16px rgba(61,122,138,0.3)',
             }}>
-              See plans — from $15/month →
+              {userId ? 'Explore all eight courses →' : 'Unlock everything free →'}
             </Link>
             <Link href="/curriculum" style={{ fontSize: 14, color: 'var(--accent)', fontWeight: 600 }}>
               Browse all eight courses first
