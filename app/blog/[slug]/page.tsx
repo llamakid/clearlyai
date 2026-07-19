@@ -4,6 +4,7 @@ import { MDXRemote } from 'next-mdx-remote/rsc'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import InlineLeadMagnet from '@/components/InlineLeadMagnet'
+import InlineCTA from '@/components/InlineCTA'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 
@@ -138,7 +139,7 @@ export default async function BlogPostPage({
             color: 'var(--ink-mid)',
           }}>
             <div className="prose">
-              <MDXRemote source={post.content} components={{ LeadMagnet: InlineLeadMagnet }} />
+              <MDXRemote source={post.content} components={{ LeadMagnet: InlineLeadMagnet, CTA: InlineCTA }} />
             </div>
 
             {/* Starter kit callout */}
