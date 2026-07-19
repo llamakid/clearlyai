@@ -7,7 +7,7 @@ import { NextResponse } from 'next/server'
 const schema = z.object({
   email: z.string().email('Invalid email'),
   firstName: z.string().trim().max(80).optional(),
-  source: z.enum(['starter-kit', 'free-course', 'blog-tools']).optional(),
+  source: z.enum(['starter-kit', 'free-course', 'blog-tools', 'blog-business']).optional(),
 })
 
 export async function POST(request: Request) {
@@ -24,9 +24,13 @@ export async function POST(request: Request) {
       process.env.SUPABASE_SERVICE_ROLE_KEY!
     )
 
-    // 'blog-tools' captures share the Starter Kit deliverable + email, but keep
-    // their own stored source so blog conversions can be measured separately.
-    const isStarterKit = parsed.data.source === 'starter-kit' || parsed.data.source === 'blog-tools'
+    // 'blog-tools' / 'blog-business' captures share the Starter Kit deliverable +
+    // email, but keep their own stored source so blog conversions can be measured
+    // separately (blog-business = the small-business post cluster).
+    const isStarterKit =
+      parsed.data.source === 'starter-kit' ||
+      parsed.data.source === 'blog-tools' ||
+      parsed.data.source === 'blog-business'
     const firstName = parsed.data.firstName || undefined
 
     const { data: existing } = await supabase
