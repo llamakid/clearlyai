@@ -172,7 +172,8 @@ Module 0 is the free starter course — progress is tracked in `course_progress`
 Progress is stored in `course_progress` (Supabase) and mirrored to `localStorage`.
 - **On page load:** server fetches the progress row and passes it to `CoursePlayer` as `initialProgress` — no client-side DB fetch on mount.
 - **On lesson completion:** `CoursePlayer` upserts `{ current_lesson, current_slide, completed }` to the DB (fire-and-forget).
-- **Module 0 (starter):** localStorage only — not written to DB.
+- **Module 0 (starter):** localStorage for everyone; ALSO written to `course_progress` for signed-in takers (CoursePlayer's DB upsert is gated only on `userId`). Anonymous/logged-out takers are localStorage-only (no user id to attribute). This means Course 0 usage by logged-in users shows up in the course-usage readout.
+- **Course-usage readout:** `supabase-queries-course-usage.sql` — saved SQL (run in the Supabase SQL Editor) that maps `module_id` → course and reports users active / modules completed / recent activity per course and per module. There is no bot/crawler tracking anymore (the `bot_visits` table + `lib/bot-detect.ts` + `lib/log-bot-visit.ts` were removed 2026-07-22; run `supabase-migration-remove-bot-visits.sql` to drop the table).
 
 ### Navigation flow
 ```
