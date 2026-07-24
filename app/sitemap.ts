@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next'
 import { getAllPosts } from '@/lib/blog'
+import { COURSES_META } from '@/lib/course-data/courses'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://learnaiclearly.com'
@@ -21,6 +22,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/terms`, changeFrequency: 'yearly', priority: 0.3 },
   ]
 
+  // Public course overview pages — one per published course.
+  const coursePages: MetadataRoute.Sitemap = COURSES_META
+    .filter((c) => c.modules.some((m) => m.available))
+    .map((c) => ({
+      url: `${baseUrl}/courses/${c.slug}`,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    }))
+
   const blogPages: MetadataRoute.Sitemap = posts.map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
     lastModified: new Date(post.date),
@@ -28,5 +38,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }))
 
-  return [...staticPages, ...blogPages]
+  return [...staticPages, ...coursePages, ...blogPages]
 }

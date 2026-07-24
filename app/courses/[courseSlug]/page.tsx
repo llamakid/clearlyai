@@ -1,9 +1,38 @@
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { getCourseBySlug } from '@/lib/course-data/courses'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import Link from 'next/link'
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ courseSlug: string }>
+}): Promise<Metadata> {
+  const { courseSlug } = await params
+  const course = getCourseBySlug(courseSlug)
+  if (!course) return {}
+  const url = `https://learnaiclearly.com/courses/${courseSlug}`
+  return {
+    title: `${course.title} — Free Course — Clearly, AI`,
+    description: course.description,
+    alternates: { canonical: url },
+    openGraph: {
+      title: course.title,
+      description: course.description,
+      url,
+      type: 'website',
+      siteName: 'Clearly, AI',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: course.title,
+      description: course.description,
+    },
+  }
+}
 
 export default async function CoursePage({
   params,
@@ -27,14 +56,14 @@ export default async function CoursePage({
       <div style={{ background: 'var(--ink)' }}>
         <div style={{ maxWidth: 1120, margin: '0 auto', padding: '64px 32px 56px' }}>
 
-          {/* Back link */}
-          <Link href="/dashboard" style={{
+          {/* Back link — dashboard for signed-in users, curriculum for visitors */}
+          <Link href={user ? '/dashboard' : '/curriculum'} style={{
             display: 'inline-flex', alignItems: 'center', gap: 6,
             fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.45)',
             textDecoration: 'none', marginBottom: 32,
             transition: 'color 0.15s',
           }}>
-            ← Back to dashboard
+            {user ? '← Back to dashboard' : '← All courses'}
           </Link>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 48, alignItems: 'start' }}>
@@ -97,6 +126,18 @@ export default async function CoursePage({
                   </div>
                 ))}
               </div>
+
+              {/* Signup CTA for logged-out visitors (e.g. arriving from search) */}
+              {!user && (
+                <div style={{ marginTop: 28 }}>
+                  <Link href="/signup" className="btn btn-primary">
+                    Start this course free →
+                  </Link>
+                  <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.45)', marginTop: 10 }}>
+                    Create a free account to start — no payment, no catch.
+                  </p>
+                </div>
+              )}
             </div>
 
             {/* Right: What you'll learn */}

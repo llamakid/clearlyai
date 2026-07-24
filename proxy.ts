@@ -40,10 +40,12 @@ export async function proxy(request: NextRequest, _event: NextFetchEvent) {
 
   const { pathname } = request.nextUrl
 
-  // Protected routes: /dashboard and /course/* — except /course/0,
-  // the free starter course, which is open to logged-out visitors
+  // Protected routes: /dashboard and the module player /course/<id> — except
+  // /course/0, the free starter, which is open to logged-out visitors.
+  // NOTE: matches '/course/' (with the slash) so the PUBLIC course overview
+  // pages at '/courses/<slug>' are NOT gated — they're crawlable landing pages.
   const isProtected =
-    (pathname.startsWith('/dashboard') || pathname.startsWith('/course')) &&
+    (pathname.startsWith('/dashboard') || pathname.startsWith('/course/')) &&
     pathname !== '/course/0'
 
   if (isProtected && !user) {
