@@ -1,0 +1,96 @@
+---
+title: "How to Install Claude Code (Even If You've Never Used a Terminal)"
+date: "2026-07-24"
+excerpt: "Claude Code lets Claude work directly with the files on your computer. Here's how to install it, step by step, in plain English — including the one part that trips people up."
+tag: "Claude"
+draft: true
+---
+
+Most people meet Claude in a chat window — you type, it types back. **Claude Code** is a different way to use the same AI. Instead of copying and pasting between a chat and your files, Claude Code runs on your own computer and can read and change your actual files directly.
+
+It was built for people writing software. But you don't have to be a programmer to install it, and plenty of curious non-developers use it to understand a project, tidy up files, or automate small tasks. This is a genuine step up from a chat window — you'll use a "terminal," which may be new to you — so let's take it slowly and honestly.
+
+By the end of this post, Claude Code will be installed and logged in. In the next post, we'll cover what to actually *do* with it.
+
+---
+
+## Before you start: two things you need
+
+**1. A paid Claude plan.** This is the part people miss. Claude Code does *not* work with a free Claude.ai account. You need a **Claude Pro** ($20/month) or **Claude Max** ($200/month) subscription — Pro is plenty to start. (There's also a pay-as-you-go option through the developer console, but for most people a subscription is simpler.) There is no free tier, so if you're not ready to pay for a plan, this isn't the tool to start with yet.
+
+**2. A terminal.** The terminal is a plain text window where you type commands instead of clicking buttons. It sounds intimidating; it isn't. You'll open it, paste one line, and press Enter. That's the whole job.
+
+- **On a Mac:** press `Cmd + Space`, type "Terminal," and press Enter.
+- **On Windows:** click Start, type "PowerShell," and open it.
+- **On Linux:** you already know where your terminal is.
+
+That's it. No other setup — you don't need to install anything else first.
+
+---
+
+## Step 1: Install Claude Code
+
+Copy the line for your computer, paste it into the terminal, and press Enter.
+
+**On a Mac or Linux:**
+
+```
+curl -fsSL https://claude.ai/install.sh | bash
+```
+
+**On Windows** (in PowerShell):
+
+```
+irm https://claude.ai/install.ps1 | iex
+```
+
+You'll see some text scroll by as it downloads and sets itself up. When it stops and gives you back a normal prompt, it's done. This usually takes under a minute.
+
+> **Mac users:** if you'd rather use Homebrew (a popular Mac installer some people already have), `brew install --cask claude-code` also works. If you don't know what Homebrew is, ignore this and use the line above.
+
+<CTA href="/signup" heading="New to Claude itself?" blurb="Claude Code is the advanced end of the Claude world. If you want the plain-English foundation first, Clearly, AI's free Claude courses walk you through using Claude confidently — no terminal required." button="Explore the free Claude courses →" />
+
+---
+
+## Step 2: Check that it worked
+
+In the same terminal window, type this and press Enter:
+
+```
+claude --version
+```
+
+If you see a version number (something like `2.x.x`), you're installed. If instead you see an error like "command not found," the most common fix is to fully close the terminal window and open a new one, then try again — the install sometimes needs a fresh window to take effect.
+
+---
+
+## Step 3: Log in
+
+Now start Claude Code by typing:
+
+```
+claude
+```
+
+The first time you run it, it will open your web browser and ask you to log in to your Claude account. Sign in with the account that has your Pro or Max subscription, approve the access, and come back to the terminal. You'll see a "Login successful" message.
+
+If the browser doesn't open on its own, the terminal will show a link — press `c` to copy it, then paste it into your browser yourself.
+
+**A common stumbling block:** if you log in with a *free* Claude account, it won't let you continue. That's the paid-plan requirement from earlier showing up. Make sure you're signing in with the account that has Pro or Max.
+
+---
+
+## That's the whole install
+
+Three steps: install, check, log in. Claude Code is now sitting on your computer, logged in and ready.
+
+A couple of honest notes so nothing surprises you:
+
+- **It costs money to run.** With a Pro or Max plan, your usage is included in the monthly price — you won't get a bill per request. If you ever use the pay-as-you-go developer option instead, you're charged based on how much you use.
+- **It updates itself.** If you used the install command above, Claude Code keeps itself up to date quietly in the background. You don't need to reinstall it.
+
+---
+
+In the next post, we'll open Claude Code inside a real folder and walk through your first hour with it — how to talk to it, how it asks permission before changing anything, and the handful of commands worth knowing on day one.
+
+The big idea to hold onto: **Claude Code isn't a new thing to learn so much as a new place to use a skill you may already have** — asking AI clearly for what you want. That's the same skill that makes any AI tool work, terminal or not.

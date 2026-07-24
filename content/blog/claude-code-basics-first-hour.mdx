@@ -1,0 +1,102 @@
+---
+title: "Claude Code Basics: What to Do in Your First Hour"
+date: "2026-07-24"
+excerpt: "You've installed Claude Code — now what? A plain-English walkthrough of your first session: how to talk to it, how it asks before changing anything, and the few commands worth knowing on day one."
+tag: "Claude"
+draft: true
+---
+
+If you've [installed Claude Code](/blog/how-to-install-claude-code) and logged in, you're ready for the part that actually matters: using it. This post is your first hour — no prior experience assumed.
+
+The single most important thing to understand up front: **Claude Code can read and change the files in whatever folder you start it in.** That's what makes it powerful, and it's also why it's careful about asking permission before it changes anything. We'll come back to that.
+
+---
+
+## Start it inside a folder
+
+Claude Code works on one folder (a "project") at a time. So first you point your terminal at the folder you want to work in, then start Claude.
+
+```
+cd path/to/your/folder
+claude
+```
+
+`cd` means "change directory" — it's how you tell the terminal which folder to look at. Once you run `claude`, you'll see it start up and show you which folder and which AI model it's using. Now you can just type.
+
+If you're only experimenting, make a new empty folder first so you can't disturb anything important.
+
+---
+
+## Talk to it like a person
+
+There's no special syntax. You describe what you want in plain English, the same way you would in a chat window:
+
+> *"What does this project do?"*
+
+> *"What kinds of files are in this folder?"*
+
+Claude will look through the folder on its own and answer. This is the best way to start — **ask before you act.** Get it to explain what's there before you ask it to change anything. You'll understand your own project better, and you'll build trust in what Claude is seeing.
+
+---
+
+## It asks before it changes anything
+
+This is the part that makes Claude Code safe to learn on. By default, Claude will read your files freely — but the moment it wants to *change* a file or *run* a command, it stops and asks you first. You'll see the proposed change and three choices:
+
+- **Approve** it (let it go ahead)
+- **Reject** it (stop, and optionally tell it why)
+- **Ask for a different approach** (just type what you'd rather it do)
+
+Nothing happens to your files without your say-so. You are always the one clicking "yes." If you're nervous, that's the safety net — read each proposal before you approve it.
+
+<CTA href="/signup" heading="Want the guided version first?" blurb="If jumping straight into a terminal feels like a lot, Clearly, AI's free Claude courses build your confidence with Claude step by step, in plain English — a friendlier on-ramp before the advanced tools." button="Start the free Claude courses →" />
+
+---
+
+## Making your first change
+
+When you're ready, ask for something concrete and specific:
+
+> *"Add a short README file to this folder that explains what the project is."*
+
+Claude will figure out what to write, show you the file it wants to create, and ask you to approve it. Say yes, and the file appears in your folder — a real file you can open and read.
+
+The lesson that carries over from every other AI tool: **be specific.** "Add a function" is vague. "Add a note to the top of the `budget.txt` file summarizing the totals" gives Claude something it can actually do well. The clearer your request, the better the result.
+
+---
+
+## Look before it leaps: plan mode
+
+For anything bigger than a one-line change, there's a gentler setting called **plan mode**. In plan mode, Claude tells you *what* it intends to do — the whole plan — without doing any of it yet. You read the plan, and only then decide whether to let it proceed.
+
+You switch modes by pressing **Shift + Tab** (it cycles through the options; you'll see the current mode on screen). For beginners, plan mode is a great habit: it turns "Claude did a bunch of stuff" into "Claude showed me its plan, and I approved it."
+
+---
+
+## A few commands worth knowing
+
+Inside Claude Code, anything you type starting with a slash `/` is a command rather than a request. The handful worth knowing on day one:
+
+- `/help` — shows everything you can do
+- `/init` — sets up a small guide file so Claude understands your project better (nice to run once in a project you'll return to)
+- `/clear` — starts a fresh conversation when you switch to an unrelated task
+- `/model` — lets you switch which AI model you're using
+- `/exit` — closes Claude Code (or press `Ctrl + D`)
+
+You don't need to memorize these. Type `/` on its own and a menu appears.
+
+---
+
+## Three beginner mistakes to sidestep
+
+1. **Trying to use a free account.** Claude Code needs a paid Claude plan (Pro or Max). A free account won't get you in.
+2. **Being vague about *where*.** Tell Claude which file you mean. "Fix the list" is guesswork; "fix the list in `notes.txt`" is a clear target.
+3. **Letting one session run forever.** If you've been going for a while and switch to something completely different, type `/clear` to start clean. It keeps your project knowledge but drops the old back-and-forth — which keeps Claude focused (and your usage efficient).
+
+---
+
+## The takeaway
+
+Claude Code feels technical because of the terminal, but the actual skill is the one you've been building all along: **describe what you want clearly, give it context, and check the result.** The terminal is just a different room to practice it in.
+
+Start small. Ask questions before you make changes. Approve one edit at a time. Within an hour, the strangeness wears off — and you'll have Claude doing real work on real files, with you in control the whole way.
