@@ -6,12 +6,53 @@ import { COURSES_META } from '@/lib/course-data/courses'
 export const metadata: Metadata = {
   title: 'Full Curriculum — Clearly, AI',
   description: 'Plain-English AI courses for working professionals, small business owners, and curious learners. All free with a free account.',
+  openGraph: {
+    title: 'Full Curriculum — Clearly, AI',
+    description: 'Plain-English AI courses for working professionals, small business owners, and curious learners. All free with a free account.',
+    url: 'https://learnaiclearly.com/curriculum',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Full Curriculum — Clearly, AI',
+    description: 'Plain-English AI courses for working professionals, small business owners, and curious learners. All free with a free account.',
+  },
   alternates: { canonical: 'https://learnaiclearly.com/curriculum' },
+}
+
+const curriculumSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  itemListElement: COURSES_META.map((course, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    item: {
+      '@type': 'Course',
+      name: course.title,
+      description: course.description,
+      provider: {
+        '@type': 'Organization',
+        name: 'Clearly, AI',
+        sameAs: 'https://learnaiclearly.com',
+      },
+      url: `https://learnaiclearly.com/courses/${course.slug}`,
+      hasCourseInstance: {
+        '@type': 'CourseInstance',
+        courseMode: 'online',
+        courseWorkload: course.estimatedTime,
+      },
+      isAccessibleForFree: true,
+    },
+  })),
 }
 
 export default function CurriculumPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(curriculumSchema) }}
+      />
       <Navbar />
 
       {/* ── Hero ── */}

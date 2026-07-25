@@ -12,9 +12,42 @@ const EmailSignup = dynamic(() => import('@/components/EmailSignup'))
 const SAMPLE_LESSON = starterCourse.lessons[0]
 const SAMPLE_SLIDE = SAMPLE_LESSON.slides[1]
 
+const HOME_FAQS = [
+  {
+    q: 'Do I need any technical background to start?',
+    a: 'Absolutely not. Clearly, AI was built for people who have zero technical background. We start at the very beginning and assume nothing. If you can send an email, you can do this.',
+  },
+  {
+    q: 'How much time does it take each week?',
+    a: 'Each lesson runs about 8 to 12 minutes. Most people spend 20 to 30 minutes a week and still see real results. Go faster if you want. There\'s no schedule to follow.',
+  },
+  {
+    q: "What if I fall behind or can't keep up?",
+    a: "There is no falling behind. Everything is self-paced and available on-demand whenever you're ready. You'll never lose access to lessons you've already unlocked.",
+  },
+  {
+    q: 'Is it really free? What\'s the catch?',
+    a: "Really free. Every course, every lesson, every tool — all you need is a free account so your progress is saved. No credit card, no trial that expires. We'd rather earn your trust than charge for it.",
+  },
+  {
+    q: "I'm 60+. Is this really for me?",
+    a: "Yes, truly. Some of our most enthusiastic students are in their 60s and 70s. We pace things gently, use real-life examples, and never rush you. You'll be surprised how quickly it clicks.",
+  },
+]
+
+const homeFaqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: HOME_FAQS.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a },
+  })),
+}
+
 export const metadata: Metadata = {
   title: 'Clearly, AI — AI School for Non-Technical Adults',
-  description: 'A plain-English AI school for working professionals, small business owners, and curious learners. No jargon, no tech background needed. Start the free course today.',
+  description: 'A plain-English AI school for busy professionals, business owners, and curious learners. No jargon, no tech background. Start the free course today.',
   openGraph: {
     title: 'Clearly, AI — AI School for Non-Technical Adults',
     description: 'A plain-English AI school for working professionals, small business owners, and curious learners. No jargon, no tech background needed.',
@@ -34,6 +67,10 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homeFaqSchema) }}
+      />
       <Navbar />
       <main>
         {/* ── Hero ── */}
@@ -632,35 +669,14 @@ export default function HomePage() {
             </div>
 
             <div style={{ maxWidth: 680, display: 'flex', flexDirection: 'column', gap: 0 }}>
-              {[
-                {
-                  q: 'Do I need any technical background to start?',
-                  a: 'Absolutely not. Clearly, AI was built for people who have zero technical background. We start at the very beginning and assume nothing. If you can send an email, you can do this.',
-                },
-                {
-                  q: 'How much time does it take each week?',
-                  a: 'Each lesson runs about 8 to 12 minutes. Most people spend 20 to 30 minutes a week and still see real results. Go faster if you want. There\'s no schedule to follow.',
-                },
-                {
-                  q: "What if I fall behind or can't keep up?",
-                  a: "There is no falling behind. Everything is self-paced and available on-demand whenever you're ready. You'll never lose access to lessons you've already unlocked.",
-                },
-                {
-                  q: 'Is it really free? What\'s the catch?',
-                  a: "Really free. Every course, every lesson, every tool — all you need is a free account so your progress is saved. No credit card, no trial that expires. We'd rather earn your trust than charge for it.",
-                },
-                {
-                  q: "I'm 60+. Is this really for me?",
-                  a: "Yes, truly. Some of our most enthusiastic students are in their 60s and 70s. We pace things gently, use real-life examples, and never rush you. You'll be surprised how quickly it clicks.",
-                },
-              ].map(({ q, a }) => (
+              {HOME_FAQS.map(({ q, a }) => (
                 <div key={q} style={{
                   borderBottom: '1px solid var(--border)',
                   padding: '24px 0',
                 }}>
-                  <p style={{ fontWeight: 600, fontSize: 16, marginBottom: 10, color: 'var(--ink)' }}>
+                  <h3 style={{ fontWeight: 600, fontSize: 16, marginBottom: 10, color: 'var(--ink)' }}>
                     {q}
-                  </p>
+                  </h3>
                   <p style={{ fontSize: 15, color: 'var(--ink-mid)', lineHeight: 1.6 }}>
                     {a}
                   </p>

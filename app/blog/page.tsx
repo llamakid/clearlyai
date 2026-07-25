@@ -6,6 +6,20 @@ import Link from 'next/link'
 export const metadata = {
   title: 'Blog — Clearly, AI',
   description: 'Practical AI tips written in plain English for non-technical adults.',
+  openGraph: {
+    title: 'Blog — Clearly, AI',
+    description: 'Practical AI tips written in plain English for non-technical adults.',
+    url: 'https://learnaiclearly.com/blog',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Blog — Clearly, AI',
+    description: 'Practical AI tips written in plain English for non-technical adults.',
+  },
+  alternates: {
+    canonical: 'https://learnaiclearly.com/blog',
+  },
 }
 
 export default function BlogIndexPage() {

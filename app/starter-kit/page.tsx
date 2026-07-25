@@ -6,6 +6,17 @@ import StarterKitForm from './StarterKitForm'
 export const metadata: Metadata = {
   title: 'Free AI Starter Kit — Clearly, AI',
   description: 'Download the free Clearly, AI Starter Kit — a plain-English PDF with practical AI prompts and tasks you can use today. No tech background needed.',
+  openGraph: {
+    title: 'Free AI Starter Kit — Clearly, AI',
+    description: 'Download the free Clearly, AI Starter Kit — a plain-English PDF with practical AI prompts and tasks you can use today.',
+    url: 'https://learnaiclearly.com/starter-kit',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free AI Starter Kit — Clearly, AI',
+    description: 'Download the free Clearly, AI Starter Kit — a plain-English PDF with practical AI prompts and tasks you can use today.',
+  },
   alternates: {
     canonical: 'https://learnaiclearly.com/starter-kit',
   },

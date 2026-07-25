@@ -179,8 +179,22 @@ export default async function PersonaPage({ params }: { params: Promise<{ person
     .map(getCourseBySlug)
     .filter((c): c is NonNullable<ReturnType<typeof getCourseBySlug>> => !!c)
 
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: page.faqs.map(({ q, a }) => ({
+      '@type': 'Question',
+      name: q,
+      acceptedAnswer: { '@type': 'Answer', text: a },
+    })),
+  }
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       <Navbar />
       <main>
         {/* ── Hero ── */}
@@ -413,7 +427,7 @@ export default async function PersonaPage({ params }: { params: Promise<{ person
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               {page.faqs.map(({ q, a }) => (
                 <div key={q} style={{ borderBottom: '1px solid var(--border)', padding: '22px 0' }}>
-                  <p style={{ fontWeight: 600, fontSize: 16, marginBottom: 10, color: 'var(--ink)' }}>{q}</p>
+                  <h3 style={{ fontWeight: 600, fontSize: 16, marginBottom: 10, color: 'var(--ink)' }}>{q}</h3>
                   <p style={{ fontSize: 15, color: 'var(--ink-mid)', lineHeight: 1.6 }}>{a}</p>
                 </div>
               ))}
