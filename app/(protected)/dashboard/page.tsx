@@ -453,52 +453,6 @@ export default async function DashboardPage({
                 })}
               </div>
             </section>
-            <section>
-                <div style={{
-                  marginBottom: 20,
-                  paddingBottom: 14,
-                  borderBottom: '1px solid var(--border)',
-                }}>
-                  <h2 style={{
-                    fontFamily: 'var(--font-h)',
-                    fontSize: 21,
-                    marginBottom: 4,
-                    color: 'var(--ink)',
-                  }}>
-                    Your member tools
-                  </h2>
-                  <p style={{ fontSize: 14, color: 'var(--ink-mid)' }}>Included free with your account.</p>
-                </div>
-                <Link href="/tools/tracker" style={{ textDecoration: 'none', display: 'block' }}>
-                  <div className="card card-hover" style={{
-                    padding: '20px 24px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    gap: 20,
-                    flexWrap: 'wrap',
-                    borderColor: 'var(--accent-lt)',
-                  }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-                      <span style={{ fontSize: 28, lineHeight: 1 }}>📈</span>
-                      <div>
-                        <h3 style={{
-                          fontFamily: 'var(--font-h)',
-                          fontSize: 17, marginBottom: 2, color: 'var(--ink)',
-                        }}>
-                          AI Visibility Tracker
-                        </h3>
-                        <p style={{ fontSize: 13, color: 'var(--ink-mid)' }}>
-                          Weekly AI search score checks for your site, with an email alert if it drops.
-                        </p>
-                      </div>
-                    </div>
-                    <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--accent)', whiteSpace: 'nowrap' }}>
-                      Open tracker →
-                    </span>
-                  </div>
-                </Link>
-              </section>
           </div>
 
         </div>

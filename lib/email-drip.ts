@@ -158,30 +158,3 @@ export function unsubscribeUrl(email: string): string {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://learnaiclearly.com'
   return `${siteUrl}/api/unsubscribe?email=${encodeURIComponent(email)}&token=${unsubscribeToken(email)}`
 }
-
-// ── AI Visibility Tracker: score-drop alert ────────────────
-// Sent by the weekly cron (app/api/cron/visibility-tracker) when a tracked
-// site's score drops by more than the alert threshold since the last crawl.
-export function visibilityAlertEmail({
-  siteUrl,
-  trackedUrl,
-  oldScore,
-  newScore,
-}: {
-  siteUrl: string
-  trackedUrl: string
-  oldScore: number
-  newScore: number
-}): { subject: string; html: string } {
-  return {
-    subject: `Your AI visibility score dropped: ${trackedUrl}`,
-    html: `
-      <div style="font-family:Inter,Helvetica,Arial,sans-serif;max-width:560px;margin:0 auto;color:#1c2b35;">
-        ${h1('Your AI visibility score dropped.')}
-        ${p(`We re-checked <strong>${trackedUrl}</strong> this week and your AI Search score went from <strong>${oldScore}</strong> to <strong>${newScore}</strong> out of 100.`)}
-        ${p(`Something on the page likely changed — a missing tag, a blocked crawler, a broken link. The full breakdown is in your tracker.`)}
-        ${btn(`${siteUrl}/tools/tracker`, 'See what changed')}
-      </div>
-    `,
-  }
-}
